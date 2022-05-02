@@ -1,0 +1,41 @@
+## GENERAL
+spring:
+  application:
+    name: Oye Taxi Backend Server
+  server:
+    port: 80
+  ##    port: 8443
+
+
+
+
+
+
+
+  ## CONFIGURACION DE MONGO DB
+  data:
+    mongodb:
+      uri: mongodb://oyetaxi:oyetaxi@localhost:27017/oye_taxi
+
+## CONFIGURACION DEL SERVIDOR DE FICHEROS CARPETA DE ALACENIMIENTO
+file:
+  storage:
+    location: fileStorage
+
+
+
+  ## CONFIGURACION DEL SERVIDOR DE FICHEROS CARPETA TEMPORAL Y TAMAÑO DE LOS ARCHIVOS
+
+  servlet:
+    multipart:
+      enabled: true
+      location: tempFolder
+      file-size-threshold: 50MB
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+##TWILIO SMS API
+twilio:
+  account_sid: AC9e44b58cdd832019e03a8f045288b591
+  auth_token: 20da967e87b858c7e0b4713838b60c8e
+  trial_number: +18596961174

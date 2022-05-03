@@ -13,9 +13,9 @@ import org.springframework.data.mongodb.core.mapping.Document
 data class Configuracion(
     @Id
     @Nullable var id:String? = DEFAULT_CONFIG,
-    @Nullable var servidorActivoClientes: Boolean? = true,
+    @Nullable var servidorActivoClientes: Boolean? = null,
     @Nullable var servidorActivoAdministradores :Boolean? = true,
-    @Nullable var twilioConfiguracion: TwilioConfiguracion?,
+    @Nullable var twilioConfiguracion: TwilioConfiguracion? = null,
     @Nullable var smsProvider:SmsProvider? = null,
     @Nullable var emailConfiguracion: EmailConfiguracion? = null,
     @Nullable var updateConfiguracion: UpdateConfiguracion? = null,

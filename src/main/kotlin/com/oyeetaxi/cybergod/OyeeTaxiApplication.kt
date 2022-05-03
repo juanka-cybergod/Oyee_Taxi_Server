@@ -21,10 +21,7 @@ import java.time.format.DateTimeFormatter
 @SpringBootApplication
 class OyeeTaxiApplication:CommandLineRunner{
 
-
-
-	//TODO //Se Debe poner Autowired cada vez q se instancie un Repositorio dentro de Una Clasa
-
+	/**Se Debe poner Autowired cada vez q se instancie un Repositorio dentro de Una Clasa*/
 	@Autowired
 	val usuarioRepository: UsuarioRepository? = null
 	@Autowired
@@ -37,10 +34,8 @@ class OyeeTaxiApplication:CommandLineRunner{
 	val configuracionRepository: ConfiguracionRepository? = null
 
 
-
-	val myformatter = DateTimeFormatter.ofPattern("dd-MM-yyyy") //LocalDate.parse("28-10-1989",myformatter)
-
-	override fun run(vararg args: String?) {
+	fun populateBD(){
+		val myformatter = DateTimeFormatter.ofPattern("dd-MM-yyyy") //LocalDate.parse("28-10-1989",myformatter)
 
 
 		val defaultConfiguration: Configuracion = Configuracion(
@@ -58,14 +53,14 @@ class OyeeTaxiApplication:CommandLineRunner{
 			smsProvider = SmsProvider.TWILIO,
 			emailConfiguracion = EmailConfiguracion(
 				serviceEmail = "oyeetaxioficial@gmail.com",
-					host = "smtp.gmail.com",
-					port = 587,
-					username = "oyeetaxioficial@gmail.com",
-					password = "djmanaxbxxkjzjer",
-					properties_mail_transport_protocol = "smtp",
-					properties_mail_smtp_auth = true,
-					properties_mail_smtp_starttls_enable = true,
-					properties_mail_debug = true,
+				host = "smtp.gmail.com",
+				port = 587,
+				username = "oyeetaxioficial@gmail.com",
+				password = "djmanaxbxxkjzjer",
+				properties_mail_transport_protocol = "smtp",
+				properties_mail_smtp_auth = true,
+				properties_mail_smtp_starttls_enable = true,
+				properties_mail_debug = true,
 			),
 			updateConfiguracion = UpdateConfiguracion(
 				available = true,
@@ -130,7 +125,7 @@ class OyeeTaxiApplication:CommandLineRunner{
 		val verificacionDefault = UsuarioVerificacion(
 			verificado = false,
 			identificacion = "",
-		    imagenIdentificaionURL = "",
+			imagenIdentificaionURL = "",
 		)
 
 
@@ -181,19 +176,6 @@ class OyeeTaxiApplication:CommandLineRunner{
 			longitud = -79.8601691,
 			rotacion = 16,
 		)
-
-
-
-
-
-//
-//
-//		val usuario_test = Usuario(
-//
-//		).also {
-//			usuarioRepository!!.insert(it)
-//		}
-//
 
 
 
@@ -407,12 +389,12 @@ class OyeeTaxiApplication:CommandLineRunner{
 
 		val tipoVehiculo_Automovil = TipoVehiculo(
 			tipoVehiculo = "Auto Móvil",
-		    descripcion  = "Automóvil de hasta 8 pasajeros para todo tipo de viajes con un buen nivel de confort",
-		    cuotaMensual = 200,
-		    seleccionable  = true,
-		    prioridadEnMapa = 0,
+			descripcion  = "Automóvil de hasta 8 pasajeros para todo tipo de viajes con un buen nivel de confort",
+			cuotaMensual = 200,
+			seleccionable  = true,
+			prioridadEnMapa = 0,
 			transportePasajeros = true,
-		    transporteCarga  = false,
+			transporteCarga  = false,
 			requiereVerification  = true,
 			imagenVehiculoURL = "ficheros/descarga/AUTO_MOVIL_3.PNG",
 		).also {
@@ -508,7 +490,7 @@ class OyeeTaxiApplication:CommandLineRunner{
 			requiereVerification  = true,
 			imagenVehiculoURL = "ficheros/descarga/CAMION_PASAJE_1.PNG",
 
-		).also {
+			).also {
 			tipoVehiculoRepository!!.save(it)
 		}
 
@@ -540,28 +522,28 @@ class OyeeTaxiApplication:CommandLineRunner{
 		val vehiculoVerificacion = VehiculoVerificacion(
 			verificado = false,
 			circulacion = "",
-		    imagenCirculacionURL = "",
-		    matricula = "P525700",
+			imagenCirculacionURL = "",
+			matricula = "P525700",
 		)
 
 		val vehiculoAuto = Vehiculo(
 			id = "id_auto",
-		    idUsuario = usuario_cliente.id,
-		    tipoVehiculo = tipoVehiculo_Automovil.tipoVehiculo,
-		    marca  = "Ford",
-		    modelo = "Skyline",
-		    ano= "1957",
-		    capacidadPasajeros = "7",
-		    capacidadEquipaje = "120",
+			idUsuario = usuario_cliente.id,
+			tipoVehiculo = tipoVehiculo_Automovil.tipoVehiculo,
+			marca  = "Ford",
+			modelo = "Skyline",
+			ano= "1957",
+			capacidadPasajeros = "7",
+			capacidadEquipaje = "120",
 			capacidadCarga = "0",
 			activo = true,
-		    visible = true,
-		    habilitado = true,
-		    disponible = true,
-		    climatizado  = true,
-		    fechaDeRegistro = LocalDate.parse("01-01-2022", myformatter),
-		    //imagenFrontalPublicaURL = "ficheros/descarga/id_auto_frontal.jpg",
-		    vehiculoVerificacion = vehiculoVerificacion
+			visible = true,
+			habilitado = true,
+			disponible = true,
+			climatizado  = true,
+			fechaDeRegistro = LocalDate.parse("01-01-2022", myformatter),
+			//imagenFrontalPublicaURL = "ficheros/descarga/id_auto_frontal.jpg",
+			vehiculoVerificacion = vehiculoVerificacion
 		).also {
 			vehiculoRepository!!.save(it)
 		}
@@ -725,6 +707,14 @@ class OyeeTaxiApplication:CommandLineRunner{
 
 
 
+
+	}
+
+
+	override fun run(vararg args: String?) {
+
+		populateBD()
+
 	}
 
 
@@ -733,6 +723,9 @@ class OyeeTaxiApplication:CommandLineRunner{
 
 fun main(args: Array<String>) {
 	runApplication<OyeeTaxiApplication>(*args)
-
-
 }
+
+
+
+
+

@@ -14,7 +14,9 @@ data class Configuracion(
     @Id
     @Nullable var id:String? = DEFAULT_CONFIG,
     @Nullable var servidorActivoClientes: Boolean? = null,
-    @Nullable var servidorActivoAdministradores :Boolean? = true,
+    @Nullable var servidorActivoAdministradores :Boolean? = null,
+    @Nullable var motivoServidorInactivoClientes :String? = null,
+    @Nullable var motivoServidorInactivoAdministradores :String? = null,
     @Nullable var twilioConfiguracion: TwilioConfiguracion? = null,
     @Nullable var smsProvider:SmsProvider? = null,
     @Nullable var emailConfiguracion: EmailConfiguracion? = null,

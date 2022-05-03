@@ -114,6 +114,8 @@ class UsuarioService : UsuarioInterface {
                 usuario.administrador?.let { usuarioModificar.administrador = it}
                 usuario.superAdministrador?.let { usuarioModificar.superAdministrador = it}
                 usuario.ubicacion?.let { usuarioModificar.ubicacion = it}
+                usuario.mensaje?.let { usuarioModificar.mensaje = it}
+
 
                 usuario.usuarioVerificacion?.let { verificacion ->
                     verificacion.verificado?.let {  usuarioModificar.usuarioVerificacion?.verificado = it }

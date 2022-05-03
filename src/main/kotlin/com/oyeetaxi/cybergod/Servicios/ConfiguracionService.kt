@@ -68,6 +68,9 @@ class ConfiguracionService : ConfiguracionInterface {
             configuracion.servidorActivoClientes?.let { configuracionModificar.servidorActivoClientes = it }
             configuracion.servidorActivoAdministradores?.let { configuracionModificar.servidorActivoAdministradores = it }
             configuracion.smsProvider?.let { configuracionModificar.smsProvider = it }
+            configuracion.motivoServidorInactivoClientes?.let { configuracionModificar.motivoServidorInactivoClientes = it }
+            configuracion.motivoServidorInactivoAdministradores?.let { configuracionModificar.motivoServidorInactivoAdministradores = it }
+
 
             configuracion.twilioConfiguracion?.let { twilioConfiguration ->
                 twilioConfiguration.account_sid?.let { configuracionModificar.twilioConfiguracion?.account_sid = it }

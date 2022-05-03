@@ -31,7 +31,8 @@ data class Usuario(
     var superAdministrador:Boolean? = null,
     var ubicacion: Ubicacion? = null,
     var usuarioVerificacion: UsuarioVerificacion? = null,
-    var valoracion: Float?=null
+    var valoracion: Float?=null,
+    var mensaje: String?=null,
     )
 
 

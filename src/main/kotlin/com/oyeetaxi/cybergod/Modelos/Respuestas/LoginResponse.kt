@@ -4,12 +4,13 @@ import com.oyeetaxi.cybergod.Modelos.Usuario
 
 data class LoginResponse(
 
-    val usuarioEncontrado :Boolean? = null,
-    val contrasenaCorrecta: Boolean? = null,
-    val mensajeBienvenida : String? = null,
 
-    val usuario: Usuario? = null,
-    val vehiculoActivo: VehiculoResponse? = null,
+    var usuarioEncontrado :Boolean? = null,
+    var contrasenaCorrecta: Boolean? = null,
+    var servidorActivo: Boolean? = null,
+    var mensaje : String? = null,
+    var usuario: Usuario? = null,
+    var vehiculoActivo: VehiculoResponse? = null,
 
 
 

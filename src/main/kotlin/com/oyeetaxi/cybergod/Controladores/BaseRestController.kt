@@ -23,6 +23,8 @@ class BaseRestController {
     val emailBusiness : EmailServicio? = null
     @Autowired
     val valoracionBusiness : ValoracionService? = null
+    @Autowired
+    val configuracionBusiness : ConfiguracionService? = null
 
 
 

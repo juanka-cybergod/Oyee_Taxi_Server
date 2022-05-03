@@ -120,9 +120,10 @@ class UsuarioRestController: BaseRestController() {
 
         var userFound : Usuario?=null
         var usuarioEncontrado  = false
+        var serverActiveForThisUser = true
         var activeVehicleResponse : VehiculoResponse? = null
         var correctPasword  = false
-        val messaje:String? = null
+        var messaje:String? = null
 
 
 
@@ -142,6 +143,21 @@ class UsuarioRestController: BaseRestController() {
                     val valoracion = valoracionBusiness!!.getValorationAverageByUserId(usuario.id!!)
                     usuario.valoracion =  valoracion
 
+
+                    val serverConfig = configuracionBusiness!!.getConfiguration()
+                    if (usuario.administrador == true) {
+                        serverActiveForThisUser = serverConfig.servidorActivoAdministradores?:true
+                        if (!serverActiveForThisUser) {messaje = serverConfig.motivoServidorInactivoAdministradores}
+                    } else if (usuario.administrador == false && usuario.superAdministrador == false) {
+                        serverActiveForThisUser = serverConfig.servidorActivoClientes?:true
+                        if (!serverActiveForThisUser) {messaje = serverConfig.motivoServidorInactivoClientes}
+                    }
+                    if (usuario.superAdministrador == true) {
+                        serverActiveForThisUser = true
+                        messaje = null
+                    }
+
+
                     userFound = usuario
 
 
@@ -151,10 +167,13 @@ class UsuarioRestController: BaseRestController() {
 
 
 
+
+
         val loginResponse = LoginResponse(
             usuarioEncontrado = usuarioEncontrado,
             contrasenaCorrecta = correctPasword,
-            mensajeBienvenida = messaje,
+            servidorActivo = serverActiveForThisUser,
+            mensaje = messaje,
             usuario = userFound,
             vehiculoActivo = activeVehicleResponse
         )

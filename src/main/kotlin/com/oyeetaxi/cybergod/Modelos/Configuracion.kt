@@ -15,7 +15,6 @@ data class Configuracion(
     @Nullable var id:String? = DEFAULT_CONFIG,
     @Nullable var servidorActivoClientes: Boolean? = true,
     @Nullable var servidorActivoAdministradores :Boolean? = true,
-    @Nullable var versionMinimaAppCliente :Int? = 0,
     @Nullable var twilioConfiguracion: TwilioConfiguracion?,
     @Nullable var smsProvider:SmsProvider? = null,
     @Nullable var emailConfiguracion: EmailConfiguracion? = null,
@@ -23,17 +22,3 @@ data class Configuracion(
 
     )
 
-
-
-
-
-/**
-: Boolean ** para clientes
-ServidorActivo:Boolean  ** para administradores (excepto yo)
-mensajeRazonInactividad ** solo para Clientes
-versionMinimaAppCliente : int ** restringir el acceso a las versiones antiguas para que actualicen y no den problemas de compatibilidad con la bd
-
-
-
- *
- */

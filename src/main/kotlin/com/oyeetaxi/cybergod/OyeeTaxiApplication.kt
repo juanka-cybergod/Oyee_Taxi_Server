@@ -42,7 +42,6 @@ class OyeeTaxiApplication:CommandLineRunner{
 			DEFAULT_CONFIG,
 			true,
 			true,
-			0,
 			twilioConfiguracion = (TwilioConfiguracion(
 				account_sid = "AC9e44b58cdd832019e03a8f045288b591",
 				auth_token = "20da967e87b858c7e0b4713838b60c8e",

@@ -82,7 +82,7 @@ class UsuarioService : UsuarioInterface {
     override fun updateUser(usuario: Usuario): Usuario {
 
         val optional:Optional<Usuario>
-        var usuarioActualizdo : Usuario = usuario
+        var usuarioActualizado : Usuario = usuario
 
         usuario.id?.let { id ->
 
@@ -122,11 +122,8 @@ class UsuarioService : UsuarioInterface {
                 }
 
 
-               // usuario.usuarioVerificacion?.let { usuarioModificar.usuarioVerificacion = it}
-
-
                 try {
-                    usuarioActualizdo = usuarioRepository!!.save(usuarioModificar)
+                    usuarioActualizado = usuarioRepository!!.save(usuarioModificar)
 
                 }catch (e:Exception){
 
@@ -138,7 +135,7 @@ class UsuarioService : UsuarioInterface {
 
         }
 
-        return usuarioActualizdo
+        return usuarioActualizado
 
 
 //        try {

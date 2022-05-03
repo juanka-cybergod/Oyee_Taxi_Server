@@ -4,16 +4,16 @@ import com.mongodb.lang.Nullable
 
 data class EmailConfiguracion(
 
-    @Nullable val serviceEmail: String? = null,
-    @Nullable val host: String? = null,
-    @Nullable val port: Int? = null,
-    @Nullable val username: String? = null,
-    @Nullable val password: String? = null,
+    @Nullable var serviceEmail: String? = null,
+    @Nullable var host: String? = null,
+    @Nullable var port: Int? = null,
+    @Nullable var username: String? = null,
+    @Nullable var password: String? = null,
 
-    @Nullable val properties_mail_transport_protocol: String? = null,
-    @Nullable val properties_mail_smtp_auth: Boolean? = null,
-    @Nullable val properties_mail_smtp_starttls_enable: Boolean? = null,
-    @Nullable val properties_mail_debug: Boolean? = null,
+    @Nullable var properties_mail_transport_protocol: String? = null,
+    @Nullable var properties_mail_smtp_auth: Boolean? = null,
+    @Nullable var properties_mail_smtp_starttls_enable: Boolean? = null,
+    @Nullable var properties_mail_debug: Boolean? = null,
 
     )
 /*

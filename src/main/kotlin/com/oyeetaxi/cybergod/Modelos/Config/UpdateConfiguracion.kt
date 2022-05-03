@@ -4,13 +4,13 @@ import com.mongodb.lang.Nullable
 
 data class UpdateConfiguracion(
 
-    @Nullable val available: Boolean? = true,
-    @Nullable val version: Int? = null,
-    @Nullable val versionString: String? = null,
-    @Nullable val fileSize: String? = null,
-    @Nullable val appURL: String? = null,
-    @Nullable val packageName: String? = null,
-    @Nullable val forceUpdate: Boolean? = null,
-    @Nullable val description: List<String>? = null,
+    @Nullable var available: Boolean? = true,
+    @Nullable var version: Int? = null,
+    @Nullable var versionString: String? = null,
+    @Nullable var fileSize: String? = null,
+    @Nullable var appURL: String? = null,
+    @Nullable var packageName: String? = null,
+    @Nullable var forceUpdate: Boolean? = null,
+    @Nullable var description: List<String>? = null,
 
     )

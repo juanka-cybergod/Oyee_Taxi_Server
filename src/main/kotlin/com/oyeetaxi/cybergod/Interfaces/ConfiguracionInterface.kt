@@ -16,7 +16,7 @@ interface ConfiguracionInterface {
     fun setTwilioConfiguration(twilioConfiguracion: TwilioConfiguracion):Boolean
     fun getTwilioConfiguration(): TwilioConfiguracion
 
-    fun setConfiguration(configuracion: Configuracion):Boolean
+    fun updateConfiguration(configuracion: Configuracion):Configuracion
     fun getConfiguration():Configuracion
 
     fun updateCredit():Boolean

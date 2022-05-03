@@ -80,12 +80,12 @@ class ConfiguracionRestController {
         }
     }
 
-    @PutMapping("/setConfiguration")
-    fun setConfiguration(@RequestBody configuracion: Configuracion): ResponseEntity<Boolean>{
-        return try {
-            configuracionBusiness!!.setConfiguration(configuracion)
-            ResponseEntity(HttpStatus.OK)
 
+
+    @PutMapping("/updateConfiguration")
+    fun updateConfiguration(@RequestBody configuracion: Configuracion): ResponseEntity<Configuracion>{
+        return try {
+            ResponseEntity(configuracionBusiness!!.updateConfiguration(configuracion),HttpStatus.OK)
         } catch (e: BusinessException) {
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }

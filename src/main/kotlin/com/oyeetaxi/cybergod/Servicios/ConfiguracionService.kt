@@ -40,18 +40,100 @@ class ConfiguracionService : ConfiguracionInterface {
         return optional.get()
     }
 
-    @Throws(BusinessException::class,NotFoundException::class)
-    override fun setConfiguration(configuracion: Configuracion): Boolean {
 
-        return try {
-            configuracionRepository!!.save(configuracion)
-            true
+
+
+
+
+    @Throws(BusinessException::class,NotFoundException::class)
+    override fun updateConfiguration(configuracion: Configuracion): Configuracion {
+
+        val optional:Optional<Configuracion>
+        configuracion.id=DEFAULT_CONFIG
+
+        var configuracionActualizada : Configuracion = configuracion
+
+        try {
+            optional = configuracionRepository!!.findById(DEFAULT_CONFIG)
         }catch (e:Exception) {
             throw BusinessException(e.message)
+        }
+
+        if (!optional.isPresent){
+            throw NotFoundException("Configuracion $DEFAULT_CONFIG No Encontrada")
+        } else {
+
+            val configuracionModificar : Configuracion = optional.get()
+
+            configuracion.servidorActivoClientes?.let { configuracionModificar.servidorActivoClientes = it }
+            configuracion.servidorActivoAdministradores?.let { configuracionModificar.servidorActivoAdministradores = it }
+            configuracion.smsProvider?.let { configuracionModificar.smsProvider = it }
+
+            configuracion.twilioConfiguracion?.let { twilioConfiguration ->
+                twilioConfiguration.account_sid?.let { configuracionModificar.twilioConfiguracion?.account_sid = it }
+                twilioConfiguration.auth_token?.let { configuracionModificar.twilioConfiguracion?.auth_token = it }
+                twilioConfiguration.trial_number?.let { configuracionModificar.twilioConfiguracion?.trial_number = it }
+                twilioConfiguration.remaningCredit?.let { configuracionModificar.twilioConfiguracion?.remaningCredit = it }
+                twilioConfiguration.smsCost?.let { configuracionModificar.twilioConfiguracion?.smsCost = it }
+            }
+
+            configuracion.emailConfiguracion?.let {emailConfiguracion ->
+
+                emailConfiguracion.serviceEmail?.let { configuracionModificar.emailConfiguracion?.serviceEmail = it }
+                emailConfiguracion.host?.let { configuracionModificar.emailConfiguracion?.host = it }
+                emailConfiguracion.port?.let { configuracionModificar.emailConfiguracion?.port = it }
+                emailConfiguracion.username?.let { configuracionModificar.emailConfiguracion?.username = it }
+                emailConfiguracion.password?.let { configuracionModificar.emailConfiguracion?.password = it }
+                emailConfiguracion.properties_mail_transport_protocol?.let { configuracionModificar.emailConfiguracion?.properties_mail_transport_protocol = it }
+                emailConfiguracion.properties_mail_smtp_auth?.let { configuracionModificar.emailConfiguracion?.properties_mail_smtp_auth = it }
+                emailConfiguracion.properties_mail_smtp_starttls_enable?.let { configuracionModificar.emailConfiguracion?.properties_mail_smtp_starttls_enable = it }
+                emailConfiguracion.properties_mail_debug?.let { configuracionModificar.emailConfiguracion?.properties_mail_debug = it }
+
+            }
+
+            configuracion.updateConfiguracion?.let {updateConfiguracion ->
+                updateConfiguracion.available?.let { configuracionModificar.updateConfiguracion?.available = it }
+                updateConfiguracion.version?.let { configuracionModificar.updateConfiguracion?.version = it }
+                updateConfiguracion.versionString?.let { configuracionModificar.updateConfiguracion?.versionString = it }
+                updateConfiguracion.fileSize?.let { configuracionModificar.updateConfiguracion?.fileSize = it }
+                updateConfiguracion.appURL?.let { configuracionModificar.updateConfiguracion?.appURL = it }
+                updateConfiguracion.packageName?.let { configuracionModificar.updateConfiguracion?.packageName = it }
+                updateConfiguracion.forceUpdate?.let { configuracionModificar.updateConfiguracion?.forceUpdate = it }
+                updateConfiguracion.description?.let { configuracionModificar.updateConfiguracion?.description = it }
+
+            }
+
+
+            try {
+                configuracionActualizada = configuracionRepository!!.save(configuracionModificar)
+
+            }catch (e:Exception){
+
+                throw BusinessException(e.message)
+
+            }
+
 
         }
 
+
+        return configuracionActualizada
+
+
+
+//        return try {
+//            configuracionRepository!!.save(configuracion)
+//            true
+//        }catch (e:Exception) {
+//            throw BusinessException(e.message)
+//
+//        }
+
     }
+
+
+
+
 
 
 

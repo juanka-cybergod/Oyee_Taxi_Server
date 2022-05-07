@@ -48,12 +48,12 @@ class OyeeTaxiApplication:CommandLineRunner{
 				account_sid = "AC9e44b58cdd832019e03a8f045288b591",
 				auth_token = "20da967e87b858c7e0b4713838b60c8e",
 				trial_number = "+18596961174",
-				remaningCredit = 13.34, //total 15.50
+				remainingCredit = 13.34, //total 15.50
 				smsCost = 0.18, //costo por sms
 			)),
 			smsProvider = SmsProvider.TWILIO,
 			emailConfiguracion = EmailConfiguracion(
-				serviceEmail = "oyeetaxioficial@gmail.com",
+				//serviceEmail = "oyeetaxioficial@gmail.com",
 				host = "smtp.gmail.com",
 				port = 587,
 				username = "oyeetaxioficial@gmail.com",

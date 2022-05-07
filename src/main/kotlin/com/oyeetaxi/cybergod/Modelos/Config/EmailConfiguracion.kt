@@ -4,7 +4,7 @@ import com.mongodb.lang.Nullable
 
 data class EmailConfiguracion(
 
-    @Nullable var serviceEmail: String? = null,
+    //@Nullable var serviceEmail: String? = null,
     @Nullable var host: String? = null,
     @Nullable var port: Int? = null,
     @Nullable var username: String? = null,

@@ -29,17 +29,12 @@ class SmsServicio: SmsInterface {
     }
 
 
-    private var LOGGER = LoggerFactory.getLogger(SmsServicio::class.java)
+    private var logger = LoggerFactory.getLogger(SmsServicio::class.java)
 
     override fun sendSMS(smsRequest: SmsRequest):Boolean {
 
 
         setupAuthCredentials()
-
-//        val twilioClient = TwilioRestClient.Builder(
-//            account_sid,
-//            auth_token
-//        ).build()
 
         Twilio.init(
             account_sid,
@@ -61,7 +56,7 @@ class SmsServicio: SmsInterface {
 
            true
         } catch (e: Exception){
-            LOGGER.info("Error de coneccion con el Servidor de Twilio usar VPN")
+            logger.info("Error de conexion con el Servidor de Twilio usar VPN en el Servidor")
            false
         }
 
@@ -69,17 +64,8 @@ class SmsServicio: SmsInterface {
 
     }
 
-//    override fun generateOTP(): String {
-//        val OTP =  DecimalFormat("000000")
-//            .format(Random().nextInt(999999))
-//        LOGGER.info("OTP Auto Generado = $OTP")
-//        return OTP
-//    }
 
-
-
-
-//      TODO METODO SICRONO PERO PUEDE DEMORAR EL SERVIDOR ??
+//      // METODO SICRONO PERO PUEDE DEMORAR EL SERVIDOR ??
 //    override fun sendSMS(smsRequest: SmsRequest):Boolean {
 //
 //        val twilioClient = TwilioRestClient.Builder(

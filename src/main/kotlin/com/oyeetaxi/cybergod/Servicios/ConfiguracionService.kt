@@ -76,13 +76,13 @@ class ConfiguracionService : ConfiguracionInterface {
                 twilioConfiguration.account_sid?.let { configuracionModificar.twilioConfiguracion?.account_sid = it }
                 twilioConfiguration.auth_token?.let { configuracionModificar.twilioConfiguracion?.auth_token = it }
                 twilioConfiguration.trial_number?.let { configuracionModificar.twilioConfiguracion?.trial_number = it }
-                twilioConfiguration.remaningCredit?.let { configuracionModificar.twilioConfiguracion?.remaningCredit = it }
+                twilioConfiguration.remainingCredit?.let { configuracionModificar.twilioConfiguracion?.remainingCredit = it }
                 twilioConfiguration.smsCost?.let { configuracionModificar.twilioConfiguracion?.smsCost = it }
             }
 
             configuracion.emailConfiguracion?.let {emailConfiguracion ->
 
-                emailConfiguracion.serviceEmail?.let { configuracionModificar.emailConfiguracion?.serviceEmail = it }
+                //emailConfiguracion.serviceEmail?.let { configuracionModificar.emailConfiguracion?.serviceEmail = it }
                 emailConfiguracion.host?.let { configuracionModificar.emailConfiguracion?.host = it }
                 emailConfiguracion.port?.let { configuracionModificar.emailConfiguracion?.port = it }
                 emailConfiguracion.username?.let { configuracionModificar.emailConfiguracion?.username = it }
@@ -226,7 +226,7 @@ class ConfiguracionService : ConfiguracionInterface {
 
         val tempTwilioConfiguration =getTwilioConfiguration()
 
-        val remaningCredit: Double = tempTwilioConfiguration.remaningCredit!!
+        val remaningCredit: Double = tempTwilioConfiguration.remainingCredit!!
         val smsCost: Double = tempTwilioConfiguration.smsCost!!
 
         val newTwilioConfiguracion = TwilioConfiguracion(
@@ -234,7 +234,7 @@ class ConfiguracionService : ConfiguracionInterface {
             auth_token = tempTwilioConfiguration.auth_token,
             trial_number = tempTwilioConfiguration.trial_number,
             smsCost = tempTwilioConfiguration.smsCost,
-            remaningCredit = remaningCredit - smsCost,
+            remainingCredit = remaningCredit - smsCost,
         )
 
         return setTwilioConfiguration(
@@ -250,7 +250,7 @@ class ConfiguracionService : ConfiguracionInterface {
 
         val tempTwilioConfiguration =getTwilioConfiguration()
 
-        val remaningCredit: Double = tempTwilioConfiguration.remaningCredit!!
+        val remaningCredit: Double = tempTwilioConfiguration.remainingCredit!!
         val smsCost: Double = tempTwilioConfiguration.smsCost!!
 
         return Math.round( (remaningCredit/smsCost) .toFloat() )

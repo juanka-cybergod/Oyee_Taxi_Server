@@ -54,7 +54,7 @@ class EmailServicio : EmailInterface {
         val javaMailSender: JavaMailSender? = getJavaMailSender()
 
         val message = SimpleMailMessage().apply {
-            setFrom(emailConfiguration.serviceEmail!!)
+            setFrom(emailConfiguration.username!!) //setFrom(emailConfiguration.serviceEmail!!)
             setSubject(subject)
             setTo(toEmail)
             setText(body)
@@ -88,7 +88,7 @@ class EmailServicio : EmailInterface {
         val mimeMessage = javaMailSender?.createMimeMessage()
 
         val mimeMessageHelper = MimeMessageHelper(mimeMessage!!,true).apply {
-            setFrom(emailConfiguration.serviceEmail!!)
+            setFrom(emailConfiguration.username!!) //setFrom(emailConfiguration.serviceEmail!!)
             setSubject(subject)
             setTo(toEmail)
             setText(body)

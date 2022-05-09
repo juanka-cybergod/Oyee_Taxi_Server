@@ -3,6 +3,8 @@ package com.oyeetaxi.cybergod.Servicios
 import com.oyeetaxi.cybergod.Interfaces.SmsInterface
 import com.oyeetaxi.cybergod.Modelos.SmsRequest
 import com.twilio.Twilio
+import com.twilio.http.HttpMethod
+import com.twilio.http.Request
 import com.twilio.rest.api.v2010.account.Message
 import com.twilio.type.PhoneNumber
 import org.slf4j.LoggerFactory
@@ -41,7 +43,10 @@ class SmsServicio: SmsInterface {
             auth_token
         )
 
-
+//
+//        val request=Request(HttpMethod.GET,"")
+//        val cliente = Twilio.getRestClient().httpClient.makeRequest(Request(HttpMethod.GET,""))
+//        cliente.
 
         val messageCreator = Message.creator(
             PhoneNumber(smsRequest.phoneNumber), //TO

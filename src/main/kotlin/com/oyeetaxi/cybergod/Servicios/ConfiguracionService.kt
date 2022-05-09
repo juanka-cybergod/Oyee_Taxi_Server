@@ -106,6 +106,19 @@ class ConfiguracionService : ConfiguracionInterface {
 
             }
 
+            configuracion.socialConfiguracion?.let { socialConfiguracion ->
+                socialConfiguracion.email?.let { configuracionModificar.socialConfiguracion?.email = it }
+                socialConfiguracion.web?.let { configuracionModificar.socialConfiguracion?.web = it }
+                socialConfiguracion.whatsapp?.let { configuracionModificar.socialConfiguracion?.whatsapp = it }
+                socialConfiguracion.facebook?.let { configuracionModificar.socialConfiguracion?.facebook = it }
+                socialConfiguracion.instagram?.let { configuracionModificar.socialConfiguracion?.instagram = it }
+                socialConfiguracion.linkedin?.let { configuracionModificar.socialConfiguracion?.linkedin = it }
+                socialConfiguracion.snapchat?.let { configuracionModificar.socialConfiguracion?.snapchat = it }
+                socialConfiguracion.tiktok?.let { configuracionModificar.socialConfiguracion?.tiktok = it }
+                socialConfiguracion.like?.let { configuracionModificar.socialConfiguracion?.like = it }
+
+            }
+
 
             try {
                 configuracionActualizada = configuracionRepository!!.save(configuracionModificar)

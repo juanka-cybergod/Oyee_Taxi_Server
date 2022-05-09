@@ -46,9 +46,9 @@ class OyeeTaxiApplication:CommandLineRunner{
 			motivoServidorInactivoAdministradores = "El Sistema está Desactivado para Administradores por falta de pago",
 			twilioConfiguracion = (TwilioConfiguracion(
 				account_sid = "AC9e44b58cdd832019e03a8f045288b591",
-				auth_token = "20da967e87b858c7e0b4713838b60c8e",
+				auth_token = "99e7fb6c2bbcba159a95c503871d4732",
 				trial_number = "+18596961174",
-				remainingCredit = 13.34, //total 15.50
+				remainingCredit = 11.22, //total
 				smsCost = 0.18, //costo por sms
 			)),
 			smsProvider = SmsProvider.TWILIO,

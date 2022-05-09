@@ -2,6 +2,7 @@ package com.oyeetaxi.cybergod.Modelos
 
 import com.mongodb.lang.Nullable
 import com.oyeetaxi.cybergod.Modelos.Config.EmailConfiguracion
+import com.oyeetaxi.cybergod.Modelos.Config.SocialConfiguracion
 import com.oyeetaxi.cybergod.Modelos.Config.TwilioConfiguracion
 import com.oyeetaxi.cybergod.Modelos.Config.UpdateConfiguracion
 import com.oyeetaxi.cybergod.Utiles.Constants.DEFAULT_CONFIG
@@ -21,6 +22,7 @@ data class Configuracion(
     @Nullable var smsProvider:SmsProvider? = null,
     @Nullable var emailConfiguracion: EmailConfiguracion? = null,
     @Nullable var updateConfiguracion: UpdateConfiguracion? = null,
+    @Nullable var socialConfiguracion: SocialConfiguracion? = null,
 
     )
 

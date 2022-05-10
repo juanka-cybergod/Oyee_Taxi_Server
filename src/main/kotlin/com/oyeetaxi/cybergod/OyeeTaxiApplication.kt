@@ -3,6 +3,7 @@ package com.oyeetaxi.cybergod
 
 import com.oyeetaxi.cybergod.Modelos.*
 import com.oyeetaxi.cybergod.Modelos.Config.EmailConfiguracion
+import com.oyeetaxi.cybergod.Modelos.Config.SocialConfiguracion
 import com.oyeetaxi.cybergod.Modelos.Config.TwilioConfiguracion
 import com.oyeetaxi.cybergod.Modelos.Config.UpdateConfiguracion
 import com.oyeetaxi.cybergod.Modelos.Verificacion.UsuarioVerificacion
@@ -36,6 +37,35 @@ class OyeeTaxiApplication:CommandLineRunner{
 
 	fun populateBD(){
 		val myformatter = DateTimeFormatter.ofPattern("dd-MM-yyyy") //LocalDate.parse("28-10-1989",myformatter)
+
+
+	 	val redesSociales : MutableList<RedSocial> = emptyList<RedSocial>().toMutableList()
+		val facebook = RedSocial(
+			disponible = true,
+			nombre = "Facebook",
+			ico = "ficheros/descarga/SOCIAL_FACEBOOK.PNG",
+			url = "facebook/oyeetaxi",
+
+		)
+		val whatsapp = RedSocial(
+			disponible = true,
+			nombre = "WhatsApp",
+			ico = "ficheros/descarga/SOCIAL_WHATSAPP.PNG",
+			url = "WhatsApp/oyeetaxi",
+
+			)
+		val twitter = RedSocial(
+			disponible = true,
+			nombre = "Twitter",
+			ico = "ficheros/descarga/SOCIAL_TWITTER.PNG",
+			url = "twitter/@oyeetaxi",
+			)
+
+		with(redesSociales){
+			add(facebook)
+			add(whatsapp)
+			add(twitter)
+		}
 
 
 		val defaultConfiguration: Configuracion = Configuracion(
@@ -73,6 +103,13 @@ class OyeeTaxiApplication:CommandLineRunner{
 				forceUpdate = false,
 				description = listOf<String>("- Solucionar errores conocidos","- Iconos modernizados","- Optimizacion de inicio","- Estabilidad de Conección")
 
+			),
+			socialConfiguracion = SocialConfiguracion(
+				disponible = true,
+				phone = "+5353208579",
+				email = "oyeetaxioficial@gmail.com",
+				web = "http://www.oyeetaxi.com",
+				redesSociales = redesSociales.toList()
 			)
 
 		).also {

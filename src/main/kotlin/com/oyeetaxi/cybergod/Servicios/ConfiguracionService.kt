@@ -81,8 +81,6 @@ class ConfiguracionService : ConfiguracionInterface {
             }
 
             configuracion.emailConfiguracion?.let {emailConfiguracion ->
-
-                //emailConfiguracion.serviceEmail?.let { configuracionModificar.emailConfiguracion?.serviceEmail = it }
                 emailConfiguracion.host?.let { configuracionModificar.emailConfiguracion?.host = it }
                 emailConfiguracion.port?.let { configuracionModificar.emailConfiguracion?.port = it }
                 emailConfiguracion.username?.let { configuracionModificar.emailConfiguracion?.username = it }
@@ -111,18 +109,7 @@ class ConfiguracionService : ConfiguracionInterface {
                 socialConfiguracion.phone?.let { configuracionModificar.socialConfiguracion?.phone = it }
                 socialConfiguracion.email?.let { configuracionModificar.socialConfiguracion?.email = it }
                 socialConfiguracion.web?.let { configuracionModificar.socialConfiguracion?.web = it }
-
                 socialConfiguracion.redesSociales?.let { configuracionModificar.socialConfiguracion?.redesSociales = it }
-
-
-//                socialConfiguracion.whatsapp?.let { configuracionModificar.socialConfiguracion?.whatsapp = it }
-//                socialConfiguracion.facebook?.let { configuracionModificar.socialConfiguracion?.facebook = it }
-//                socialConfiguracion.instagram?.let { configuracionModificar.socialConfiguracion?.instagram = it }
-//                socialConfiguracion.linkedin?.let { configuracionModificar.socialConfiguracion?.linkedin = it }
-//                socialConfiguracion.snapchat?.let { configuracionModificar.socialConfiguracion?.snapchat = it }
-//                socialConfiguracion.tiktok?.let { configuracionModificar.socialConfiguracion?.tiktok = it }
-//                socialConfiguracion.like?.let { configuracionModificar.socialConfiguracion?.like = it }
-
             }
 
 

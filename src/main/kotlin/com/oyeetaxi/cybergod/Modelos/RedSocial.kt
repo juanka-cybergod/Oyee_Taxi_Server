@@ -8,6 +8,6 @@ data class RedSocial(
     @Nullable var nombre: String? = null,
     @Nullable var ico: String? = null,
     @Nullable var url: String? = null,
-
+    @Nullable var ayuda: String? = null,
 
     )

@@ -44,27 +44,51 @@ class OyeeTaxiApplication:CommandLineRunner{
 			disponible = true,
 			nombre = "Facebook",
 			ico = "ficheros/descarga/SOCIAL_FACEBOOK.PNG",
-			url = "facebook/oyeetaxi",
-
+			url = "oyee.taxi.00",
+			ayuda = "Indicar el id de su cuenta de facebook. Ej: Oyee.taxi.00"
 		)
 		val whatsapp = RedSocial(
 			disponible = true,
 			nombre = "WhatsApp",
 			ico = "ficheros/descarga/SOCIAL_WHATSAPP.PNG",
-			url = "WhatsApp/oyeetaxi",
-
+			url = "+53 12345678",
+			ayuda = "Indicar el número completo incluyendo el código del país. Ej: +53 12345678"
 			)
 		val twitter = RedSocial(
 			disponible = true,
 			nombre = "Twitter",
 			ico = "ficheros/descarga/SOCIAL_TWITTER.PNG",
-			url = "twitter/@oyeetaxi",
+			url = "@OyeeTaxi_oficial",
+			ayuda = "Indicar el id de su cuenta personal comenzando con @ . Ej: @OyeeTaxi_oficial"
 			)
-
+		val instagram = RedSocial(
+			disponible = true,
+			nombre = "Instagram",
+			ico = "ficheros/descarga/SOCIAL_INSTAGRAM.PNG",
+			url = "Oyee.taxi.00",
+			ayuda = "Indicar el id de su cuenta de instagram. Ej: Oyee.taxi.00"
+		)
+		val youtube = RedSocial(
+			disponible = true,
+			nombre = "YouTube",
+			ico = "ficheros/descarga/SOCIAL_YOUTUBE.PNG",
+			url = "OyeeTaxiOficial",
+			ayuda = "Indicar el nombre de su canal de youtube. Ej: OyeeTaxiOficial"
+		)
+		val linkedin = RedSocial(
+			disponible = true,
+			nombre = "LinkeIn",
+			ico = "ficheros/descarga/SOCIAL_LINKEDIN.PNG",
+			url = "oyee-taxi-oficial",
+			ayuda = "Indicar el nombre de su cuenta en linkedin. Ej: oyee-taxi-oficial"
+		)
 		with(redesSociales){
-			add(facebook)
 			add(whatsapp)
+			add(facebook)
+			add(instagram)
+			add(youtube)
 			add(twitter)
+			add(linkedin)
 		}
 
 

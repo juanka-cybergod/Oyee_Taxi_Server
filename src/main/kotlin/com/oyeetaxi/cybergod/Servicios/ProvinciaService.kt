@@ -54,11 +54,51 @@ class ProvinciaService : ProvinciaInterface {
 
     @Throws(BusinessException::class,NotFoundException::class)
     override fun updateProvince(provincia: Provincia): Provincia {
-        try {
-            return provinciaRepository!!.save(provincia)
-        }catch (e:Exception) {
-            throw BusinessException(e.message)
+
+        val optional:Optional<Provincia>
+        var provinciaActualizada: Provincia = provincia
+
+        provincia.nombre?.let { nombre ->
+            try{
+                optional= provinciaRepository!!.findById(nombre)
+            }   catch (e: Exception) {
+                throw  BusinessException(e.message)
+            }
+
+            if (!optional.isPresent) {
+                throw  NotFoundException("Provincia $nombre no Encontrada")
+            } else {
+                val provinciaModificar :Provincia = optional.get()
+
+                provincia.visible?.let { provinciaModificar.visible = it }
+
+                provincia.ubicacion?.let { ubicacion ->
+                    ubicacion.latitud?.let { provinciaModificar.ubicacion?.latitud = it }
+                    ubicacion.longitud?.let { provinciaModificar.ubicacion?.longitud = it }
+                    ubicacion.alturaMapa?.let { provinciaModificar.ubicacion?.alturaMapa = it }
+                }
+
+
+                try {
+                    provinciaActualizada = provinciaRepository!!.save(provinciaModificar)
+                } catch (e : Exception) {
+                    throw BusinessException(e.message)
+                }
+
+            }
+
+
+
         }
+
+        return provinciaActualizada
+
+//
+//        try {
+//            return provinciaRepository!!.save(provincia)
+//        }catch (e:Exception) {
+//            throw BusinessException(e.message)
+//        }
     }
 
     @Throws(BusinessException::class,NotFoundException::class)

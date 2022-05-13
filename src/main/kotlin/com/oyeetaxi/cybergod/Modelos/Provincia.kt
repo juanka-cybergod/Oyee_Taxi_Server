@@ -11,9 +11,8 @@ data class Provincia(
     @NonNull
     @Id
     var nombre:String? = null,
-    var ubicacion: Ubicacion,
-    var alturaMapa :Int? = null,
-    var visible :Boolean = true,
+    var ubicacion: Ubicacion? = null,
+    var visible :Boolean? = null,
     )
 /**
 

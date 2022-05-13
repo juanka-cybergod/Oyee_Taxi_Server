@@ -5,4 +5,5 @@ data class Ubicacion(
     var longitud:Double? = null,
     var rotacion:Int? = 0,
     val direccion:String? = null,
+    var alturaMapa:Int? = null
     )

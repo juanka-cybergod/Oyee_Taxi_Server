@@ -59,11 +59,9 @@ class ProvinciaRestController {
     }
 
     @PutMapping("/updateProvince")
-    fun updateProvince(@RequestBody provincia: Provincia): ResponseEntity<Any>{
+    fun updateProvince(@RequestBody provincia: Provincia): ResponseEntity<Provincia>{
         return try {
-            provinciasBusiness!!.updateProvince(provincia)
-            ResponseEntity(HttpStatus.OK)
-
+            ResponseEntity(provinciasBusiness!!.updateProvince(provincia),HttpStatus.OK)
         } catch (e: BusinessException) {
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }

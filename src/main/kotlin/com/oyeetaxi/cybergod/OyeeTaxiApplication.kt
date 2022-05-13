@@ -40,44 +40,46 @@ class OyeeTaxiApplication:CommandLineRunner{
 
 
 	 	val redesSociales : MutableList<RedSocial> = emptyList<RedSocial>().toMutableList()
+
+		val visibles = true
 		val facebook = RedSocial(
-			disponible = true,
+			disponible = visibles,
 			nombre = "Facebook",
 			ico = "ficheros/descarga/SOCIAL_FACEBOOK.PNG",
 			url = "oyee.taxi.00",
 			ayuda = "Indicar el id de su cuenta de facebook. Ej: Oyee.taxi.00"
 		)
 		val whatsapp = RedSocial(
-			disponible = true,
+			disponible = visibles,
 			nombre = "WhatsApp",
 			ico = "ficheros/descarga/SOCIAL_WHATSAPP.PNG",
-			url = "+53 12345678",
+			url = "+5353208579",
 			ayuda = "Indicar el número completo incluyendo el código del país. Ej: +53 12345678"
 			)
 		val twitter = RedSocial(
-			disponible = true,
+			disponible = visibles,
 			nombre = "Twitter",
 			ico = "ficheros/descarga/SOCIAL_TWITTER.PNG",
 			url = "@OyeeTaxi_oficial",
 			ayuda = "Indicar el id de su cuenta personal comenzando con @ . Ej: @OyeeTaxi_oficial"
 			)
 		val instagram = RedSocial(
-			disponible = true,
+			disponible = visibles,
 			nombre = "Instagram",
 			ico = "ficheros/descarga/SOCIAL_INSTAGRAM.PNG",
 			url = "Oyee.taxi.00",
 			ayuda = "Indicar el id de su cuenta de instagram. Ej: Oyee.taxi.00"
 		)
 		val youtube = RedSocial(
-			disponible = true,
+			disponible = visibles,
 			nombre = "YouTube",
 			ico = "ficheros/descarga/SOCIAL_YOUTUBE.PNG",
 			url = "OyeeTaxiOficial",
 			ayuda = "Indicar el nombre de su canal de youtube. Ej: OyeeTaxiOficial"
 		)
 		val linkedin = RedSocial(
-			disponible = true,
-			nombre = "LinkeIn",
+			disponible = visibles,
+			nombre = "LinkedIn",
 			ico = "ficheros/descarga/SOCIAL_LINKEDIN.PNG",
 			url = "oyee-taxi-oficial",
 			ayuda = "Indicar el nombre de su cuenta en linkedin. Ej: oyee-taxi-oficial"
@@ -148,11 +150,12 @@ class OyeeTaxiApplication:CommandLineRunner{
 		val villaClara = Provincia(
 			nombre = "Villa Clara",
 			visible = true,
-			alturaMapa = 8,
+
 			ubicacion = Ubicacion(
 				latitud = 22.4067049,
 				longitud = -79.9651691,
-				rotacion = 0
+				rotacion = 0,
+				alturaMapa = 8,
 			)
 		).also {
 			procinciaRepository!!.save(it)
@@ -160,11 +163,11 @@ class OyeeTaxiApplication:CommandLineRunner{
 		val laHabana = Provincia(
 			nombre = "La Habana",
 			visible = true,
-			alturaMapa = 8,
 			ubicacion = Ubicacion(
 				latitud = 23.113708,
 				longitud = -82.366642,
-				rotacion = 0
+				rotacion = 0,
+				alturaMapa = 8,
 			)
 		).also {
 			procinciaRepository!!.save(it)
@@ -172,11 +175,11 @@ class OyeeTaxiApplication:CommandLineRunner{
 		val matanzas = Provincia(
 			nombre = "Matanzas",
 			visible = true,
-			alturaMapa = 8,
 			ubicacion = Ubicacion(
 				latitud = 23.041986,
 				longitud = -81.574046,
-				rotacion = 0
+				rotacion = 0,
+				alturaMapa = 8,
 			)
 		).also {
 			procinciaRepository!!.save(it)

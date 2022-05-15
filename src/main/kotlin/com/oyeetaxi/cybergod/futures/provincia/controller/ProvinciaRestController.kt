@@ -35,6 +35,16 @@ class ProvinciaRestController {
     }
 
 
+    @GetMapping("/getAvailableProvinces")
+    fun getAvailableProvinces():ResponseEntity<List<Provincia>>{
+        return try {
+            ResponseEntity(provinciasBusiness!!.getAvailableProvinces(),HttpStatus.OK)
+        }catch (e:Exception){
+            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+
     @GetMapping("/getProvinceById={id}")
     fun getProvinceById(@PathVariable("id") idProvincia: String  ):ResponseEntity<Provincia> {
         return try {

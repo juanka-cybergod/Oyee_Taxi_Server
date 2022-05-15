@@ -28,6 +28,15 @@ class ProvinciaService : ProvinciaInterface {
         }
     }
 
+    @Throws(BusinessException::class)
+    override fun getAvailableProvinces(): List<Provincia> {
+        try {
+            return provinciaRepository!!.findAvailableProvinces()
+        } catch (e:Exception){
+            throw BusinessException(e.message)
+        }
+    }
+
     @Throws(BusinessException::class, NotFoundException::class)
     override fun getProvinceById(idProvincia: String): Provincia {
         val optional: Optional<Provincia>

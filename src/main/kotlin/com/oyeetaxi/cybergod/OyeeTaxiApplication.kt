@@ -1,20 +1,26 @@
 package com.oyeetaxi.cybergod
 
 
-import com.oyeetaxi.cybergod.Modelos.*
-import com.oyeetaxi.cybergod.Modelos.Config.EmailConfiguracion
-import com.oyeetaxi.cybergod.Modelos.Config.SocialConfiguracion
-import com.oyeetaxi.cybergod.Modelos.Config.TwilioConfiguracion
-import com.oyeetaxi.cybergod.Modelos.Config.UpdateConfiguracion
-import com.oyeetaxi.cybergod.Modelos.Verificacion.UsuarioVerificacion
-import com.oyeetaxi.cybergod.Modelos.Verificacion.VehiculoVerificacion
-import com.oyeetaxi.cybergod.Repositorios.*
-import com.oyeetaxi.cybergod.Utiles.Constants.DEFAULT_CONFIG
-import com.oyeetaxi.cybergod.Utiles.Utils.passwordEncode
+import com.oyeetaxi.cybergod.futures.base.models.Ubicacion
+import com.oyeetaxi.cybergod.futures.usuario.models.type.UsuarioVerificacion
+import com.oyeetaxi.cybergod.futures.vehiculo.models.VehiculoVerificacion
+import com.oyeetaxi.cybergod.utils.Constants.DEFAULT_CONFIG
+import com.oyeetaxi.cybergod.utils.Utils.passwordEncode
+import com.oyeetaxi.cybergod.futures.configuracion.models.Configuracion
+import com.oyeetaxi.cybergod.futures.configuracion.models.types.*
+import com.oyeetaxi.cybergod.futures.configuracion.repositories.ConfiguracionRepository
+import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
+import com.oyeetaxi.cybergod.futures.usuario.repositories.UsuarioRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import com.oyeetaxi.cybergod.futures.provincia.models.Provincia
+import com.oyeetaxi.cybergod.futures.provincia.repositories.ProvinciaRepository
+import com.oyeetaxi.cybergod.futures.tipo_vehiculo.models.TipoVehiculo
+import com.oyeetaxi.cybergod.futures.tipo_vehiculo.repositories.TipoVehiculoRepository
+import com.oyeetaxi.cybergod.futures.vehiculo.models.Vehiculo
+import com.oyeetaxi.cybergod.futures.vehiculo.repositories.VehiculoRepository
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -194,49 +200,49 @@ class OyeeTaxiApplication:CommandLineRunner{
 		)
 
 
-		val ubicacionCliente :Ubicacion = Ubicacion(
+		val ubicacionCliente : Ubicacion = Ubicacion(
 			latitud = 22.6442956,
 			longitud = -80.0462211,
 			rotacion = 70,
 		)
 
-		val ubicacionAuto :Ubicacion = Ubicacion(
+		val ubicacionAuto : Ubicacion = Ubicacion(
 			latitud = 22.4067049,
 			longitud = -79.9651691,
 			rotacion = 30,
 		)
-		val ubicacionMoto :Ubicacion = Ubicacion(
+		val ubicacionMoto : Ubicacion = Ubicacion(
 			latitud = 22.3027049,
 			longitud = -79.8601691,
 			rotacion = 40,
 		)
-		val ubicacionCamioCarga :Ubicacion = Ubicacion(
+		val ubicacionCamioCarga : Ubicacion = Ubicacion(
 			latitud = 22.5037049,
 			longitud = -80.1621691,
 			rotacion = 100,
 		)
-		val ubicacionCamioPasaje :Ubicacion = Ubicacion(
+		val ubicacionCamioPasaje : Ubicacion = Ubicacion(
 			latitud = 22.2077049,
 			longitud = -79.9671691,
 			rotacion = 90,
 		)
-		val ubicacionGuagua :Ubicacion = Ubicacion(
+		val ubicacionGuagua : Ubicacion = Ubicacion(
 			latitud = 22.6097049,
 			longitud = -79.9691691,
 			rotacion = 70,
 		)
 
-		val ubicacionVan :Ubicacion = Ubicacion(
+		val ubicacionVan : Ubicacion = Ubicacion(
 			latitud = 22.5037049,
 			longitud = -79.9691691,
 			rotacion = 60,
 		)
-		val ubicacionMotorina :Ubicacion = Ubicacion(
+		val ubicacionMotorina : Ubicacion = Ubicacion(
 			latitud = 22.0067049,
 			longitud = -79.4651691,
 			rotacion = 95,
 		)
-		val ubicacionMotoneta :Ubicacion = Ubicacion(
+		val ubicacionMotoneta : Ubicacion = Ubicacion(
 			latitud = 22.5037049,
 			longitud = -79.8601691,
 			rotacion = 16,

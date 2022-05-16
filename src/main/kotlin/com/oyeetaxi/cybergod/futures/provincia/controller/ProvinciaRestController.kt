@@ -58,10 +58,10 @@ class ProvinciaRestController {
     @PostMapping("/addProvince")
     fun addProvince(@RequestBody provincia: Provincia): ResponseEntity<Any>{
         return try {
-            provinciasBusiness!!.addProvince(provincia)
-            val responseHeader = org.springframework.http.HttpHeaders()
-            responseHeader.set("location",Constants.URL_BASE_PROVINCIAS + "/" + provincia.nombre)
-            ResponseEntity(responseHeader,HttpStatus.CREATED)
+//            provinciasBusiness!!.addProvince(provincia)
+//            val responseHeader = org.springframework.http.HttpHeaders()
+//            responseHeader.set("location",Constants.URL_BASE_PROVINCIAS + "/" + provincia.nombre)
+            ResponseEntity(provinciasBusiness!!.addProvince(provincia),HttpStatus.OK)
 
         } catch (e: BusinessException) {
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)

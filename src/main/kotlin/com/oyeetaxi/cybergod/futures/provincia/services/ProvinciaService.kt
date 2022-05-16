@@ -52,7 +52,7 @@ class ProvinciaService : ProvinciaInterface {
         return optional.get()
     }
 
-    @Throws(BusinessException::class,NotFoundException::class)
+    @Throws(BusinessException::class,BusinessException::class)
     override fun addProvince(provincia: Provincia): Provincia {
         try {
             return provinciaRepository!!.insert(provincia)

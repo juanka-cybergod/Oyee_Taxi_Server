@@ -31,6 +31,15 @@ class TipoVehiculoRestController {
         }
     }
 
+    @GetMapping("/getAvailableVehiclesType")
+    fun getAvailableVehiclesType():ResponseEntity<List<TipoVehiculo>>{
+        return try {
+            ResponseEntity(tipoVehiculosBusiness!!.getAvailableVehiclesType(),HttpStatus.OK)
+        }catch (e:Exception){
+            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
 
     @GetMapping("/getVehicleTypeById={id}")
     fun getVehicleTypeById(@PathVariable("id") idTipoVehiculo: String  ):ResponseEntity<TipoVehiculo> {
@@ -45,21 +54,16 @@ class TipoVehiculoRestController {
     @PostMapping("/addVehicleType")
     fun addVehicleType(@RequestBody tipoVehiculo: TipoVehiculo): ResponseEntity<Any>{
         return try {
-            tipoVehiculosBusiness!!.addVehicleType(tipoVehiculo)
-            val responseHeader = org.springframework.http.HttpHeaders()
-            responseHeader.set("location",URL_BASE_TIPO_VEHICULOS + "/" + tipoVehiculo.tipoVehiculo)
-            ResponseEntity(responseHeader,HttpStatus.CREATED)
-
+            ResponseEntity(tipoVehiculosBusiness!!.addVehicleType(tipoVehiculo),HttpStatus.OK)
         } catch (e: BusinessException) {
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
     @PutMapping("/updateVehicleType")
-    fun updateVehicleType(@RequestBody tipoVehiculo: TipoVehiculo): ResponseEntity<Any>{
+    fun updateVehicleType(@RequestBody tipoVehiculo: TipoVehiculo): ResponseEntity<TipoVehiculo>{
         return try {
-            tipoVehiculosBusiness!!.updateVehicleType(tipoVehiculo)
-            ResponseEntity(HttpStatus.OK)
+            ResponseEntity(tipoVehiculosBusiness!!.updateVehicleType(tipoVehiculo),HttpStatus.OK)
 
         } catch (e: BusinessException) {
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)

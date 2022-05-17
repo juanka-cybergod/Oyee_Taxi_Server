@@ -53,42 +53,42 @@ class OyeeTaxiApplication:CommandLineRunner{
 			nombre = "Facebook",
 			ico = "ficheros/descarga/SOCIAL_FACEBOOK.PNG",
 			url = "oyee.taxi.00",
-			ayuda = "Indicar el id de su cuenta de facebook. Ej: Oyee.taxi.00"
+			ayuda = "ID de su cuenta de facebook. Ej: Oyee.taxi.00"
 		)
 		val whatsapp = RedSocial(
 			disponible = visibles,
 			nombre = "WhatsApp",
 			ico = "ficheros/descarga/SOCIAL_WHATSAPP.PNG",
 			url = "+5353208579",
-			ayuda = "Indicar el número completo incluyendo el código del país. Ej: +53 12345678"
+			ayuda = "Número completo incluyendo el código del país. Ej: +53 12345678"
 			)
 		val twitter = RedSocial(
 			disponible = visibles,
 			nombre = "Twitter",
 			ico = "ficheros/descarga/SOCIAL_TWITTER.PNG",
 			url = "@OyeeTaxi_oficial",
-			ayuda = "Indicar el id de su cuenta personal comenzando con @ . Ej: @OyeeTaxi_oficial"
+			ayuda = "ID de su cuenta personal comenzando con @ . Ej: @OyeeTaxi_oficial"
 			)
 		val instagram = RedSocial(
 			disponible = visibles,
 			nombre = "Instagram",
 			ico = "ficheros/descarga/SOCIAL_INSTAGRAM.PNG",
 			url = "Oyee.taxi.00",
-			ayuda = "Indicar el id de su cuenta de instagram. Ej: Oyee.taxi.00"
+			ayuda = "ID de su cuenta de instagram. Ej: Oyee.taxi.00"
 		)
 		val youtube = RedSocial(
 			disponible = visibles,
 			nombre = "YouTube",
 			ico = "ficheros/descarga/SOCIAL_YOUTUBE.PNG",
 			url = "OyeeTaxiOficial",
-			ayuda = "Indicar el nombre de su canal de youtube. Ej: OyeeTaxiOficial"
+			ayuda = "Nombre de su canal de youtube. Ej: OyeeTaxiOficial"
 		)
 		val linkedin = RedSocial(
 			disponible = visibles,
 			nombre = "LinkedIn",
 			ico = "ficheros/descarga/SOCIAL_LINKEDIN.PNG",
 			url = "oyee-taxi-oficial",
-			ayuda = "Indicar el nombre de su cuenta en linkedin. Ej: oyee-taxi-oficial"
+			ayuda = "Nombre de su cuenta en linkedin. Ej: oyee-taxi-oficial"
 		)
 		with(redesSociales){
 			add(whatsapp)

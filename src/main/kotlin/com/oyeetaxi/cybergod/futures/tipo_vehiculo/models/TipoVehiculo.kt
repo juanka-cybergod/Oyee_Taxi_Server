@@ -1,7 +1,6 @@
 package com.oyeetaxi.cybergod.futures.tipo_vehiculo.models
 
-
-import com.mongodb.lang.NonNull
+import com.mongodb.lang.Nullable
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 
@@ -9,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 @Document(collection = "tipo_vehiculo")
 data class TipoVehiculo(
     @Id
-    @NonNull
+    @Nullable
     var tipoVehiculo:String? = null,
     var descripcion :String? = null,
     var cuotaMensual: Int? = null,

@@ -26,6 +26,17 @@ class TipoVehiculoService : TipoVehiculoInterface {
         }
     }
 
+    @Throws(BusinessException::class)
+    override fun getAvailableVehiclesType(): List<TipoVehiculo> {
+        try {
+            return tipoVehiculoRepository!!.findAvailableVehiclesType()
+        } catch (e:Exception){
+            throw BusinessException(e.message)
+        }
+    }
+
+
+
     @Throws(BusinessException::class,NotFoundException::class)
     override fun getVehicleTypeById(idTipoVehiculo: String): TipoVehiculo {
         val optional:Optional<TipoVehiculo>
@@ -51,12 +62,58 @@ class TipoVehiculoService : TipoVehiculoInterface {
     }
 
     @Throws(BusinessException::class,NotFoundException::class)
-    override fun updateVehicleType(vehiculoTipo: TipoVehiculo): TipoVehiculo {
-        try {
-            return tipoVehiculoRepository!!.save(vehiculoTipo)
-        }catch (e:Exception) {
-            throw BusinessException(e.message)
+    override fun updateVehicleType(tipoVehiculo: TipoVehiculo): TipoVehiculo {
+
+        val optional:Optional<TipoVehiculo>
+        var tipoVehiculoActualizado: TipoVehiculo = tipoVehiculo
+
+        tipoVehiculo.tipoVehiculo?.let { tipoVehiculoNombre ->
+
+            try{
+                optional= tipoVehiculoRepository!!.findById(tipoVehiculoNombre)
+            }   catch (e: Exception) {
+                throw  BusinessException(e.message)
+            }
+
+
+            if (!optional.isPresent) {
+                throw  NotFoundException("Tipo de Vehículo $tipoVehiculoNombre no Encontrado")
+            } else {
+                val tipoVehiculoModificar : TipoVehiculo = optional.get()
+
+                tipoVehiculo.descripcion?.let { tipoVehiculoModificar.descripcion = it }
+                tipoVehiculo.cuotaMensual?.let { tipoVehiculoModificar.cuotaMensual = it }
+                tipoVehiculo.seleccionable?.let { tipoVehiculoModificar.seleccionable = it }
+                tipoVehiculo.prioridadEnMapa?.let { tipoVehiculoModificar.prioridadEnMapa = it }
+                tipoVehiculo.transportePasajeros?.let { tipoVehiculoModificar.transportePasajeros = it }
+                tipoVehiculo.transporteCarga?.let { tipoVehiculoModificar.transporteCarga = it }
+                tipoVehiculo.requiereVerification?.let { tipoVehiculoModificar.requiereVerification = it }
+                tipoVehiculo.imagenVehiculoURL?.let { tipoVehiculoModificar.imagenVehiculoURL = it }
+
+
+
+                try {
+                    tipoVehiculoActualizado = tipoVehiculoRepository!!.save(tipoVehiculoModificar)
+                } catch (e : Exception) {
+                    throw BusinessException(e.message)
+                }
+
+            }
+
+
+
+
         }
+
+
+        return tipoVehiculoActualizado
+
+//        try {
+//            return tipoVehiculoRepository!!.save(vehiculoTipo)
+//        }catch (e:Exception) {
+//            throw BusinessException(e.message)
+//        }
+
     }
 
     @Throws(BusinessException::class,NotFoundException::class)

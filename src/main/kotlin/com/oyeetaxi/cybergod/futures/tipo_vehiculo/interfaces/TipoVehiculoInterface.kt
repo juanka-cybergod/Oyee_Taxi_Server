@@ -6,6 +6,7 @@ import com.oyeetaxi.cybergod.futures.tipo_vehiculo.models.TipoVehiculo
 interface TipoVehiculoInterface {
 
     fun getAllVehiclesType(): List<TipoVehiculo>
+    fun getAvailableVehiclesType(): List<TipoVehiculo>
     fun getVehicleTypeById(idTipoVehiculo: String): TipoVehiculo
     fun addVehicleType(tipoVehiculo: TipoVehiculo): TipoVehiculo
     fun updateVehicleType(tipoVehiculo: TipoVehiculo): TipoVehiculo

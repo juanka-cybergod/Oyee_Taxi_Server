@@ -280,7 +280,7 @@ class UsuarioRestController: BaseRestController() {
 //            ResponseEntity(responseHeader,HttpStatus.CREATED)
 
             //Devuelve el Body completo del Usuario Creado
-            ResponseEntity( usuarioBusiness!!.addUser(usuario),HttpStatus.CREATED)
+            ResponseEntity( usuarioBusiness!!.addUser(usuario),HttpStatus.OK)
 
         } catch (e: BusinessException) {
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)

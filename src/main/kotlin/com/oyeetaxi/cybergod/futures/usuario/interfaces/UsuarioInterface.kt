@@ -2,10 +2,14 @@ package com.oyeetaxi.cybergod.futures.usuario.interfaces
 
 import com.oyeetaxi.cybergod.futures.base.models.Ubicacion
 import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 interface UsuarioInterface {
 
     fun getAllUsers(): List<Usuario>
+    fun getAllUsersPaginated(pageable: Pageable):Page<Usuario>
+    fun searchAllUsersPaginated(search:String,pageable: Pageable):Page<Usuario>
     fun getUserById(idUsuario: String): Usuario
     fun addUser(usuario: Usuario): Usuario
     fun updateUser(usuario: Usuario): Usuario

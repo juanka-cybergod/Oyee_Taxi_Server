@@ -8,6 +8,8 @@ import com.oyeetaxi.cybergod.futures.base.models.Ubicacion
 import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -23,6 +25,24 @@ class UsuarioService : UsuarioInterface {
     override fun getAllUsers(): List<Usuario> {
         try {
             return usuarioRepository!!.findAll()
+        } catch (e:Exception){
+            throw BusinessException(e.message)
+        }
+    }
+
+    @Throws(BusinessException::class)
+    override fun getAllUsersPaginated(pageable: Pageable): Page<Usuario> {
+        try {
+            return usuarioRepository!!.findAll(pageable)
+        } catch (e:Exception){
+            throw BusinessException(e.message)
+        }
+    }
+
+    @Throws(BusinessException::class)
+    override fun searchAllUsersPaginated( search: String, pageable: Pageable): Page<Usuario> {
+        try {
+            return usuarioRepository!!.search(search,pageable)
         } catch (e:Exception){
             throw BusinessException(e.message)
         }

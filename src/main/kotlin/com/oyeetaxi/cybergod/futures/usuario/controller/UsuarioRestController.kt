@@ -12,6 +12,9 @@ import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
 import com.oyeetaxi.cybergod.utils.Constants
 import com.oyeetaxi.cybergod.utils.Utils
 import com.oyeetaxi.cybergod.utils.Utils.getServerLocalDate
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.repository.query.Param
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -252,6 +255,23 @@ class UsuarioRestController: BaseRestController() {
         }
     }
 
+    @GetMapping("/getAllUsersPaginated")
+    fun getAllUsersPaginated(pageable: Pageable):ResponseEntity<Page<Usuario>>{ //@RequestParam("pageable")
+        return try {
+            ResponseEntity(usuarioBusiness!!.getAllUsersPaginated(pageable),HttpStatus.OK)
+        }catch (e:Exception){
+            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    @GetMapping("/searchUsersPaginated")
+    fun searchUsersPaginated(pageable: Pageable,@RequestParam("search") search:String):ResponseEntity<Page<Usuario>>{ //@RequestParam("pageable")
+        return try {
+            ResponseEntity(usuarioBusiness!!.searchAllUsersPaginated(search,pageable),HttpStatus.OK)
+        }catch (e:Exception){
+            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
 
     @GetMapping("/getUserById={id}")
     fun getUserById(@PathVariable("id") idUsuario: String  ):ResponseEntity<Usuario> {

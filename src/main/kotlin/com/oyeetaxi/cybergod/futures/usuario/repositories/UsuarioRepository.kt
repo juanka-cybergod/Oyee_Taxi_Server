@@ -24,7 +24,7 @@ interface UsuarioRepository: MongoRepository<Usuario, String> {
 
 
 //    @Query("{\$or: [    {'nombre': {\$regex: ?1, \$options: 'i'}}   ,   {'apellidos': {\$regex: ?1, \$options: 'i'}}    ,    {'correo': {\$regex: ?1, \$options: 'i'}}     ,    {'telefonoMovil': {\$regex: ?1, \$options: 'i'}}  ]}")
-    @Query("{\$or: [{'nombre': {\$regex: ?0, \$options: 'i'}},{'apellidos': {\$regex: ?0, \$options: 'i'}},{'telefonoMovil': {\$regex: ?0, \$options: 'i'}},{'correo': {\$regex: ?0, \$options: 'i'}} ]}")
+    @Query("{\$or: [{'nombre': {\$regex: ?0, \$options: 'i'}},{'apellidos': {\$regex: ?0, \$options: 'i'}},{'telefonoMovil': {\$regex: ?0, \$options: 'i'}},{'correo': {\$regex: ?0, \$options: 'i'}} ,{'usuarioVerificacion.identificacion': {\$regex: ?0, \$options: 'i'}} ]}")
     fun search(search:String="",pageable: Pageable): Page<Usuario>
 
 //    @Query("{'nombre': ?1}")

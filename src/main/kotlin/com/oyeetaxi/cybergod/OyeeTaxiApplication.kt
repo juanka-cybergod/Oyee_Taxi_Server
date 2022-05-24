@@ -268,7 +268,11 @@ class OyeeTaxiApplication:CommandLineRunner{
 			administrador = false,
 			superAdministrador = false,
 			ubicacion = ubicacionCliente,
-			usuarioVerificacion = verificacionDefault,
+			usuarioVerificacion = UsuarioVerificacion(
+				verificado = false,
+				identificacion = "89102830106",
+				imagenIdentificaionURL = "",
+			),
 		).also {
 			usuarioRepository!!.save(it)
 		}
@@ -456,6 +460,274 @@ class OyeeTaxiApplication:CommandLineRunner{
 		).also {
 			usuarioRepository!!.save(it)
 		}
+
+
+		Usuario(
+			id= "id_usuario_borrar_01",
+			conductor = false,
+			modoCondutor = false,
+			nombre = "id_usuario_borrar_01",
+			apellidos = "",
+			imagenPerfilURL = "",
+			telefonoMovil = "",
+			telefonoFijo = "",
+			correo = "id_usuario_borrar@gmail.com",
+			contrasena = passwordEncode("qwe"),
+			provincia = villaClara,
+			fechaDeNacimiento = LocalDate.parse("20-01-1972", myformatter),
+			fechaDeRegistro = LocalDate.now(),
+			habilitado = true,
+			administrador = false,
+			superAdministrador = false,
+			ubicacion = ubicacionMotorina,
+			usuarioVerificacion = verificacionDefault,
+		).also {
+			usuarioRepository!!.save(it)
+		}
+		Usuario(
+			id= "id_usuario_borrar_02",
+			conductor = false,
+			modoCondutor = false,
+			nombre = "id_usuario_borrar_02",
+			apellidos = "",
+			imagenPerfilURL = "",
+			telefonoMovil = "",
+			telefonoFijo = "",
+			correo = "id_usuario_borrar@gmail.com",
+			contrasena = passwordEncode("asd"),
+			provincia = villaClara,
+			fechaDeNacimiento = LocalDate.parse("20-01-1972", myformatter),
+			fechaDeRegistro = LocalDate.now(),
+			habilitado = true,
+			administrador = false,
+			superAdministrador = false,
+			ubicacion = ubicacionMotorina,
+			usuarioVerificacion = verificacionDefault,
+		).also {
+			usuarioRepository!!.save(it)
+		}
+		Usuario(
+			id= "id_usuario_borrar_03",
+			conductor = false,
+			modoCondutor = false,
+			nombre = "id_usuario_borrar_03",
+			apellidos = "",
+			imagenPerfilURL = "",
+			telefonoMovil = "",
+			telefonoFijo = "",
+			correo = "id_usuario_borrar@gmail.com",
+			contrasena = passwordEncode("zxc"),
+			provincia = villaClara,
+			fechaDeNacimiento = LocalDate.parse("20-01-1972", myformatter),
+			fechaDeRegistro = LocalDate.now(),
+			habilitado = true,
+			administrador = false,
+			superAdministrador = false,
+			ubicacion = ubicacionMotorina,
+			usuarioVerificacion = verificacionDefault,
+		).also {
+			usuarioRepository!!.save(it)
+		}
+		Usuario(
+			id= "id_usuario_borrar_04",
+			conductor = false,
+			modoCondutor = false,
+			nombre = "id_usuario_borrar_04",
+			apellidos = "",
+			imagenPerfilURL = "",
+			telefonoMovil = "",
+			telefonoFijo = "",
+			correo = "id_usuario_borrar@gmail.com",
+			contrasena = passwordEncode("bnm"),
+			provincia = villaClara,
+			fechaDeNacimiento = LocalDate.parse("20-01-1972", myformatter),
+			fechaDeRegistro = LocalDate.now(),
+			habilitado = true,
+			administrador = false,
+			superAdministrador = false,
+			ubicacion = ubicacionMotorina,
+			usuarioVerificacion = verificacionDefault,
+		).also {
+			usuarioRepository!!.save(it)
+		}
+		Usuario(
+			id= "id_usuario_borrar_05",
+			conductor = false,
+			modoCondutor = false,
+			nombre = "id_usuario_borrar_05",
+			apellidos = "",
+			imagenPerfilURL = "",
+			telefonoMovil = "",
+			telefonoFijo = "",
+			correo = "id_usuario_borrar@gmail.com",
+			contrasena = passwordEncode("ljk"),
+			provincia = villaClara,
+			fechaDeNacimiento = LocalDate.parse("20-01-1972", myformatter),
+			fechaDeRegistro = LocalDate.now(),
+			habilitado = true,
+			administrador = false,
+			superAdministrador = false,
+			ubicacion = ubicacionMotorina,
+			usuarioVerificacion = verificacionDefault,
+		).also {
+			usuarioRepository!!.save(it)
+		}
+		Usuario(
+			id= "id_usuario_borrar_06",
+			conductor = true,
+			modoCondutor = true,
+			nombre = "id_usuario_borrar_06",
+			apellidos = "",
+			imagenPerfilURL = "",
+			telefonoMovil = "",
+			telefonoFijo = "",
+			correo = "id_usuario_borrar@gmail.com",
+			contrasena = passwordEncode("yui6"),
+			provincia = villaClara,
+			fechaDeNacimiento = LocalDate.parse("20-01-1972", myformatter),
+			fechaDeRegistro = LocalDate.now(),
+			habilitado = true,
+			administrador = false,
+			superAdministrador = false,
+			ubicacion = ubicacionMotorina,
+			usuarioVerificacion = verificacionDefault,
+		).also {
+			usuarioRepository!!.save(it)
+		}
+		Usuario(
+			id= "id_usuario_borrar_07",
+			conductor = false,
+			modoCondutor = false,
+			nombre = "id_usuario_borrar_07",
+			apellidos = "",
+			imagenPerfilURL = "",
+			telefonoMovil = "",
+			telefonoFijo = "",
+			correo = "id_usuario_borrar@gmail.com",
+			contrasena = passwordEncode("4953"),
+			provincia = villaClara,
+			fechaDeNacimiento = LocalDate.parse("20-01-1972", myformatter),
+			fechaDeRegistro = LocalDate.now(),
+			habilitado = true,
+			administrador = false,
+			superAdministrador = false,
+			ubicacion = ubicacionMotorina,
+			usuarioVerificacion = verificacionDefault,
+		).also {
+			usuarioRepository!!.save(it)
+		}
+		Usuario(
+			id= "id_usuario_borrar_08",
+			conductor = false,
+			modoCondutor = false,
+			nombre = "id_usuario_borrar_08",
+			apellidos = "",
+			imagenPerfilURL = "",
+			telefonoMovil = "",
+			telefonoFijo = "",
+			correo = "id_usuario_borrar@gmail.com",
+			contrasena = passwordEncode("fdglkn5  "),
+			provincia = villaClara,
+			fechaDeNacimiento = LocalDate.parse("20-01-1972", myformatter),
+			fechaDeRegistro = LocalDate.now(),
+			habilitado = true,
+			administrador = false,
+			superAdministrador = false,
+			ubicacion = ubicacionMotorina,
+			usuarioVerificacion = verificacionDefault,
+		).also {
+			usuarioRepository!!.save(it)
+		}
+		Usuario(
+			id= "id_usuario_borrar_09",
+			conductor = false,
+			modoCondutor = false,
+			nombre = "id_usuario_borrar_09",
+			apellidos = "",
+			imagenPerfilURL = "",
+			telefonoMovil = "",
+			telefonoFijo = "",
+			correo = "id_usuario_borrar@gmail.com",
+			contrasena = passwordEncode(" dbb"),
+			provincia = villaClara,
+			fechaDeNacimiento = LocalDate.parse("20-01-1972", myformatter),
+			fechaDeRegistro = LocalDate.now(),
+			habilitado = true,
+			administrador = false,
+			superAdministrador = false,
+			ubicacion = ubicacionMotorina,
+			usuarioVerificacion = verificacionDefault,
+		).also {
+			usuarioRepository!!.save(it)
+		}
+		Usuario(
+			id= "id_usuario_borrar_10",
+			conductor = false,
+			modoCondutor = false,
+			nombre = "id_usuario_borrar_10",
+			apellidos = "",
+			imagenPerfilURL = "",
+			telefonoMovil = "",
+			telefonoFijo = "",
+			correo = "id_usuario_borrar@gmail.com",
+			contrasena = passwordEncode("s1879"),
+			provincia = villaClara,
+			fechaDeNacimiento = LocalDate.parse("20-01-1972", myformatter),
+			fechaDeRegistro = LocalDate.now(),
+			habilitado = true,
+			administrador = false,
+			superAdministrador = false,
+			ubicacion = ubicacionMotorina,
+			usuarioVerificacion = verificacionDefault,
+		).also {
+			usuarioRepository!!.save(it)
+		}
+		Usuario(
+			id= "id_usuario_borrar_11",
+			conductor = false,
+			modoCondutor = false,
+			nombre = "id_usuario_borrar_11",
+			apellidos = "",
+			imagenPerfilURL = "",
+			telefonoMovil = "",
+			telefonoFijo = "",
+			correo = "id_usuario_borrar@gmail.com",
+			contrasena = passwordEncode(" kp31"),
+			provincia = villaClara,
+			fechaDeNacimiento = LocalDate.parse("20-01-1972", myformatter),
+			fechaDeRegistro = LocalDate.now(),
+			habilitado = true,
+			administrador = false,
+			superAdministrador = false,
+			ubicacion = ubicacionMotorina,
+			usuarioVerificacion = verificacionDefault,
+		).also {
+			usuarioRepository!!.save(it)
+		}
+		Usuario(
+			id= "id_usuario_borrar_12",
+			conductor = false,
+			modoCondutor = false,
+			nombre = "id_usuario_borrar_12",
+			apellidos = "",
+			imagenPerfilURL = "",
+			telefonoMovil = "",
+			telefonoFijo = "",
+			correo = "id_usuario_borrar@gmail.com",
+			contrasena = passwordEncode("agasg sdvb "),
+			provincia = villaClara,
+			fechaDeNacimiento = LocalDate.parse("20-01-1972", myformatter),
+			fechaDeRegistro = LocalDate.now(),
+			habilitado = true,
+			administrador = false,
+			superAdministrador = false,
+			ubicacion = ubicacionMotorina,
+			usuarioVerificacion = verificacionDefault,
+		).also {
+			usuarioRepository!!.save(it)
+		}
+
+
 
 
 		val tipoVehiculo_Automovil = TipoVehiculo(

@@ -27,6 +27,12 @@ interface UsuarioRepository: MongoRepository<Usuario, String> {
     @Query("{\$or: [{'nombre': {\$regex: ?0, \$options: 'i'}},{'apellidos': {\$regex: ?0, \$options: 'i'}},{'telefonoMovil': {\$regex: ?0, \$options: 'i'}},{'correo': {\$regex: ?0, \$options: 'i'}} ,{'usuarioVerificacion.identificacion': {\$regex: ?0, \$options: 'i'}} ]}")
     fun search(search:String="",pageable: Pageable): Page<Usuario>
 
+
+    @Query("{\$or: [{'nombre': {\$regex: ?0, \$options: 'i'}},{'apellidos': {\$regex: ?0, \$options: 'i'}},{'telefonoMovil': {\$regex: ?0, \$options: 'i'}},{'correo': {\$regex: ?0, \$options: 'i'}} ,{'usuarioVerificacion.identificacion': {\$regex: ?0, \$options: 'i'}} ]}")
+    fun searchAll(search:String=""): List<Usuario>
+
+
+
 //    @Query("{'nombre': ?1}")
 //    override fun findAll(pageable: Pageable,nombre_correo_numero:String): Page<Usuario> {
 //

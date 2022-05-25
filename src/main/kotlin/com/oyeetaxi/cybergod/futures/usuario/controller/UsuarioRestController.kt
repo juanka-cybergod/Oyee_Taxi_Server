@@ -9,6 +9,7 @@ import com.oyeetaxi.cybergod.futures.usuario.models.response.RequestVerification
 import com.oyeetaxi.cybergod.futures.vehiculo.models.VehiculoResponse
 import com.oyeetaxi.cybergod.futures.base.models.Ubicacion
 import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
+import com.oyeetaxi.cybergod.futures.usuario.models.requestFilter.UserFilterOptions
 import com.oyeetaxi.cybergod.utils.Constants
 import com.oyeetaxi.cybergod.utils.Utils
 import com.oyeetaxi.cybergod.utils.Utils.getServerLocalDate
@@ -265,10 +266,21 @@ class UsuarioRestController: BaseRestController() {
     }
 
     @GetMapping("/searchUsersPaginated")
-    fun searchUsersPaginated(pageable: Pageable,@RequestParam("search") search:String):ResponseEntity<Page<Usuario>>{ //@RequestParam("pageable")
+    fun searchUsersPaginated(pageable: Pageable,@RequestParam("search") search:String?):ResponseEntity<Page<Usuario>>{ //@RequestParam("pageable")
         return try {
-            ResponseEntity(usuarioBusiness!!.searchAllUsersPaginated(search,pageable),HttpStatus.OK)
+            ResponseEntity(usuarioBusiness!!.searchAllUsersPaginated(search?:"",pageable),HttpStatus.OK)
         }catch (e:Exception){
+            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    @GetMapping("/searchUsersPaginatedWithFilter")
+    fun searchUsersPaginatedWithFilter(pageable: Pageable,@RequestBody userFilterOptions: UserFilterOptions?,@RequestParam("search") search:String?, verificacion:Boolean?):ResponseEntity<Page<Usuario>>{ //@RequestParam("pageable")
+
+        return try {
+            ResponseEntity(usuarioBusiness!!.searchUsersPaginatedWithFilter(search?:"",userFilterOptions,pageable),HttpStatus.OK)
+        }catch (e:Exception){
+            LOGGER.info(e.message)
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }

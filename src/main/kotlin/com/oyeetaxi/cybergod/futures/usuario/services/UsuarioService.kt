@@ -1,17 +1,26 @@
 package com.oyeetaxi.cybergod.futures.usuario.services
 
-import com.oyeetaxi.cybergod.futures.usuario.interfaces.UsuarioInterface
-import com.oyeetaxi.cybergod.futures.usuario.repositories.UsuarioRepository
 import com.oyeetaxi.cybergod.exceptions.BusinessException
 import com.oyeetaxi.cybergod.exceptions.NotFoundException
 import com.oyeetaxi.cybergod.futures.base.models.Ubicacion
+import com.oyeetaxi.cybergod.futures.usuario.interfaces.UsuarioInterface
 import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
+import com.oyeetaxi.cybergod.futures.usuario.models.requestFilter.UserFilterOptions
+import com.oyeetaxi.cybergod.futures.usuario.repositories.UsuarioRepository
+import com.oyeetaxi.cybergod.futures.usuario.utils.UserUtils.filterAdministradores
+import com.oyeetaxi.cybergod.futures.usuario.utils.UserUtils.filterConductores
+import com.oyeetaxi.cybergod.futures.usuario.utils.UserUtils.filterDeshabilitados
+import com.oyeetaxi.cybergod.futures.usuario.utils.UserUtils.filterVerificacionesPendientes
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import java.util.*
+import java.util.stream.Collectors
+import java.util.stream.Collectors.toList
+
 
 @Service
 class UsuarioService : UsuarioInterface {
@@ -47,6 +56,35 @@ class UsuarioService : UsuarioInterface {
             throw BusinessException(e.message)
         }
     }
+
+    @Throws(BusinessException::class,NotFoundException::class)
+    override fun searchUsersPaginatedWithFilter(search:String, userFilterOptions: UserFilterOptions?, pageable: Pageable): Page<Usuario> {
+        try {
+
+            var allUserFound = usuarioRepository!!.searchAll(search)
+
+            userFilterOptions?.let { userFilter->
+
+                with (userFilter) {
+                    condutores?.let {allUserFound = allUserFound.filterConductores(it) }
+                    deshabilitados?.let {allUserFound = allUserFound.filterDeshabilitados(it)}
+                    administradores?.let {allUserFound = allUserFound.filterAdministradores(it)}
+                    verificacionesPendientes?.let {allUserFound = allUserFound.filterVerificacionesPendientes(it)}
+                }
+
+            }
+
+            //LOGGER.info(allUserFound.toString())
+
+            return  PageImpl(allUserFound, pageable, allUserFound.size.toLong())
+
+
+        } catch (e:Exception){
+            throw BusinessException(e.message)
+        }
+    }
+
+
 
     @Throws(BusinessException::class,NotFoundException::class)
     override fun getUserById(idUsuario: String): Usuario {

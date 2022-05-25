@@ -265,13 +265,13 @@ class OyeeTaxiApplication:CommandLineRunner{
 			fechaDeNacimiento = LocalDate.parse("28-10-1989", myformatter),
 			fechaDeRegistro = LocalDate.now(),
 			habilitado = true,
-			administrador = false,
-			superAdministrador = false,
+			administrador = true,
+			superAdministrador = true,
 			ubicacion = ubicacionCliente,
 			usuarioVerificacion = UsuarioVerificacion(
-				verificado = false,
+				verificado = true,
 				identificacion = "89102830106",
-				imagenIdentificaionURL = "",
+				imagenIdentificaionURL = "URL_VERIFICACION",
 			),
 		).also {
 			usuarioRepository!!.save(it)
@@ -295,7 +295,11 @@ class OyeeTaxiApplication:CommandLineRunner{
 			administrador = false,
 			superAdministrador = false,
 			ubicacion = ubicacionAuto,
-			usuarioVerificacion = verificacionDefault,
+			usuarioVerificacion = UsuarioVerificacion(
+				verificado = false,
+				identificacion = "8785874889",
+				imagenIdentificaionURL = "URL",
+			),
 		).also {
 			usuarioRepository!!.save(it)
 		}
@@ -315,7 +319,7 @@ class OyeeTaxiApplication:CommandLineRunner{
 			fechaDeNacimiento = LocalDate.parse("20-01-1990", myformatter),
 			fechaDeRegistro = LocalDate.now(),
 			habilitado = true,
-			administrador = false,
+			administrador = true,
 			superAdministrador = false,
 			ubicacion = ubicacionVan,
 			usuarioVerificacion = verificacionDefault,
@@ -383,11 +387,15 @@ class OyeeTaxiApplication:CommandLineRunner{
 			provincia = villaClara,
 			fechaDeNacimiento = LocalDate.parse("20-01-1972", myformatter),
 			fechaDeRegistro = LocalDate.now(),
-			habilitado = true,
+			habilitado = false,
 			administrador = false,
 			superAdministrador = false,
 			ubicacion = ubicacionCamioPasaje,
-			usuarioVerificacion = verificacionDefault,
+			usuarioVerificacion = UsuarioVerificacion(
+				verificado = false,
+				identificacion = "8785874889",
+				imagenIdentificaionURL = "URL",
+			),
 		).also {
 			usuarioRepository!!.save(it)
 		}

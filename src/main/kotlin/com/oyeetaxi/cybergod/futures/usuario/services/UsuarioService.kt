@@ -60,9 +60,9 @@ class UsuarioService : UsuarioInterface {
     @Throws(BusinessException::class,NotFoundException::class)
     override fun searchUsersPaginatedWithFilter(search:String, userFilterOptions: UserFilterOptions?, pageable: Pageable): Page<Usuario> {
 
-        val searchUsersPaginatedWithFilterUsingMongoTemplates = SearchUsersPaginatedWithFilterUsingMongoTemplates()
-
-        val a =  searchUsersPaginatedWithFilterUsingMongoTemplates(search, userFilterOptions, pageable)
+//        val searchUsersPaginatedWithFilterUsingMongoTemplates = SearchUsersPaginatedWithFilterUsingMongoTemplates()
+//
+//        val a =  searchUsersPaginatedWithFilterUsingMongoTemplates(search, userFilterOptions, pageable)
 
         try {
 

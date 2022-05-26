@@ -284,7 +284,7 @@ class UsuarioRestController: BaseRestController() {
         return try {
             ResponseEntity(usuarioBusiness!!.searchUsersPaginatedWithFilter(search?:"",userFilterOptions,pageable),HttpStatus.OK)
         }catch (e:Exception){
-            //LOGGER.info(e.message)
+            LOGGER.info(e.message)
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }

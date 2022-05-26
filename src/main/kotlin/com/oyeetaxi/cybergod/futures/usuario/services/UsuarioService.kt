@@ -7,19 +7,18 @@ import com.oyeetaxi.cybergod.futures.usuario.interfaces.UsuarioInterface
 import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
 import com.oyeetaxi.cybergod.futures.usuario.models.requestFilter.UserFilterOptions
 import com.oyeetaxi.cybergod.futures.usuario.repositories.UsuarioRepository
-import com.oyeetaxi.cybergod.futures.usuario.utils.UserUtils.filterAdministradores
-import com.oyeetaxi.cybergod.futures.usuario.utils.UserUtils.filterConductores
-import com.oyeetaxi.cybergod.futures.usuario.utils.UserUtils.filterDeshabilitados
-import com.oyeetaxi.cybergod.futures.usuario.utils.UserUtils.filterVerificacionesPendientes
-import org.slf4j.LoggerFactory
+import com.oyeetaxi.cybergod.futures.usuario.use_cases.SearchUsersPaginatedWithFilterUsingMongoTemplates
+import com.oyeetaxi.cybergod.futures.usuario.utils.UsuarioUtils.filterAdministradores
+import com.oyeetaxi.cybergod.futures.usuario.utils.UsuarioUtils.filterConductores
+import com.oyeetaxi.cybergod.futures.usuario.utils.UsuarioUtils.filterDeshabilitados
+import com.oyeetaxi.cybergod.futures.usuario.utils.UsuarioUtils.filterVerificacionesPendientes
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import java.util.*
-import java.util.stream.Collectors
-import java.util.stream.Collectors.toList
+import kotlin.math.min
 
 
 @Service
@@ -28,7 +27,8 @@ class UsuarioService : UsuarioInterface {
     @Autowired
     val usuarioRepository: UsuarioRepository? = null
 
-    private var LOGGER = LoggerFactory.getLogger(UsuarioService::class.java)
+
+
 
     @Throws(BusinessException::class)
     override fun getAllUsers(): List<Usuario> {
@@ -59,27 +59,32 @@ class UsuarioService : UsuarioInterface {
 
     @Throws(BusinessException::class,NotFoundException::class)
     override fun searchUsersPaginatedWithFilter(search:String, userFilterOptions: UserFilterOptions?, pageable: Pageable): Page<Usuario> {
+
+        val searchUsersPaginatedWithFilterUsingMongoTemplates = SearchUsersPaginatedWithFilterUsingMongoTemplates()
+
+        val a =  searchUsersPaginatedWithFilterUsingMongoTemplates(search, userFilterOptions, pageable)
+
         try {
 
-            var allUserFound = usuarioRepository!!.searchAll(search)
+            var allUserFound = usuarioRepository!!.searchAll(search, pageable.sort)
 
-            userFilterOptions?.let { userFilter->
+            userFilterOptions?.let { userFilter ->
 
-                with (userFilter) {
-                    condutores?.let {allUserFound = allUserFound.filterConductores(it) }
-                    deshabilitados?.let {allUserFound = allUserFound.filterDeshabilitados(it)}
-                    administradores?.let {allUserFound = allUserFound.filterAdministradores(it)}
-                    verificacionesPendientes?.let {allUserFound = allUserFound.filterVerificacionesPendientes(it)}
+                with(userFilter) {
+                    condutores?.let { allUserFound = allUserFound.filterConductores(it) }
+                    deshabilitados?.let { allUserFound = allUserFound.filterDeshabilitados(it) }
+                    administradores?.let { allUserFound = allUserFound.filterAdministradores(it) }
+                    verificacionesPendientes?.let { allUserFound = allUserFound.filterVerificacionesPendientes(it) }
                 }
 
             }
 
-            //LOGGER.info(allUserFound.toString())
 
-            return  PageImpl(allUserFound, pageable, allUserFound.size.toLong())
+            val start = pageable.offset.toInt()
+            val end = min(start + pageable.pageSize, allUserFound.size)
+            return PageImpl(allUserFound.subList(start, end), pageable, allUserFound.size.toLong())
 
-
-        } catch (e:Exception){
+        } catch (e: Exception) {
             throw BusinessException(e.message)
         }
     }
@@ -300,11 +305,11 @@ class UsuarioService : UsuarioInterface {
 
         if (encontrados.isNotEmpty()) {
 
-            encontrados.forEach {
-                LOGGER.info("ID Encontrados = "+it.id.toString())
-            }
+            //encontrados.forEach {
+                //LOGGER.info("ID Encontrados = "+it.id.toString())
+            //}
             foundUser = encontrados.last()
-            LOGGER.info("ULTIMO = $foundUser")
+            //LOGGER.info("ULTIMO = $foundUser")
 
 
         }

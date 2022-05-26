@@ -3,7 +3,7 @@ package com.oyeetaxi.cybergod.futures.usuario.utils
 import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
 import java.util.stream.Collectors
 
-object UserUtils {
+object UsuarioUtils {
 
 
     fun List<Usuario>.filterConductores(param:Boolean):List<Usuario>{

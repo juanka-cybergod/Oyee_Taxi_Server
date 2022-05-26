@@ -274,13 +274,17 @@ class UsuarioRestController: BaseRestController() {
         }
     }
 
-    @GetMapping("/searchUsersPaginatedWithFilter")
-    fun searchUsersPaginatedWithFilter(pageable: Pageable,@RequestBody userFilterOptions: UserFilterOptions?,@RequestParam("search") search:String?, verificacion:Boolean?):ResponseEntity<Page<Usuario>>{ //@RequestParam("pageable")
+    @PutMapping("/searchUsersPaginatedWithFilter")
+    fun searchUsersPaginatedWithFilter(pageable: Pageable,@RequestBody userFilterOptions: UserFilterOptions?,@RequestParam("search") search:String?):ResponseEntity<Page<Usuario>>{ //@RequestParam("pageable")
+
+
+        //LOGGER.info(pageable.toString())
+        //LOGGER.info(userFilterOptions.toString())
 
         return try {
             ResponseEntity(usuarioBusiness!!.searchUsersPaginatedWithFilter(search?:"",userFilterOptions,pageable),HttpStatus.OK)
         }catch (e:Exception){
-            LOGGER.info(e.message)
+            //LOGGER.info(e.message)
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }

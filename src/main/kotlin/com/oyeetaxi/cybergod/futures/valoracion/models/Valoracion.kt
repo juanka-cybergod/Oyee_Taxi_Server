@@ -2,11 +2,12 @@ package com.oyeetaxi.cybergod.futures.valoracion.models
 
 
 import com.mongodb.lang.Nullable
+import com.oyeetaxi.cybergod.utils.CollectionsNames.VALORACIONES
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 
 
-@Document(collection = "valoraciones")
+@Document(collection = VALORACIONES)
 data class Valoracion(
     @Id
     @Nullable

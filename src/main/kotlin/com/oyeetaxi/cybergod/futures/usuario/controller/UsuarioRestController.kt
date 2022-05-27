@@ -277,14 +277,9 @@ class UsuarioRestController: BaseRestController() {
     @PutMapping("/searchUsersPaginatedWithFilter")
     fun searchUsersPaginatedWithFilter(pageable: Pageable,@RequestBody userFilterOptions: UserFilterOptions?,@RequestParam("search") search:String?):ResponseEntity<Page<Usuario>>{ //@RequestParam("pageable")
 
-
-        //LOGGER.info(pageable.toString())
-        //LOGGER.info(userFilterOptions.toString())
-
         return try {
             ResponseEntity(usuarioBusiness!!.searchUsersPaginatedWithFilter(search?:"",userFilterOptions,pageable),HttpStatus.OK)
         }catch (e:Exception){
-            LOGGER.info(e.message)
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }

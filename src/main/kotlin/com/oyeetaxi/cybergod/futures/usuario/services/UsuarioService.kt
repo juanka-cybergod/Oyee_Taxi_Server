@@ -7,7 +7,6 @@ import com.oyeetaxi.cybergod.futures.usuario.interfaces.UsuarioInterface
 import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
 import com.oyeetaxi.cybergod.futures.usuario.models.requestFilter.UserFilterOptions
 import com.oyeetaxi.cybergod.futures.usuario.repositories.UsuarioRepository
-import com.oyeetaxi.cybergod.futures.usuario.use_cases.SearchUsersPaginatedWithFilterUsingMongoTemplates
 import com.oyeetaxi.cybergod.futures.usuario.utils.UsuarioUtils.filterAdministradores
 import com.oyeetaxi.cybergod.futures.usuario.utils.UsuarioUtils.filterConductores
 import com.oyeetaxi.cybergod.futures.usuario.utils.UsuarioUtils.filterDeshabilitados
@@ -27,8 +26,8 @@ class UsuarioService : UsuarioInterface {
     @Autowired
     val usuarioRepository: UsuarioRepository? = null
 
-
-
+    @Autowired
+    val usuarioQueryService: UsuarioQueryService? = null
 
     @Throws(BusinessException::class)
     override fun getAllUsers(): List<Usuario> {
@@ -60,33 +59,33 @@ class UsuarioService : UsuarioInterface {
     @Throws(BusinessException::class,NotFoundException::class)
     override fun searchUsersPaginatedWithFilter(search:String, userFilterOptions: UserFilterOptions?, pageable: Pageable): Page<Usuario> {
 
-//        val searchUsersPaginatedWithFilterUsingMongoTemplates = SearchUsersPaginatedWithFilterUsingMongoTemplates()
-//
-//        val a =  searchUsersPaginatedWithFilterUsingMongoTemplates(search, userFilterOptions, pageable)
 
-        try {
+//        var allUserFound: List<Usuario> =  try{
+//           usuarioQueryService!!.searchUsersFiltered(search, userFilterOptions, pageable.sort)
+//        } catch (e:Exception){
+//            println("usuarioQueryService!!.searchUsersFiltered() -> Fail to Search")
+//           usuarioRepository!!.searchAll(search, pageable.sort)
+//        }
 
-            var allUserFound = usuarioRepository!!.searchAll(search, pageable.sort)
+        var allUserFound: List<Usuario> = usuarioRepository!!.searchAll(search, pageable.sort)
 
-            userFilterOptions?.let { userFilter ->
+        userFilterOptions?.let { userFilter ->
 
-                with(userFilter) {
+            with(userFilter) {
                     condutores?.let { allUserFound = allUserFound.filterConductores(it) }
                     deshabilitados?.let { allUserFound = allUserFound.filterDeshabilitados(it) }
                     administradores?.let { allUserFound = allUserFound.filterAdministradores(it) }
                     verificacionesPendientes?.let { allUserFound = allUserFound.filterVerificacionesPendientes(it) }
-                }
-
             }
 
-
-            val start = pageable.offset.toInt()
-            val end = min(start + pageable.pageSize, allUserFound.size)
-            return PageImpl(allUserFound.subList(start, end), pageable, allUserFound.size.toLong())
-
-        } catch (e: Exception) {
-            throw BusinessException(e.message)
         }
+
+
+        val start = pageable.offset.toInt()
+        val end = min(start + pageable.pageSize, allUserFound.size)
+
+        return PageImpl(allUserFound.subList(start, end), pageable, allUserFound.size.toLong())
+
     }
 
 

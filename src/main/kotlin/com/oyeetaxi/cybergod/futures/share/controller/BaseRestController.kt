@@ -1,8 +1,8 @@
-package com.oyeetaxi.cybergod.futures.base.controller
+package com.oyeetaxi.cybergod.futures.share.controller
 
 import com.oyeetaxi.cybergod.futures.vehiculo.models.VehiculoResponse
-import com.oyeetaxi.cybergod.futures.base.services.EmailServicio
-import com.oyeetaxi.cybergod.futures.base.services.SmsService
+import com.oyeetaxi.cybergod.futures.share.services.EmailServicio
+import com.oyeetaxi.cybergod.futures.share.services.SmsService
 import com.oyeetaxi.cybergod.futures.configuracion.services.ConfiguracionService
 import com.oyeetaxi.cybergod.futures.tipo_vehiculo.services.TipoVehiculoService
 import com.oyeetaxi.cybergod.futures.usuario.models.Usuario

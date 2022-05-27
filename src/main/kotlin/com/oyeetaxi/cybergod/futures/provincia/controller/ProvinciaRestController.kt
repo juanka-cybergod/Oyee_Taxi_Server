@@ -7,7 +7,6 @@ import com.oyeetaxi.cybergod.exceptions.BusinessException
 import com.oyeetaxi.cybergod.exceptions.NotFoundException
 import com.oyeetaxi.cybergod.futures.provincia.models.Provincia
 import com.oyeetaxi.cybergod.futures.provincia.services.ProvinciaService
-import com.oyeetaxi.cybergod.utils.Constants
 import com.oyeetaxi.cybergod.utils.Constants.URL_BASE_PROVINCIAS
 
 import org.springframework.beans.factory.annotation.Autowired

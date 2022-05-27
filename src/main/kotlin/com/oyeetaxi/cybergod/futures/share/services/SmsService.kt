@@ -1,6 +1,6 @@
-package com.oyeetaxi.cybergod.futures.base.services
+package com.oyeetaxi.cybergod.futures.share.services
 
-import com.oyeetaxi.cybergod.futures.base.interfaces.SmsInterface
+import com.oyeetaxi.cybergod.futures.share.interfaces.SmsInterface
 import com.oyeetaxi.cybergod.futures.configuracion.services.ConfiguracionService
 import com.twilio.Twilio
 import com.twilio.rest.api.v2010.account.Message

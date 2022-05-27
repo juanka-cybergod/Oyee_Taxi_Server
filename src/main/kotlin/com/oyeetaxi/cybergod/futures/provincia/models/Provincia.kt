@@ -1,7 +1,7 @@
 package com.oyeetaxi.cybergod.futures.provincia.models
 
 import com.mongodb.lang.Nullable
-import com.oyeetaxi.cybergod.futures.base.models.Ubicacion
+import com.oyeetaxi.cybergod.futures.share.models.Ubicacion
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 

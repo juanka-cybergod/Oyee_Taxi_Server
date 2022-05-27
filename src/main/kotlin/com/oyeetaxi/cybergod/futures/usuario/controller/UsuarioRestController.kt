@@ -1,13 +1,13 @@
 package com.oyeetaxi.cybergod.futures.usuario.controller
 
 
-import com.oyeetaxi.cybergod.futures.base.controller.BaseRestController
+import com.oyeetaxi.cybergod.futures.share.controller.BaseRestController
 import com.oyeetaxi.cybergod.exceptions.BusinessException
 import com.oyeetaxi.cybergod.exceptions.NotFoundException
 import com.oyeetaxi.cybergod.futures.usuario.models.response.LoginResponse
 import com.oyeetaxi.cybergod.futures.usuario.models.response.RequestVerificationCodeResponse
 import com.oyeetaxi.cybergod.futures.vehiculo.models.VehiculoResponse
-import com.oyeetaxi.cybergod.futures.base.models.Ubicacion
+import com.oyeetaxi.cybergod.futures.share.models.Ubicacion
 import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
 import com.oyeetaxi.cybergod.futures.usuario.models.requestFilter.UserFilterOptions
 import com.oyeetaxi.cybergod.utils.Constants
@@ -15,7 +15,6 @@ import com.oyeetaxi.cybergod.utils.Utils
 import com.oyeetaxi.cybergod.utils.Utils.getServerLocalDate
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.data.repository.query.Param
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -275,10 +274,10 @@ class UsuarioRestController: BaseRestController() {
     }
 
     @PutMapping("/searchUsersPaginatedWithFilter")
-    fun searchUsersPaginatedWithFilter(pageable: Pageable,@RequestBody userFilterOptions: UserFilterOptions?,@RequestParam("search") search:String?):ResponseEntity<Page<Usuario>>{ //@RequestParam("pageable")
+    fun searchUsersPaginatedWithFilter(pageable: Pageable,@RequestBody userFilterOptions: UserFilterOptions?):ResponseEntity<Page<Usuario>>{ //@RequestParam("pageable") ,@RequestParam("search") search:String?
 
         return try {
-            ResponseEntity(usuarioBusiness!!.searchUsersPaginatedWithFilter(search?:"",userFilterOptions,pageable),HttpStatus.OK)
+            ResponseEntity(usuarioBusiness!!.searchUsersPaginatedWithFilter(userFilterOptions?:UserFilterOptions(),pageable),HttpStatus.OK)
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }

@@ -1,7 +1,7 @@
 package com.oyeetaxi.cybergod.futures.viaje.models
 
 import com.mongodb.lang.Nullable
-import com.oyeetaxi.cybergod.futures.base.models.Ubicacion
+import com.oyeetaxi.cybergod.futures.share.models.Ubicacion
 import com.oyeetaxi.cybergod.futures.tipo_vehiculo.models.TipoVehiculo
 import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
 import org.springframework.data.annotation.Id

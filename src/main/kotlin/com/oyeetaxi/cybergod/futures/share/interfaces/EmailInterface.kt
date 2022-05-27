@@ -1,4 +1,4 @@
-package com.oyeetaxi.cybergod.futures.base.interfaces
+package com.oyeetaxi.cybergod.futures.share.interfaces
 
 
 

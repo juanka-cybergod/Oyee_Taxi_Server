@@ -28,7 +28,7 @@ interface UsuarioRepository: MongoRepository<Usuario, String>{
 
 
     @Query("{\$or: [{'nombre': {\$regex: ?0, \$options: 'i'}},{'apellidos': {\$regex: ?0, \$options: 'i'}},{'telefonoMovil': {\$regex: ?0, \$options: 'i'}},{'correo': {\$regex: ?0, \$options: 'i'}} ,{'usuarioVerificacion.identificacion': {\$regex: ?0, \$options: 'i'}} ]}")
-    fun searchAll(search:String="",sort: Sort): List<Usuario>
+    fun searchAll(search:String,sort: Sort): List<Usuario>
 
 
 

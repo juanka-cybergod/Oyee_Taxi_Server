@@ -1,4 +1,4 @@
-package com.oyeetaxi.cybergod.futures.base.models
+package com.oyeetaxi.cybergod.futures.share.models
 
 data class Ubicacion(
     var latitud:Double? = null,

@@ -3,7 +3,7 @@ package com.oyeetaxi.cybergod.futures.usuario.models
 
 import com.mongodb.lang.Nullable
 import com.oyeetaxi.cybergod.futures.provincia.models.Provincia
-import com.oyeetaxi.cybergod.futures.base.models.Ubicacion
+import com.oyeetaxi.cybergod.futures.share.models.Ubicacion
 import com.oyeetaxi.cybergod.futures.usuario.models.type.UsuarioVerificacion
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document

@@ -1,7 +1,7 @@
 package com.oyeetaxi.cybergod
 
 
-import com.oyeetaxi.cybergod.futures.base.models.Ubicacion
+import com.oyeetaxi.cybergod.futures.share.models.Ubicacion
 import com.oyeetaxi.cybergod.futures.usuario.models.type.UsuarioVerificacion
 import com.oyeetaxi.cybergod.futures.vehiculo.models.VehiculoVerificacion
 import com.oyeetaxi.cybergod.utils.Constants.DEFAULT_CONFIG

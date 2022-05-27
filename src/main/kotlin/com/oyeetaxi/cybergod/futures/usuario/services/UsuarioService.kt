@@ -2,7 +2,7 @@ package com.oyeetaxi.cybergod.futures.usuario.services
 
 import com.oyeetaxi.cybergod.exceptions.BusinessException
 import com.oyeetaxi.cybergod.exceptions.NotFoundException
-import com.oyeetaxi.cybergod.futures.base.models.Ubicacion
+import com.oyeetaxi.cybergod.futures.share.models.Ubicacion
 import com.oyeetaxi.cybergod.futures.usuario.interfaces.UsuarioInterface
 import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
 import com.oyeetaxi.cybergod.futures.usuario.models.requestFilter.UserFilterOptions
@@ -57,7 +57,7 @@ class UsuarioService : UsuarioInterface {
     }
 
     @Throws(BusinessException::class,NotFoundException::class)
-    override fun searchUsersPaginatedWithFilter(search:String, userFilterOptions: UserFilterOptions?, pageable: Pageable): Page<Usuario> {
+    override fun searchUsersPaginatedWithFilter(userFilterOptions: UserFilterOptions, pageable: Pageable): Page<Usuario> {
 
 
 //        var allUserFound: List<Usuario> =  try{
@@ -67,17 +67,14 @@ class UsuarioService : UsuarioInterface {
 //           usuarioRepository!!.searchAll(search, pageable.sort)
 //        }
 
-        var allUserFound: List<Usuario> = usuarioRepository!!.searchAll(search, pageable.sort)
+        var allUserFound: List<Usuario> = usuarioRepository!!.searchAll(userFilterOptions.texto, pageable.sort)
 
-        userFilterOptions?.let { userFilter ->
 
-            with(userFilter) {
-                    condutores?.let { allUserFound = allUserFound.filterConductores(it) }
-                    deshabilitados?.let { allUserFound = allUserFound.filterDeshabilitados(it) }
-                    administradores?.let { allUserFound = allUserFound.filterAdministradores(it) }
-                    verificacionesPendientes?.let { allUserFound = allUserFound.filterVerificacionesPendientes(it) }
-            }
-
+        with(userFilterOptions) {
+                condutores?.let { allUserFound = allUserFound.filterConductores(it) }
+                deshabilitados?.let { allUserFound = allUserFound.filterDeshabilitados(it) }
+                administradores?.let { allUserFound = allUserFound.filterAdministradores(it) }
+                verificacionesPendientes?.let { allUserFound = allUserFound.filterVerificacionesPendientes(it) }
         }
 
 

@@ -2,7 +2,7 @@ package com.oyeetaxi.cybergod.futures.vehiculo.controller
 
 
 
-import com.oyeetaxi.cybergod.futures.base.controller.BaseRestController
+import com.oyeetaxi.cybergod.futures.share.controller.BaseRestController
 import com.oyeetaxi.cybergod.exceptions.BusinessException
 import com.oyeetaxi.cybergod.exceptions.NotFoundException
 import com.oyeetaxi.cybergod.futures.vehiculo.models.VehiculoResponse

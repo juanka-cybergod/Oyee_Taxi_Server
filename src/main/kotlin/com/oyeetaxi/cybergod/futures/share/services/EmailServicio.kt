@@ -1,6 +1,6 @@
-package com.oyeetaxi.cybergod.futures.base.services
+package com.oyeetaxi.cybergod.futures.share.services
 
-import com.oyeetaxi.cybergod.futures.base.interfaces.EmailInterface
+import com.oyeetaxi.cybergod.futures.share.interfaces.EmailInterface
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.EmailConfiguracion
 import com.oyeetaxi.cybergod.futures.usuario.repositories.UsuarioRepository
 import com.oyeetaxi.cybergod.utils.Constants.PROPERTIES_mail_debug

@@ -12,14 +12,17 @@ import com.oyeetaxi.cybergod.futures.configuracion.models.types.UpdateConfigurac
 import com.oyeetaxi.cybergod.futures.configuracion.repositories.ConfiguracionRepository
 import com.oyeetaxi.cybergod.utils.Constants.AUTHORIZATION
 import com.oyeetaxi.cybergod.utils.Constants.DEFAULT_CONFIG
-
+import com.oyeetaxi.cybergod.utils.Utils.getBalanceFromXMLResponse
+import com.oyeetaxi.cybergod.utils.Utils.getEncodedAuthorization
+import io.netty.handler.timeout.TimeoutException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.web.reactive.function.client.bodyToMono
+import org.springframework.web.reactive.function.client.WebClientResponseException
+import java.time.Duration
 import java.util.*
 
 @Service
@@ -29,19 +32,11 @@ class ConfiguracionService : ConfiguracionInterface {
     val configuracionRepository: ConfiguracionRepository? = null
 
     @Autowired
-    val webClient: WebClient.Builder? = null
+    val webClient: WebClient? = null
 
-
-
-
-    fun getEncodedAuthorization(userId:String,token:String): String {
-        val typeEncode = "Basic "
-        val authorization = "${userId}:${token}"
-        return typeEncode + Base64.getEncoder().encodeToString(authorization.toByteArray())
-    }
 
     @Throws(BusinessException::class)
-    fun getTwilioBalance():String?{
+    fun getTwilioBalance():Double?{
         //https://api.twilio.com/2010-04-01/Accounts/AC9e44b58cdd832019e03a8f045288b591/Balance.json%20-u%20AC9e44b58cdd832019e03a8f045288b591:99e7fb6c2bbcba159a95c503871d4732
         val base = "https://api.twilio.com/2010-04-01/Accounts/"
         val userId = "AC9e44b58cdd832019e03a8f045288b591"
@@ -67,31 +62,43 @@ class ConfiguracionService : ConfiguracionInterface {
         }
          */
 
-
         //METODO CON RESPONSE ENTITY PARA VER LO Q DEVUELVE
         val response: ResponseEntity<String>? = try {
-                 webClient!!.build()
+                 webClient!!
                 .get()
                 .uri(uri)
                 .header(AUTHORIZATION, getEncodedAuthorization(userId,userToken))
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .toEntity(String::class.java)
+                .timeout(Duration.ofSeconds(40))  // timeout
                 .block()
 
-         } catch (e:Exception) {
+         } catch (e:WebClientResponseException) {
+             val exceptionString = "Fail to getTwilioBalance WebClientResponseException = " +
+                     when (e.rawStatusCode ) {
+                        451 -> {"Unavailable For Legal Reasons Set VPN Connection"}
+                        else -> {e.message}
+                     }
+            println(exceptionString)
+            throw BusinessException(exceptionString)
+         } catch (e:TimeoutException) {
+            val exceptionString = "Fail to getTwilioBalance TimeoutException = ${e.message}"
+            println(exceptionString)
+            throw BusinessException(exceptionString)
+         }catch (e:Exception) {
              println("Fail to getTwilioBalance Exception = $e")
-             null
+             throw BusinessException("")
          }
 
-        println(response)
+
         response.toString()
 
         return when (response?.statusCodeValue) {
             HttpStatus.OK.value() -> {
-                response.body
+                response.body?.getBalanceFromXMLResponse()
             }
-            else -> {null}
+            else -> {throw BusinessException("Fail to getTwilioBalance")}
         }
 
 

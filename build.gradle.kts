@@ -31,6 +31,10 @@ dependencies {
 	implementation("com.twilio.sdk:twilio:8.29.1") //Twillio
 	implementation("org.springframework.boot:spring-boot-starter-mail") //Spring Java Mail Sender
 	implementation("org.springframework.boot:spring-boot-starter-security") //Spring Security
+	implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.3") //Jackson XML  https://github.com/FasterXML/jackson-dataformat-xml
+
+
+
 
 //	//NOT USING
 //	//runtimeOnly("mysql:mysql-connector-java") No Used //MySQL
@@ -38,15 +42,7 @@ dependencies {
 //	implementation("io.socket:socket.io-server:4.0.1") //Socket.IO
 //	implementation("io.springfox:springfox-boot-starter:3.0.0") //Swagger
 //	implementation("io.springfox:springfox-swagger-ui:3.0.0") //Swagger UI
-//
-//	//Retrofit
-//	implementation("com.squareup.retrofit2:retrofit:2.9.0")
-//	implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-//	implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
-//	implementation("com.squareup.okhttp3:okhttp:4.9.3")
-//
-//	//Gson
-//	implementation("com.google.code.gson:gson:2.9.0")
+
 
 	//Test
 	implementation("junit:junit:4.13.2")

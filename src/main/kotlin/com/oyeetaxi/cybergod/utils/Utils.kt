@@ -1,7 +1,10 @@
 package com.oyeetaxi.cybergod.utils
 
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper
+import com.oyeetaxi.cybergod.futures.configuracion.models.balanceResponse.BalanceResponse
 import com.oyeetaxi.cybergod.futures.fichero.models.TipoFichero
+import io.jsonwebtoken.io.IOException
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -12,17 +15,33 @@ object Utils {
 
 
 
+
+
+    fun getEncodedAuthorization(userId:String,token:String): String {
+        val typeEncode = "Basic "
+        val authorization = "${userId}:${token}"
+        return typeEncode + Base64.getEncoder().encodeToString(authorization.toByteArray())
+    }
+
+
+    fun String.getBalanceFromXMLResponse():Double?{
+        val value : BalanceResponse? = try {
+            XmlMapper().readValue(this, BalanceResponse::class.java)
+        } catch ( e : IOException) {
+            println("Fail To Convert XML to DataClass : BAD XML = $this\n CAUSE IOException: ${e.message}")
+            null
+        }
+        return value?.balance?.balance
+    }
+
+
     fun generateOTP(): String {
-        val OTP =  DecimalFormat("000000")
-            .format(Random().nextInt(999999))
-        return OTP
+        return DecimalFormat("000000").format(Random().nextInt(999999))
     }
 
 
     fun getServerLocalDate():LocalDate{
-
         return LocalDate.now()
-
     }
 
     fun passwordEncode(password:String): String {

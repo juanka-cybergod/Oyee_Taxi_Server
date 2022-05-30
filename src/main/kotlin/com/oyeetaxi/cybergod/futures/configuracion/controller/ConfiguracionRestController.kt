@@ -32,6 +32,15 @@ class ConfiguracionRestController {
         }
     }
 
+    @GetMapping("/getTwilioBalance")
+    fun getTwilioBalance():ResponseEntity<Any>{
+        return try {
+            ResponseEntity(configuracionBusiness!!.getTwilioBalance(),HttpStatus.OK)
+        }catch (e:Exception){
+            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
 
     @GetMapping("/getSmsProvider")
     fun getSmsProvider():ResponseEntity<SmsProvider>{

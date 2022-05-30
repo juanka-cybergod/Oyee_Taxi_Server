@@ -26,5 +26,7 @@ object Constants {
         const val PROPERTIES_mail_smtp_starttls_enable="mail.smtp.starttls.enable"
         const val PROPERTIES_mail_debug="mail.debug"
 
+        const val AUTHORIZATION = "Authorization"
+
 
 }

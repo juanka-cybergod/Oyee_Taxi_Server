@@ -10,10 +10,14 @@ import com.oyeetaxi.cybergod.futures.configuracion.models.types.SmsProvider
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.TwilioConfiguracion
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.UpdateConfiguracion
 import com.oyeetaxi.cybergod.futures.configuracion.repositories.ConfiguracionRepository
+import com.oyeetaxi.cybergod.utils.Constants.AUTHORIZATION
 import com.oyeetaxi.cybergod.utils.Constants.DEFAULT_CONFIG
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
+import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.reactive.function.client.bodyToMono
 import java.util.*
 
 @Service
@@ -22,6 +26,49 @@ class ConfiguracionService : ConfiguracionInterface {
     @Autowired
     val configuracionRepository: ConfiguracionRepository? = null
 
+    @Autowired
+    val webClient: WebClient.Builder? = null
+
+
+
+
+    fun getEncodedAuthorization(userId:String,token:String): String {
+        val typeEncode = "Basic "
+        val authorization = "${userId}:${token}"
+        return typeEncode + Base64.getEncoder().encodeToString(authorization.toByteArray())
+    }
+
+    @Throws(BusinessException::class)
+    fun getTwilioBalance():String?{
+        //https://api.twilio.com/2010-04-01/Accounts/AC9e44b58cdd832019e03a8f045288b591/Balance.json%20-u%20AC9e44b58cdd832019e03a8f045288b591:99e7fb6c2bbcba159a95c503871d4732
+        val base = "https://api.twilio.com/2010-04-01/Accounts/"
+        val userId = "AC9e44b58cdd832019e03a8f045288b591"
+        val userToken = "99e7fb6c2bbcba159a95c503871d4732"
+        val uri = "${base}${userId}/Balance.json%20-u%20${userId}:${userToken}"
+
+        return try {
+            //val response = WebClient.builder().build()
+            val response = webClient!!.build()
+                .get()
+                .uri(uri)
+                .header(AUTHORIZATION, getEncodedAuthorization(userId,userToken))
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono<String>()
+                .block()
+
+
+            println(response)
+            response.toString()
+
+        } catch (e:Exception) {
+            println("Fail to getTwilioBalance Exception = $e")
+            null
+        }
+
+
+
+    }
 
 
     @Throws(BusinessException::class, NotFoundException::class)

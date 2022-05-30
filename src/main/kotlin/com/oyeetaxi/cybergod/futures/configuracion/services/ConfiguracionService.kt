@@ -14,7 +14,9 @@ import com.oyeetaxi.cybergod.utils.Constants.AUTHORIZATION
 import com.oyeetaxi.cybergod.utils.Constants.DEFAULT_CONFIG
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.bodyToMono
@@ -46,17 +48,15 @@ class ConfiguracionService : ConfiguracionInterface {
         val userToken = "99e7fb6c2bbcba159a95c503871d4732"
         val uri = "${base}${userId}/Balance.json%20-u%20${userId}:${userToken}"
 
-        return try {
-            //val response = WebClient.builder().build()
-            val response = webClient!!.build()
-                .get()
-                .uri(uri)
-                .header(AUTHORIZATION, getEncodedAuthorization(userId,userToken))
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToMono<String>()
-                .block()
-
+        /** Solo Devuelve Cuando la respuesta es OK
+        val response = webClient!!.build()
+        .get()
+        .uri(uri)
+        .header(AUTHORIZATION, getEncodedAuthorization(userId,userToken))
+        .accept(MediaType.APPLICATION_JSON)
+        .retrieve()
+        .bodyToMono<String>()
+        .block()
 
             println(response)
             response.toString()
@@ -65,7 +65,34 @@ class ConfiguracionService : ConfiguracionInterface {
             println("Fail to getTwilioBalance Exception = $e")
             null
         }
+         */
 
+
+        //METODO CON RESPONSE ENTITY PARA VER LO Q DEVUELVE
+        val response: ResponseEntity<String>? = try {
+                 webClient!!.build()
+                .get()
+                .uri(uri)
+                .header(AUTHORIZATION, getEncodedAuthorization(userId,userToken))
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .toEntity(String::class.java)
+                .block()
+
+         } catch (e:Exception) {
+             println("Fail to getTwilioBalance Exception = $e")
+             null
+         }
+
+        println(response)
+        response.toString()
+
+        return when (response?.statusCodeValue) {
+            HttpStatus.OK.value() -> {
+                response.body
+            }
+            else -> {null}
+        }
 
 
     }

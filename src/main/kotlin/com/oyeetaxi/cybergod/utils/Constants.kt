@@ -26,6 +26,7 @@ object Constants {
         const val PROPERTIES_mail_smtp_starttls_enable="mail.smtp.starttls.enable"
         const val PROPERTIES_mail_debug="mail.debug"
 
+        const val TWILIO_BASE_URL = "https://api.twilio.com/2010-04-01/Accounts/"   //https://api.twilio.com/2010-04-01/Accounts/AC9e44b58cdd832019e03a8f045288b591/Balance.json%20-u%20AC9e44b58cdd832019e03a8f045288b591:99e7fb6c2bbcba159a95c503871d4732
         const val AUTHORIZATION = "Authorization"
 
 

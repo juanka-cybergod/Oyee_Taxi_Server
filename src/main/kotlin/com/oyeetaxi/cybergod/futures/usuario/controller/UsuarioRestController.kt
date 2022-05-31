@@ -12,6 +12,7 @@ import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
 import com.oyeetaxi.cybergod.futures.usuario.models.requestFilter.UserFilterOptions
 import com.oyeetaxi.cybergod.utils.Constants
 import com.oyeetaxi.cybergod.utils.Utils
+import com.oyeetaxi.cybergod.utils.Utils.generateOTP
 import com.oyeetaxi.cybergod.utils.Utils.getServerLocalDate
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -226,13 +227,12 @@ class UsuarioRestController: BaseRestController() {
     fun requestOTPCodeToSMS(@RequestParam("phoneNumber") phoneNumber: String): ResponseEntity<Any> {
         return try {
 
-            val codeOTP = Utils.generateOTP()
+            val codeOTP = generateOTP()
             val message = "El Código de Verificación para ud es $codeOTP"
 
 
 
             if (smsBusiness!!.sendSMS(phoneNumber,message)) {
-                configuracionBusiness!!.updateCredit()
                 ResponseEntity(codeOTP, HttpStatus.OK)
             } else {
                 ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -7,6 +7,8 @@ import com.oyeetaxi.cybergod.futures.configuracion.models.types.SmsProvider
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.TwilioConfiguracion
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.UpdateConfiguracion
 import com.oyeetaxi.cybergod.futures.configuracion.services.ConfiguracionService
+import com.oyeetaxi.cybergod.futures.share.interfaces.SmsInterface
+import com.oyeetaxi.cybergod.futures.share.services.SmsTwilioService
 import com.oyeetaxi.cybergod.utils.Constants.URL_BASE_CONFIGURACION
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -20,6 +22,8 @@ class ConfiguracionRestController {
 
     @Autowired
     val configuracionBusiness : ConfiguracionService? = null
+    @Autowired
+    val smsTwilioService : SmsTwilioService? = null
 
 
 
@@ -32,10 +36,16 @@ class ConfiguracionRestController {
         }
     }
 
-    @GetMapping("/getTwilioBalance")
-    fun getTwilioBalance():ResponseEntity<Any>{
+    @GetMapping("/getSMSBalance")
+    fun getSMSBalance():ResponseEntity<Any>{
+        val smsProvider :SmsInterface? =
+            when (configuracionBusiness!!.getSmsProvider()) {
+            SmsProvider.TWILIO -> {smsTwilioService!!}
+            else -> null
+            }
+
         return try {
-            ResponseEntity(configuracionBusiness!!.getTwilioBalance(),HttpStatus.OK)
+            ResponseEntity(smsProvider?.getBalance(),HttpStatus.OK)
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -71,12 +81,28 @@ class ConfiguracionRestController {
 
     @GetMapping("/getRemaningSMS")
     fun getRemaningSMS(): ResponseEntity<Int>{
-        return try {
-            ResponseEntity( configuracionBusiness!!.getRemaningSMS(),HttpStatus.OK)
 
-        } catch (e: BusinessException) {
+
+        val smsProvider :SmsInterface? =
+            when (configuracionBusiness!!.getSmsProvider()) {
+                SmsProvider.TWILIO -> {smsTwilioService!!}
+                else -> null
+            }
+
+        return try {
+            ResponseEntity(smsProvider?.getRemainingSMS(),HttpStatus.OK)
+        }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
+
+
+//
+//        return try {
+//            ResponseEntity( configuracionBusiness!!.getRemaningSMS(),HttpStatus.OK)
+//
+//        } catch (e: BusinessException) {
+//            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+//        }
     }
 
 
@@ -101,18 +127,6 @@ class ConfiguracionRestController {
     }
 
 
-
-
-    @PutMapping("/setTwilioConfiguration")
-    fun setTwilioConfiguration(@RequestBody twilioConfiguracion: TwilioConfiguracion): ResponseEntity<Boolean>{
-        return try {
-            configuracionBusiness!!.setTwilioConfiguration(twilioConfiguracion)
-            ResponseEntity(HttpStatus.OK)
-
-        } catch (e: BusinessException) {
-            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
-        }
-    }
 
 
 

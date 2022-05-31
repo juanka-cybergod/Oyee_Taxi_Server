@@ -10,19 +10,9 @@ import com.oyeetaxi.cybergod.futures.configuracion.models.types.SmsProvider
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.TwilioConfiguracion
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.UpdateConfiguracion
 import com.oyeetaxi.cybergod.futures.configuracion.repositories.ConfiguracionRepository
-import com.oyeetaxi.cybergod.utils.Constants.AUTHORIZATION
 import com.oyeetaxi.cybergod.utils.Constants.DEFAULT_CONFIG
-import com.oyeetaxi.cybergod.utils.Utils.getBalanceFromXMLResponse
-import com.oyeetaxi.cybergod.utils.Utils.getEncodedAuthorization
-import io.netty.handler.timeout.TimeoutException
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.web.reactive.function.client.WebClientResponseException
-import java.time.Duration
 import java.util.*
 
 @Service
@@ -30,80 +20,6 @@ class ConfiguracionService : ConfiguracionInterface {
 
     @Autowired
     val configuracionRepository: ConfiguracionRepository? = null
-
-    @Autowired
-    val webClient: WebClient? = null
-
-
-    @Throws(BusinessException::class)
-    fun getTwilioBalance():Double?{
-        //https://api.twilio.com/2010-04-01/Accounts/AC9e44b58cdd832019e03a8f045288b591/Balance.json%20-u%20AC9e44b58cdd832019e03a8f045288b591:99e7fb6c2bbcba159a95c503871d4732
-        val base = "https://api.twilio.com/2010-04-01/Accounts/"
-        val userId = "AC9e44b58cdd832019e03a8f045288b591"
-        val userToken = "99e7fb6c2bbcba159a95c503871d4732"
-        val uri = "${base}${userId}/Balance.json%20-u%20${userId}:${userToken}"
-
-        /** Solo Devuelve Cuando la respuesta es OK
-        val response = webClient!!.build()
-        .get()
-        .uri(uri)
-        .header(AUTHORIZATION, getEncodedAuthorization(userId,userToken))
-        .accept(MediaType.APPLICATION_JSON)
-        .retrieve()
-        .bodyToMono<String>()
-        .block()
-
-            println(response)
-            response.toString()
-
-        } catch (e:Exception) {
-            println("Fail to getTwilioBalance Exception = $e")
-            null
-        }
-         */
-
-        //METODO CON RESPONSE ENTITY PARA VER LO Q DEVUELVE
-        val response: ResponseEntity<String>? = try {
-                 webClient!!
-                .get()
-                .uri(uri)
-                .header(AUTHORIZATION, getEncodedAuthorization(userId,userToken))
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .toEntity(String::class.java)
-                .timeout(Duration.ofSeconds(40))  // timeout
-                .block()
-
-         } catch (e:WebClientResponseException) {
-             val exceptionString = "Fail to getTwilioBalance WebClientResponseException = " +
-                     when (e.rawStatusCode ) {
-                        451 -> {"Unavailable For Legal Reasons Set VPN Connection"}
-                        else -> {e.message}
-                     }
-            println(exceptionString)
-            throw BusinessException(exceptionString)
-         } catch (e:TimeoutException) {
-            val exceptionString = "Fail to getTwilioBalance TimeoutException = ${e.message}"
-            println(exceptionString)
-            throw BusinessException(exceptionString)
-         }catch (e:Exception) {
-             println("Fail to getTwilioBalance Exception = $e")
-             throw BusinessException("")
-         }
-
-
-        response.toString()
-
-        return when (response?.statusCodeValue) {
-            HttpStatus.OK.value() -> {
-                response.body?.getBalanceFromXMLResponse()
-            }
-            else -> {throw BusinessException("Fail to getTwilioBalance")}
-        }
-
-
-    }
-
 
     @Throws(BusinessException::class, NotFoundException::class)
     override fun getConfiguration(): Configuracion {
@@ -120,11 +36,6 @@ class ConfiguracionService : ConfiguracionInterface {
         }
         return optional.get()
     }
-
-
-
-
-
 
     @Throws(BusinessException::class,NotFoundException::class)
     override fun updateConfiguration(configuracion: Configuracion): Configuracion {
@@ -157,8 +68,13 @@ class ConfiguracionService : ConfiguracionInterface {
                 twilioConfiguration.account_sid?.let { configuracionModificar.twilioConfiguracion?.account_sid = it }
                 twilioConfiguration.auth_token?.let { configuracionModificar.twilioConfiguracion?.auth_token = it }
                 twilioConfiguration.trial_number?.let { configuracionModificar.twilioConfiguracion?.trial_number = it }
-                twilioConfiguration.remainingCredit?.let { configuracionModificar.twilioConfiguracion?.remainingCredit = it }
+//                twilioConfiguration.remainingCredit?.let { configuracionModificar.twilioConfiguracion?.remainingCredit = it }
                 twilioConfiguration.smsCost?.let { configuracionModificar.twilioConfiguracion?.smsCost = it }
+                twilioConfiguration.balance?.let { balance ->
+                    balance.balance?.let { configuracionModificar.twilioConfiguracion?.balance?.balance = it }
+                    balance.currency?.let { configuracionModificar.twilioConfiguracion?.balance?.currency = it }
+                    balance.accountSid?.let { configuracionModificar.twilioConfiguracion?.balance?.accountSid = it }
+                }
             }
 
             configuracion.emailConfiguracion?.let {emailConfiguracion ->
@@ -221,33 +137,6 @@ class ConfiguracionService : ConfiguracionInterface {
 
     }
 
-
-
-
-
-
-
-
-    @Throws(BusinessException::class,NotFoundException::class)
-    override fun setTwilioConfiguration(twilioConfiguracion: TwilioConfiguracion): Boolean {
-
-        val tempConfiguracion = Configuracion(
-            twilioConfiguracion = twilioConfiguracion
-        )
-
-        return try {
-            configuracionRepository!!.save(tempConfiguracion)
-            true
-        }catch (e:Exception) {
-            throw BusinessException(e.message)
-
-        }
-
-    }
-
-
-
-
     @Throws(BusinessException::class, NotFoundException::class)
     override fun getTwilioConfiguration(): TwilioConfiguracion {
 
@@ -265,7 +154,6 @@ class ConfiguracionService : ConfiguracionInterface {
 
 
     }
-
 
     @Throws(BusinessException::class,NotFoundException::class)
     override fun isServerActive(): Boolean {
@@ -285,10 +173,6 @@ class ConfiguracionService : ConfiguracionInterface {
 
     }
 
-
-
-
-
     @Throws(BusinessException::class,NotFoundException::class)
     override fun isServerActiveForAdmin(): Boolean {
 
@@ -305,42 +189,6 @@ class ConfiguracionService : ConfiguracionInterface {
         return optional.get().servidorActivoAdministradores!!
 
 
-    }
-
-
-    @Throws(BusinessException::class,NotFoundException::class)
-    override fun updateCredit(): Boolean {
-
-        val tempTwilioConfiguration =getTwilioConfiguration()
-
-        val remaningCredit: Double = tempTwilioConfiguration.remainingCredit!!
-        val smsCost: Double = tempTwilioConfiguration.smsCost!!
-
-        val newTwilioConfiguracion = TwilioConfiguracion(
-            account_sid = tempTwilioConfiguration.account_sid,
-            auth_token = tempTwilioConfiguration.auth_token,
-            trial_number = tempTwilioConfiguration.trial_number,
-            smsCost = tempTwilioConfiguration.smsCost,
-            remainingCredit = remaningCredit - smsCost,
-        )
-
-        return setTwilioConfiguration(
-            newTwilioConfiguracion
-        )
-
-
-    }
-
-
-    @Throws(BusinessException::class,NotFoundException::class)
-    override fun getRemaningSMS(): Int {
-
-        val tempTwilioConfiguration =getTwilioConfiguration()
-
-        val remaningCredit: Double = tempTwilioConfiguration.remainingCredit!!
-        val smsCost: Double = tempTwilioConfiguration.smsCost!!
-
-        return Math.round( (remaningCredit/smsCost) .toFloat() )
     }
 
     @Throws(BusinessException::class,NotFoundException::class)

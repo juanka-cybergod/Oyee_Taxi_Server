@@ -2,6 +2,7 @@ package com.oyeetaxi.cybergod.utils
 
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
+import com.oyeetaxi.cybergod.futures.configuracion.models.balanceResponse.Balance
 import com.oyeetaxi.cybergod.futures.configuracion.models.balanceResponse.BalanceResponse
 import com.oyeetaxi.cybergod.futures.fichero.models.TipoFichero
 import io.jsonwebtoken.io.IOException
@@ -24,14 +25,14 @@ object Utils {
     }
 
 
-    fun String.getBalanceFromXMLResponse():Double?{
+    fun String.getBalanceFromXMLResponse():Balance?{
         val value : BalanceResponse? = try {
             XmlMapper().readValue(this, BalanceResponse::class.java)
         } catch ( e : IOException) {
             println("Fail To Convert XML to DataClass : BAD XML = $this\n CAUSE IOException: ${e.message}")
             null
         }
-        return value?.balance?.balance
+        return value?.balance
     }
 
 

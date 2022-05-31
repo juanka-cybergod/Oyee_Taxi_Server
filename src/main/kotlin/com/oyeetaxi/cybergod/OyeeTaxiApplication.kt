@@ -7,6 +7,7 @@ import com.oyeetaxi.cybergod.futures.vehiculo.models.VehiculoVerificacion
 import com.oyeetaxi.cybergod.utils.Constants.DEFAULT_CONFIG
 import com.oyeetaxi.cybergod.utils.Utils.passwordEncode
 import com.oyeetaxi.cybergod.futures.configuracion.models.Configuracion
+import com.oyeetaxi.cybergod.futures.configuracion.models.balanceResponse.Balance
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.*
 import com.oyeetaxi.cybergod.futures.configuracion.repositories.ConfiguracionRepository
 import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
@@ -109,9 +110,13 @@ class OyeeTaxiApplication:CommandLineRunner{
 			twilioConfiguracion = (TwilioConfiguracion(
 				account_sid = "AC9e44b58cdd832019e03a8f045288b591",
 				auth_token = "99e7fb6c2bbcba159a95c503871d4732",
-				trial_number = "+18596961174",
-				remainingCredit = 11.22, //total
-				smsCost = 0.18, //costo por sms
+				trial_number = "+19062890453",
+				balance = Balance(
+					currency = "USD",
+					balance = 10.22,
+					accountSid = null,
+				),
+				smsCost = 1.0, //costo por sms
 			)),
 			smsProvider = SmsProvider.TWILIO,
 			emailConfiguracion = EmailConfiguracion(

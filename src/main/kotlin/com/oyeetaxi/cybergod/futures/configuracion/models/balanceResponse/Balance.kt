@@ -5,10 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class Balance(
     @JsonProperty("Currency")
-    val currency : String? = null,
+    var currency : String? = null,
     @JsonProperty("Balance")
-    val balance : Double? = null,
+    var balance : Double? = null,
     @JsonProperty("AccountSid")
-    val accountSid : String? = null,
+    var accountSid : String? = null,
 
     )

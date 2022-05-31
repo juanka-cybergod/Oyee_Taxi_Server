@@ -12,15 +12,10 @@ interface ConfiguracionInterface {
     fun isServerActive(): Boolean
     fun isServerActiveForAdmin(): Boolean
 
-
-    fun setTwilioConfiguration(twilioConfiguracion: TwilioConfiguracion):Boolean
     fun getTwilioConfiguration(): TwilioConfiguracion
 
     fun updateConfiguration(configuracion: Configuracion): Configuracion
     fun getConfiguration(): Configuracion
-
-    fun updateCredit():Boolean
-    fun getRemaningSMS():Int
 
     fun getSmsProvider(): SmsProvider
 

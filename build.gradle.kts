@@ -26,6 +26,12 @@ dependencies {
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor") //Kotlin Coroutines
 	implementation("org.projectlombok:lombok:1.18.24") //Lombok for Java Annotations
 
+	//Test
+	implementation("junit:junit:4.13.2")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("io.projectreactor:reactor-test")
+
 	//USING
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb") //MongoDBDB
 	implementation("com.twilio.sdk:twilio:8.29.1") //Twillio
@@ -34,21 +40,20 @@ dependencies {
 	implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.3") //Jackson XML  https://github.com/FasterXML/jackson-dataformat-xml
 
 
-
-
 //	//NOT USING
 //	//runtimeOnly("mysql:mysql-connector-java") No Used //MySQL
-//	implementation("org.springframework.boot:spring-boot-starter-websocket") //Spring Web Socket
 //	implementation("io.socket:socket.io-server:4.0.1") //Socket.IO
 //	implementation("io.springfox:springfox-boot-starter:3.0.0") //Swagger
 //	implementation("io.springfox:springfox-swagger-ui:3.0.0") //Swagger UI
 
 
-	//Test
-	implementation("junit:junit:4.13.2")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.springframework.security:spring-security-test")
-	testImplementation("io.projectreactor:reactor-test")
+	//client sockjs
+//  implementation("org.springframework.boot:spring-boot-starter-websocket") //Spring Web Socket
+//	implementation ("org.webjars:webjars-locator-core")
+//	implementation ("org.webjars:sockjs-client:1.5.1")
+//	implementation ("org.webjars:stomp-websocket:2.3.4")
+//	implementation ("org.webjars:bootstrap:5.1.3")
+//	implementation ("org.webjars:jquery:3.6.0")
 
 
 
@@ -64,16 +69,3 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
-
-
-//OLD
-//plugins {
-//	id("org.springframework.boot") version "2.6.2"
-//	id("io.spring.dependency-management") version "1.0.11.RELEASE"
-//	kotlin("jvm") version "1.6.10"
-//	kotlin("plugin.spring") version "1.6.10"
-//	kotlin("plugin.jpa") version "1.6.10"
-//}
-//    implementation("org.projectlombok:lombok:1.18.20")
-//    implementation("junit:junit:4.13.1")
-//	implementation("com.twilio.sdk:twilio:8.26.0")

@@ -1,6 +1,6 @@
 package com.oyeetaxi.cybergod.futures.share.services
 
-import com.oyeetaxi.cybergod.configuration.AppCoroutineScope
+import com.oyeetaxi.cybergod.configuration.CoroutineConfiguration
 import com.oyeetaxi.cybergod.exceptions.BusinessException
 import com.oyeetaxi.cybergod.exceptions.NotFoundException
 import com.oyeetaxi.cybergod.futures.configuracion.models.Configuracion
@@ -31,7 +31,7 @@ import kotlin.math.roundToInt
 
 @Service
 class SmsTwilioService(
-    @Autowired private val scope: AppCoroutineScope,
+    @Autowired private val scope: CoroutineConfiguration,
     @Autowired val configurationBusiness : ConfiguracionService,
     @Autowired val webClient: WebClient
     ): SmsInterface  {

@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration
 
 
 @Configuration
-class AppCoroutineScope: CoroutineScope by CoroutineScope(Dispatchers.Default) {
+class CoroutineConfiguration: CoroutineScope by CoroutineScope(Dispatchers.Default) {
 
     @Bean
-    fun scope(): AppCoroutineScope = AppCoroutineScope()
+    fun scope(): CoroutineConfiguration = CoroutineConfiguration()
 }

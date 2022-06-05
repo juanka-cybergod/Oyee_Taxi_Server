@@ -37,7 +37,7 @@ class UsuarioRestController: BaseRestController() {
 
         if (emailOrPhone.contains("@",true)) {
             //Buscar por email
-            usuario = usuarioBusiness!!.getUserByEmail(emailOrPhone)
+            usuario = usuarioBusiness.getUserByEmail(emailOrPhone)
             usuario?.let {
                 emailCorrecto = it.correo
             }
@@ -45,7 +45,7 @@ class UsuarioRestController: BaseRestController() {
         } else {
             //buscar por numero de telefono
 
-            usuario =  usuarioBusiness!!.findUserByPhoneNumber(emailOrPhone)
+            usuario =  usuarioBusiness.findUserByPhoneNumber(emailOrPhone)
             usuario?.let {
                 emailCorrecto = it.correo
             }
@@ -67,9 +67,9 @@ class UsuarioRestController: BaseRestController() {
 
             val asunto = "Oyee Taxi"
 
-            emailSentSussefuctly = emailBusiness!!.sendEmailTo(it,asunto, template)
+            emailSentSussefuctly = emailBusiness.sendEmailTo(it,asunto, template)
             if (emailSentSussefuctly) {
-                usuarioBusiness!!.updateUser(
+                usuarioBusiness.updateUser(
                     Usuario(
                         id = usuario?.id,
                         otpCode = codeOTP
@@ -101,7 +101,7 @@ class UsuarioRestController: BaseRestController() {
         var otpCodeCorrect  = false
 
         val usuario : Usuario? = try {
-            usuarioBusiness!!.getUserById(idUsuario)
+            usuarioBusiness.getUserById(idUsuario)
         }catch (e:BusinessException) {
             null
         }
@@ -132,24 +132,21 @@ class UsuarioRestController: BaseRestController() {
 
 
 
-            usuarioBusiness!!.findUserByPhoneNumber(userPhone)?.let { usuario ->
+            usuarioBusiness.findUserByPhoneNumber(userPhone)?.let { usuario ->
                 usuarioEncontrado = true
                 correctPasword = (password == usuario.contrasena)
                 if (correctPasword) {
 
 
                     if (usuario.conductor == true) {
-                        vehiculoBusiness!!.getActiveVehicleByUserId(usuario.id!!)?.let { vehiculo ->
+                        vehiculoBusiness.getActiveVehicleByUserId(usuario.id?:"")?.let { vehiculo ->
                             activeVehicleResponse = convertVehicleToVehicleResponse(vehiculo)
                         }
 
                     }
 
-                    val valoracion = valoracionBusiness!!.getValorationAverageByUserId(usuario.id!!)
-                    usuario.valoracion =  valoracion
 
-
-                    val serverConfig = configuracionBusiness!!.getConfiguration()
+                    val serverConfig = configuracionBusiness.getConfiguration()
                     if (usuario.administrador == true) {
                         serverActiveForThisUser = serverConfig.servidorActivoAdministradores?:true
                         if (!serverActiveForThisUser) {messaje = serverConfig.motivoServidorInactivoAdministradores}
@@ -197,7 +194,7 @@ class UsuarioRestController: BaseRestController() {
 
         var usuarioEncontrado  = false
 
-        usuarioBusiness!!.findUserByPhoneNumber(userPhone)?.let {
+        usuarioBusiness.findUserByPhoneNumber(userPhone)?.let {
             usuarioEncontrado = true
         }
 
@@ -215,7 +212,7 @@ class UsuarioRestController: BaseRestController() {
     @GetMapping("/requestOTPCodeToSMSTest")
     fun requestOTPCodeToSMSTest(@RequestParam("phoneNumber") phoneNumber: String): ResponseEntity<Any> {
         return try {
-            val codeOTP = 123456 //smsBusiness!!.generateOTP()
+            val codeOTP = 123456
             ResponseEntity(codeOTP, HttpStatus.OK)
         } catch (e: BusinessException) {
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -232,7 +229,7 @@ class UsuarioRestController: BaseRestController() {
 
 
 
-            if (smsBusiness!!.sendSMS(phoneNumber,message)) {
+            if (smsBusiness.sendSMS(phoneNumber,message)) {
                 ResponseEntity(codeOTP, HttpStatus.OK)
             } else {
                 ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -249,7 +246,7 @@ class UsuarioRestController: BaseRestController() {
     @GetMapping("/getAllUsers")
     fun getAllUsers():ResponseEntity<List<Usuario>>{
         return try {
-            ResponseEntity(usuarioBusiness!!.getAllUsers(),HttpStatus.OK)
+            ResponseEntity(usuarioBusiness.getAllUsers(),HttpStatus.OK)
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -258,7 +255,7 @@ class UsuarioRestController: BaseRestController() {
     @GetMapping("/getAllUsersPaginated")
     fun getAllUsersPaginated(pageable: Pageable):ResponseEntity<Page<Usuario>>{ //@RequestParam("pageable")
         return try {
-            ResponseEntity(usuarioBusiness!!.getAllUsersPaginated(pageable),HttpStatus.OK)
+            ResponseEntity(usuarioBusiness.getAllUsersPaginated(pageable),HttpStatus.OK)
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -267,7 +264,7 @@ class UsuarioRestController: BaseRestController() {
     @GetMapping("/searchUsersPaginated")
     fun searchUsersPaginated(pageable: Pageable,@RequestParam("search") search:String?):ResponseEntity<Page<Usuario>>{ //@RequestParam("pageable")
         return try {
-            ResponseEntity(usuarioBusiness!!.searchAllUsersPaginated(search?:"",pageable),HttpStatus.OK)
+            ResponseEntity(usuarioBusiness.searchAllUsersPaginated(search?:"",pageable),HttpStatus.OK)
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -277,7 +274,7 @@ class UsuarioRestController: BaseRestController() {
     fun searchUsersPaginatedWithFilter(pageable: Pageable,@RequestBody userFilterOptions: UserFilterOptions?):ResponseEntity<Page<Usuario>>{ //@RequestParam("pageable") ,@RequestParam("search") search:String?
 
         return try {
-            ResponseEntity(usuarioBusiness!!.searchUsersPaginatedWithFilter(userFilterOptions?:UserFilterOptions(),pageable),HttpStatus.OK)
+            ResponseEntity(usuarioBusiness.searchUsersPaginatedWithFilter(userFilterOptions?:UserFilterOptions(),pageable),HttpStatus.OK)
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -286,7 +283,7 @@ class UsuarioRestController: BaseRestController() {
     @GetMapping("/getUserById={id}")
     fun getUserById(@PathVariable("id") idUsuario: String  ):ResponseEntity<Usuario> {
         return try {
-            ResponseEntity(usuarioBusiness!!.getUserById(idUsuario),HttpStatus.OK)
+            ResponseEntity(usuarioBusiness.getUserById(idUsuario),HttpStatus.OK)
         }catch (e:BusinessException) {
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -304,13 +301,13 @@ class UsuarioRestController: BaseRestController() {
 
 
             //Devuelve solo el Header con el ID del usuario creado
-//            usuarioBusiness!!.addUser(usuario)
+//            usuarioBusiness.addUser(usuario)
 //            val responseHeader = org.springframework.http.HttpHeaders()
 //            responseHeader.set("id",  usuario.id)
 //            ResponseEntity(responseHeader,HttpStatus.CREATED)
 
             //Devuelve el Body completo del Usuario Creado
-            ResponseEntity( usuarioBusiness!!.addUser(usuario),HttpStatus.OK)
+            ResponseEntity( usuarioBusiness.addUser(usuario),HttpStatus.OK)
 
         } catch (e: BusinessException) {
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -322,7 +319,7 @@ class UsuarioRestController: BaseRestController() {
     fun updateUser(@RequestBody usuario: Usuario): ResponseEntity<Any>{
 
         return try {
-            ResponseEntity( usuarioBusiness!!.updateUser(usuario),HttpStatus.OK)
+            ResponseEntity( usuarioBusiness.updateUser(usuario),HttpStatus.OK)
         } catch (e: BusinessException) {
             ResponseEntity(HttpStatus.NOT_FOUND)
         }
@@ -332,7 +329,7 @@ class UsuarioRestController: BaseRestController() {
     @PutMapping("/updateUserLocationById")
     fun updateUserLocationById(@RequestParam idUsuario: String,@RequestBody ubicacion: Ubicacion): ResponseEntity<Any>{
         return try {
-            ResponseEntity( usuarioBusiness!!.updateUserLocationById(idUsuario,ubicacion ),HttpStatus.OK)
+            ResponseEntity( usuarioBusiness.updateUserLocationById(idUsuario,ubicacion ),HttpStatus.OK)
         } catch (e: BusinessException) {
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -342,7 +339,7 @@ class UsuarioRestController: BaseRestController() {
     @DeleteMapping("/deleteUserById={id}")
     fun deleteUserById(@PathVariable("id") idUsuario: String): ResponseEntity<Any>{
         return try {
-            usuarioBusiness!!.deleteUserById(idUsuario)
+            usuarioBusiness.deleteUserById(idUsuario)
             ResponseEntity(HttpStatus.OK)
 
         } catch (e: BusinessException) {
@@ -356,7 +353,7 @@ class UsuarioRestController: BaseRestController() {
     @DeleteMapping("/deleteAllUsers")
     fun deleteAllUsers(): ResponseEntity<Any>{
         return try {
-            usuarioBusiness!!.deleteAllUsers()
+            usuarioBusiness.deleteAllUsers()
 
             val responseHeader = org.springframework.http.HttpHeaders()
             responseHeader.set("BORRADOS","SI")
@@ -373,7 +370,7 @@ class UsuarioRestController: BaseRestController() {
     @GetMapping("/countUsers")
     fun countUsers():String{
         return try {
-            usuarioBusiness!!.countUsers().toString()
+            usuarioBusiness.countUsers().toString()
 
         }catch (e:Exception){
             "-1"

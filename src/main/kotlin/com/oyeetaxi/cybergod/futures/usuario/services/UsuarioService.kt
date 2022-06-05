@@ -21,10 +21,11 @@ import kotlin.math.min
 
 
 @Service
-class UsuarioService : UsuarioInterface {
+class UsuarioService(
+    @Autowired private val usuarioRepository: UsuarioRepository
+) : UsuarioInterface {
 
-    @Autowired
-    val usuarioRepository: UsuarioRepository? = null
+
 
     @Autowired
     val usuarioQueryService: UsuarioQueryService? = null
@@ -32,7 +33,7 @@ class UsuarioService : UsuarioInterface {
     @Throws(BusinessException::class)
     override fun getAllUsers(): List<Usuario> {
         try {
-            return usuarioRepository!!.findAll()
+            return usuarioRepository.findAll()
         } catch (e:Exception){
             throw BusinessException(e.message)
         }
@@ -41,7 +42,7 @@ class UsuarioService : UsuarioInterface {
     @Throws(BusinessException::class)
     override fun getAllUsersPaginated(pageable: Pageable): Page<Usuario> {
         try {
-            return usuarioRepository!!.findAll(pageable)
+            return usuarioRepository.findAll(pageable)
         } catch (e:Exception){
             throw BusinessException(e.message)
         }
@@ -50,7 +51,7 @@ class UsuarioService : UsuarioInterface {
     @Throws(BusinessException::class)
     override fun searchAllUsersPaginated( search: String, pageable: Pageable): Page<Usuario> {
         try {
-            return usuarioRepository!!.search(search,pageable)
+            return usuarioRepository.search(search,pageable)
         } catch (e:Exception){
             throw BusinessException(e.message)
         }
@@ -67,7 +68,7 @@ class UsuarioService : UsuarioInterface {
 //           usuarioRepository!!.searchAll(search, pageable.sort)
 //        }
 
-        var allUserFound: List<Usuario> = usuarioRepository!!.searchAll(userFilterOptions.texto, pageable.sort)
+        var allUserFound: List<Usuario> = usuarioRepository.searchAll(userFilterOptions.texto, pageable.sort)
 
 
         with(userFilterOptions) {
@@ -78,10 +79,14 @@ class UsuarioService : UsuarioInterface {
         }
 
 
+
         val start = pageable.offset.toInt()
         val end = min(start + pageable.pageSize, allUserFound.size)
 
-        return PageImpl(allUserFound.subList(start, end), pageable, allUserFound.size.toLong())
+        val userSubList = allUserFound.subList(start, end)
+
+
+        return PageImpl(userSubList, pageable, allUserFound.size.toLong())
 
     }
 
@@ -92,7 +97,7 @@ class UsuarioService : UsuarioInterface {
         val optional:Optional<Usuario>
 
         try {
-            optional = usuarioRepository!!.findById(idUsuario)
+            optional = usuarioRepository.findById(idUsuario)
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
@@ -108,7 +113,7 @@ class UsuarioService : UsuarioInterface {
 
        // LOGGER.info("BUSCANDO A USUARIO CON NUMERO= $phoneNumber")
 
-            encontrados = usuarioRepository!!.findUserByPhoneNumberList(phoneNumber).get()
+            encontrados = usuarioRepository.findUserByPhoneNumberList(phoneNumber).get()
 
             if (encontrados.isNotEmpty()) {
 
@@ -127,7 +132,7 @@ class UsuarioService : UsuarioInterface {
     @Throws(BusinessException::class,NotFoundException::class)
     override fun addUser(usuario: Usuario): Usuario {
         try {
-            return usuarioRepository!!.insert(usuario)
+            return usuarioRepository.insert(usuario)
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
@@ -142,7 +147,7 @@ class UsuarioService : UsuarioInterface {
         usuario.id?.let { id ->
 
             try {
-                optional = usuarioRepository!!.findById(id)
+                optional = usuarioRepository.findById(id)
             }catch (e:Exception) {
                 throw BusinessException(e.message)
             }
@@ -170,7 +175,7 @@ class UsuarioService : UsuarioInterface {
                 usuario.superAdministrador?.let { usuarioModificar.superAdministrador = it}
                 usuario.ubicacion?.let { usuarioModificar.ubicacion = it}
                 usuario.mensaje?.let { usuarioModificar.mensaje = it}
-
+                usuario.valoracion?.let { usuarioModificar.valoracion = it}
 
                 usuario.usuarioVerificacion?.let { verificacion ->
                     verificacion.verificado?.let {  usuarioModificar.usuarioVerificacion?.verificado = it }
@@ -180,7 +185,7 @@ class UsuarioService : UsuarioInterface {
 
 
                 try {
-                    usuarioActualizado = usuarioRepository!!.save(usuarioModificar)
+                    usuarioActualizado = usuarioRepository.save(usuarioModificar)
 
                 }catch (e:Exception){
 
@@ -195,17 +200,12 @@ class UsuarioService : UsuarioInterface {
         return usuarioActualizado
 
 
-//        try {
-//            return usuarioRepository!!.save(usuario)
-//        }catch (e:Exception) {
-//            throw BusinessException(e.message)
-//        }
     }
 
     @Throws(BusinessException::class,NotFoundException::class)
     override fun countUsers():Long {
         try {
-          return  usuarioRepository!!.count()
+          return  usuarioRepository.count()
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
@@ -216,7 +216,7 @@ class UsuarioService : UsuarioInterface {
     override fun deleteAllUsers() {
 
         try {
-            usuarioRepository!!.deleteAll()
+            usuarioRepository.deleteAll()
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
@@ -231,7 +231,7 @@ class UsuarioService : UsuarioInterface {
         val optional:Optional<Usuario>
 
         try {
-            optional = usuarioRepository!!.findById(idUsuario)
+            optional = usuarioRepository.findById(idUsuario)
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
@@ -262,7 +262,7 @@ class UsuarioService : UsuarioInterface {
         var updated = false
 
         try {
-            optional = usuarioRepository!!.findById(idUsuario)
+            optional = usuarioRepository.findById(idUsuario)
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
@@ -274,19 +274,17 @@ class UsuarioService : UsuarioInterface {
             usuario = optional.get()
             usuario.ubicacion = ubicacion
 
-            try {
-                usuarioRepository!!.save(usuario)
-                updated = true
+            return try {
+                usuarioRepository.save(usuario)
+                true
             }catch (e:Exception){
-                updated = false
                 throw BusinessException(e.message)
-
             }
 
         }
 
 
-        return updated
+
 
 
     }
@@ -297,7 +295,7 @@ class UsuarioService : UsuarioInterface {
         val encontrados: List<Usuario>?
 
 
-        encontrados = usuarioRepository!!.findUserByEmail(email).get()
+        encontrados = usuarioRepository.findUserByEmail(email).get()
 
         if (encontrados.isNotEmpty()) {
 

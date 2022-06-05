@@ -23,20 +23,15 @@ class VehiculoRestController: BaseRestController() {
     @GetMapping("/getAvailableVehicles")
     fun getAvailableVehicles():ResponseEntity<List<VehiculoResponse>>{
 
-        //Preparar la Respuesta
         val listaVehiculosResponse : MutableCollection<VehiculoResponse> = ArrayList()
 
-        vehiculoBusiness!!.getAviableVehicles().let { listaVehiculosDisponibles ->
+        vehiculoBusiness.getAviableVehicles().let { listaVehiculosDisponibles ->
 
             listaVehiculosDisponibles.forEach { vehiculo ->
                 listaVehiculosResponse.add(
                     convertVehicleToVehicleResponse(vehiculo)
                 )
             }
-
-
-
-
         }
 
 
@@ -52,12 +47,12 @@ class VehiculoRestController: BaseRestController() {
 
         var vehiculoResponse : VehiculoResponse? = null
 
-        vehiculoBusiness!!.getActiveVehicleByUserId(idUsuario)?.let {  vehiculo ->
+        vehiculoBusiness.getActiveVehicleByUserId(idUsuario)?.let {  vehiculo ->
 
             vehiculoResponse = VehiculoResponse(
                 id = vehiculo.id,
                 usuario = null,
-                tipoVehiculo = tipoVehiculosBusiness?.getVehicleTypeById(vehiculo.tipoVehiculo!!),
+                tipoVehiculo = tipoVehiculosBusiness.getVehicleTypeById(vehiculo.tipoVehiculo!!),
                 marca = vehiculo.marca,
                 modelo = vehiculo.modelo,
                 ano = vehiculo.ano,
@@ -96,7 +91,7 @@ class VehiculoRestController: BaseRestController() {
         val listaVehiculosResponse : MutableCollection<VehiculoResponse> = ArrayList()
 
 
-        vehiculoBusiness!!.getAllVehiclesFromUserId(idUsuario).let {  listaVehiculosDeUsuario ->
+        vehiculoBusiness.getAllVehiclesFromUserId(idUsuario).let {  listaVehiculosDeUsuario ->
 
             listaVehiculosDeUsuario.forEach { vehiculo ->
                 listaVehiculosResponse.add(
@@ -122,17 +117,17 @@ class VehiculoRestController: BaseRestController() {
 
         var vehiculoActivo = false
 
-        vehiculoBusiness!!.getAllVehiclesFromUserId(idUsuario).let {  listaVehiculosDeUsuario ->
+        vehiculoBusiness.getAllVehiclesFromUserId(idUsuario).let {  listaVehiculosDeUsuario ->
 
             listaVehiculosDeUsuario.forEach { vehiculo ->
                 //LOGGER.info(vehiculo.id.toString())
 
                 when (idVehiculo) {
                         vehiculo.id -> {
-                            vehiculoActivo =  vehiculoBusiness!!.setActiveVehicle(vehiculo,true)
+                            vehiculoActivo =  vehiculoBusiness.setActiveVehicle(vehiculo,true)
                         }
                         else -> {
-                            vehiculoBusiness!!.setActiveVehicle(vehiculo,false)
+                            vehiculoBusiness.setActiveVehicle(vehiculo,false)
                         }
                 }
             }
@@ -154,7 +149,7 @@ class VehiculoRestController: BaseRestController() {
     @GetMapping("/getAllVehicles")
     fun getAllVehicles():ResponseEntity<List<Vehiculo>>{
         return try {
-            ResponseEntity(vehiculoBusiness!!.getAllVehicles(),HttpStatus.OK)
+            ResponseEntity(vehiculoBusiness.getAllVehicles(),HttpStatus.OK)
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -164,7 +159,7 @@ class VehiculoRestController: BaseRestController() {
     @GetMapping("/getVehicleById={id}")
     fun getVehicleById(@PathVariable("id") idVehiculo: String  ):ResponseEntity<Vehiculo> {
         return try {
-            ResponseEntity(vehiculoBusiness!!.getVehicleById(idVehiculo),HttpStatus.OK)
+            ResponseEntity(vehiculoBusiness.getVehicleById(idVehiculo),HttpStatus.OK)
         }catch (e:BusinessException) {
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -179,7 +174,7 @@ class VehiculoRestController: BaseRestController() {
         setUserConductorById(vehiculo.idUsuario)
 
         return try {
-            ResponseEntity(vehiculoBusiness!!.addVehicle(vehiculo),HttpStatus.CREATED)
+            ResponseEntity(vehiculoBusiness.addVehicle(vehiculo),HttpStatus.CREATED)
         } catch (e: BusinessException) {
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -191,7 +186,7 @@ class VehiculoRestController: BaseRestController() {
     fun updateVehicle(@RequestBody vehiculo: Vehiculo): ResponseEntity<Any>{
 
         return try {
-            ResponseEntity(vehiculoBusiness!!.updateVehicle(vehiculo),HttpStatus.OK)
+            ResponseEntity(vehiculoBusiness.updateVehicle(vehiculo),HttpStatus.OK)
         } catch (e: BusinessException) {
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -201,7 +196,7 @@ class VehiculoRestController: BaseRestController() {
     @DeleteMapping("/deleteVehicleById={id}")
     fun deleteVehicleById(@PathVariable("id") idVehiculo: String): ResponseEntity<Any>{
         return try {
-            vehiculoBusiness!!.deleteVehicleById(idVehiculo)
+            vehiculoBusiness.deleteVehicleById(idVehiculo)
             ResponseEntity(HttpStatus.OK)
 
         } catch (e: BusinessException) {
@@ -215,7 +210,7 @@ class VehiculoRestController: BaseRestController() {
     @DeleteMapping("/deleteAllVehicles")
     fun deleteAllVehicles(): ResponseEntity<Any>{
         return try {
-            vehiculoBusiness!!.deleteAllVehicles()
+            vehiculoBusiness.deleteAllVehicles()
 
             val responseHeader = org.springframework.http.HttpHeaders()
             responseHeader.set("BORRADOS","SI")
@@ -232,7 +227,7 @@ class VehiculoRestController: BaseRestController() {
     @GetMapping("/countVehicles")
     fun countVehicles():String{
         return try {
-            vehiculoBusiness!!.countVehicles().toString()
+            vehiculoBusiness.countVehicles().toString()
 
         }catch (e:Exception){
             "-1"

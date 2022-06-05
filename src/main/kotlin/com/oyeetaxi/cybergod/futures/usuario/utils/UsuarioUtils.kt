@@ -1,6 +1,7 @@
 package com.oyeetaxi.cybergod.futures.usuario.utils
 
 import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
+import com.oyeetaxi.cybergod.futures.valoracion.services.ValoracionService
 import java.util.stream.Collectors
 
 object UsuarioUtils {
@@ -41,5 +42,7 @@ object UsuarioUtils {
             }
             .collect(Collectors.toList())
     }
+
+
 
 }

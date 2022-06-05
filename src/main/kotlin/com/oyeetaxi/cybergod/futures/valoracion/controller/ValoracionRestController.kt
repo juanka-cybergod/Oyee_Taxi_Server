@@ -22,9 +22,11 @@ class ValoracionRestController: BaseRestController() {
     fun addUpdateValoration(@RequestBody valoracion: Valoracion): ResponseEntity<Any>{
 
         return try {
-            ResponseEntity(valoracionBusiness!!.addUpdateValoration(valoracion),HttpStatus.OK)
+            ResponseEntity(valoracionBusiness.addUpdateValoration(valoracion),HttpStatus.OK)
         } catch (e: BusinessException) {
             ResponseEntity(HttpStatus.NOT_FOUND)
+        }finally {
+            updateUserValoration(valoracion)
         }
 
 
@@ -33,7 +35,7 @@ class ValoracionRestController: BaseRestController() {
     @GetMapping("/getValorationAverageByUserId={id}")
     fun getValorationAverageByUserId(@PathVariable("id") id:String): ResponseEntity<Any> {
 
-        val valoracionAverage = valoracionBusiness!!.getValorationAverageByUserId(id)
+        val valoracionAverage = valoracionBusiness.getValorationAverageByUserId(id)
 
         return if (valoracionAverage != null) {
             ResponseEntity(valoracionAverage,HttpStatus.OK)
@@ -47,7 +49,7 @@ class ValoracionRestController: BaseRestController() {
     fun getValorationByUsersId(@RequestParam("idUsuarioValora") idUsuarioValora:String, @RequestParam("idUsuarioValorado") idUsuarioValorado:String): ResponseEntity<Any> {
 
         return try {
-            ResponseEntity(valoracionBusiness!!.getValorationByUsersId(idUsuarioValora, idUsuarioValorado),HttpStatus.OK)
+            ResponseEntity(valoracionBusiness.getValorationByUsersId(idUsuarioValora, idUsuarioValorado),HttpStatus.OK)
         } catch (e: NotFoundException) {
             ResponseEntity(HttpStatus.NOT_FOUND)
         }

@@ -200,8 +200,8 @@ class OyeeTaxiApplication:CommandLineRunner{
 
 		val verificacionDefault = UsuarioVerificacion(
 			verificado = false,
-			identificacion = "",
-			imagenIdentificaionURL = "",
+			identificacion = null,
+			imagenIdentificaionURL = null,
 		)
 
 
@@ -274,9 +274,9 @@ class OyeeTaxiApplication:CommandLineRunner{
 			superAdministrador = true,
 			ubicacion = ubicacionCliente,
 			usuarioVerificacion = UsuarioVerificacion(
-				verificado = true,
+				verificado = null,
 				identificacion = "89102830106",
-				imagenIdentificaionURL = "URL_VERIFICACION",
+				imagenIdentificaionURL = "ficheros/descarga/ID_USUARIO_CLIENTE_USUARIO_VERIFICACION_20220603030431.JPG"
 			),
 		).also {
 			usuarioRepository!!.save(it)
@@ -300,11 +300,7 @@ class OyeeTaxiApplication:CommandLineRunner{
 			administrador = false,
 			superAdministrador = false,
 			ubicacion = ubicacionAuto,
-			usuarioVerificacion = UsuarioVerificacion(
-				verificado = false,
-				identificacion = "8785874889",
-				imagenIdentificaionURL = "URL",
-			),
+			usuarioVerificacion = verificacionDefault,
 		).also {
 			usuarioRepository!!.save(it)
 		}
@@ -396,11 +392,7 @@ class OyeeTaxiApplication:CommandLineRunner{
 			administrador = false,
 			superAdministrador = false,
 			ubicacion = ubicacionCamioPasaje,
-			usuarioVerificacion = UsuarioVerificacion(
-				verificado = false,
-				identificacion = "8785874889",
-				imagenIdentificaionURL = "URL",
-			),
+			usuarioVerificacion = verificacionDefault,
 		).also {
 			usuarioRepository!!.save(it)
 		}

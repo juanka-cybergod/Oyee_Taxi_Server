@@ -1,24 +1,25 @@
 package com.oyeetaxi.cybergod.futures.valoracion.services
 
 
+import com.oyeetaxi.cybergod.configuration.CoroutineConfiguration
 import com.oyeetaxi.cybergod.exceptions.BusinessException
 import com.oyeetaxi.cybergod.exceptions.NotFoundException
 import com.oyeetaxi.cybergod.futures.valoracion.interfaces.ValoracionInterface
 import com.oyeetaxi.cybergod.futures.valoracion.models.Valoracion
 import com.oyeetaxi.cybergod.futures.valoracion.repositories.ValoracionRepository
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
 
 
 @Service
-class ValoracionService : ValoracionInterface {
+class ValoracionService(
+    @Autowired private val valoracionRepository: ValoracionRepository,
+) : ValoracionInterface {
 
     //private var LOGGER = LoggerFactory.getLogger(ValoracionService::class.java)
-
-    @Autowired
-    val valoracionRepository: ValoracionRepository? = null
-
 
     @Throws(BusinessException::class, NotFoundException::class)
     override fun addUpdateValoration(valoracion: Valoracion): Valoracion {
@@ -39,15 +40,13 @@ class ValoracionService : ValoracionInterface {
 
     }
 
-
-
     override fun getValorationAverageByUserId(userId: String): Float? {
 
         var totalValoraciones : Float = 0f
         var sumaValoraciones : Float = 0f
         var valoracionFinal :Float? = null
 
-        val optionalLstaValoraciones = valoracionRepository!!.findValoracionesByUserId(userId)
+        val optionalLstaValoraciones = valoracionRepository.findValoracionesByUserId(userId)
 
         //LOGGER.info("userId = $userId")
         //LOGGER.info("valoracionEncontrada = $optionalLstaValoraciones")
@@ -72,9 +71,6 @@ class ValoracionService : ValoracionInterface {
             }
 
 
-        } else {
-            //LOGGER.info("El Usuario con Id $userId no tiene valoraciones aun")
-           // throw NotFoundException("El Usuario con Id $userId no tiene valoraciones aun")
         }
 
         return valoracionFinal
@@ -85,7 +81,7 @@ class ValoracionService : ValoracionInterface {
     @Throws(NotFoundException::class)
     override fun getValorationByUsersId(idUsuarioValora:String, idUsuarioValorado:String) : Valoracion {
 
-        val optionalLstaValoraciones = valoracionRepository!!.findValoracionByUsersId(
+        val optionalLstaValoraciones = valoracionRepository.findValoracionByUsersId(
             idUsuarioValora,
             idUsuarioValorado
         )
@@ -110,7 +106,7 @@ class ValoracionService : ValoracionInterface {
     @Throws(BusinessException::class)
     private fun addValoracion(valoracion: Valoracion) : Valoracion {
         try {
-            return valoracionRepository!!.insert(valoracion)
+            return valoracionRepository.insert(valoracion)
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
@@ -124,7 +120,7 @@ class ValoracionService : ValoracionInterface {
         valoracion.id?.let { id ->
 
             try {
-                optional = valoracionRepository!!.findById(id)
+                optional = valoracionRepository.findById(id)
             }catch (e:Exception) {
                 throw BusinessException(e.message)
             }
@@ -139,7 +135,7 @@ class ValoracionService : ValoracionInterface {
                 valoracion.opinion?.let { valoracionModificar.opinion = it}
 
                 try {
-                    valoracionActualizada = valoracionRepository!!.save(valoracionModificar)
+                    valoracionActualizada = valoracionRepository.save(valoracionModificar)
                 }catch (e:Exception){
                     throw BusinessException(e.message)
                 }

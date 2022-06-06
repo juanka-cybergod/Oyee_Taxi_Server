@@ -10,8 +10,8 @@ object UsuarioUtils {
     fun List<Usuario>.filterConductores(param:Boolean):List<Usuario>{
         return this.stream()
             .parallel()
-            .filter { usuario->
-                param == usuario.conductor
+            .filter {
+                param == it.conductor
             }
             .collect(Collectors.toList())
     }
@@ -19,8 +19,8 @@ object UsuarioUtils {
     fun List<Usuario>.filterDeshabilitados(param:Boolean):List<Usuario>{
         return this.stream()
             .parallel()
-            .filter { usuario->
-                param != usuario.habilitado
+            .filter {
+                param != it.habilitado
             }
             .collect(Collectors.toList())
     }
@@ -28,8 +28,8 @@ object UsuarioUtils {
     fun List<Usuario>.filterAdministradores(param:Boolean):List<Usuario>{
         return this.stream()
             .parallel()
-            .filter { usuario->
-                (param == usuario.administrador) || (param == usuario.superAdministrador)
+            .filter {
+                (param == it.administrador) || (param == it.superAdministrador)
             }
             .collect(Collectors.toList())
     }
@@ -37,8 +37,8 @@ object UsuarioUtils {
     fun List<Usuario>.filterVerificacionesPendientes(param:Boolean):List<Usuario>{
         return this.stream()
             .parallel()
-            .filter { usuario->
-                (param) &&  (usuario.usuarioVerificacion?.verificado == false) &&  (!usuario.usuarioVerificacion?.identificacion.isNullOrEmpty()) && (!usuario.usuarioVerificacion?.imagenIdentificaionURL.isNullOrEmpty())
+            .filter {
+                (param) &&  (it.usuarioVerificacion?.verificado == false) &&  (!it.usuarioVerificacion?.identificacion.isNullOrEmpty()) && (!it.usuarioVerificacion?.imagenIdentificaionURL.isNullOrEmpty())
             }
             .collect(Collectors.toList())
     }

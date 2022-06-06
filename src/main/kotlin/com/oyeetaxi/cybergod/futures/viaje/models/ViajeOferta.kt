@@ -1,6 +1,6 @@
 package com.oyeetaxi.cybergod.futures.viaje.models
 
-import com.oyeetaxi.cybergod.futures.vehiculo.models.VehiculoResponse
+import com.oyeetaxi.cybergod.futures.vehiculo.models.response.VehiculoResponse
 
 data class ViajeOferta(
     var conductorVehiculo: VehiculoResponse? = null,

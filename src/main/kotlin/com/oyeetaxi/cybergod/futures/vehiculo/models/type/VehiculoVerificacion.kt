@@ -1,4 +1,4 @@
-package com.oyeetaxi.cybergod.futures.vehiculo.models
+package com.oyeetaxi.cybergod.futures.vehiculo.models.type
 
 data class VehiculoVerificacion(
 

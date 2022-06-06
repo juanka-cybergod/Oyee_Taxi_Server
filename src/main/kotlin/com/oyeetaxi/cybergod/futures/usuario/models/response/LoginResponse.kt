@@ -1,7 +1,7 @@
 package com.oyeetaxi.cybergod.futures.usuario.models.response
 
 import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
-import com.oyeetaxi.cybergod.futures.vehiculo.models.VehiculoResponse
+import com.oyeetaxi.cybergod.futures.vehiculo.models.response.VehiculoResponse
 
 data class LoginResponse(
 

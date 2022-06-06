@@ -6,7 +6,7 @@ import com.oyeetaxi.cybergod.exceptions.BusinessException
 import com.oyeetaxi.cybergod.exceptions.NotFoundException
 import com.oyeetaxi.cybergod.futures.usuario.models.response.LoginResponse
 import com.oyeetaxi.cybergod.futures.usuario.models.response.RequestVerificationCodeResponse
-import com.oyeetaxi.cybergod.futures.vehiculo.models.VehiculoResponse
+import com.oyeetaxi.cybergod.futures.vehiculo.models.response.VehiculoResponse
 import com.oyeetaxi.cybergod.futures.share.models.Ubicacion
 import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
 import com.oyeetaxi.cybergod.futures.usuario.models.requestFilter.UserFilterOptions
@@ -37,7 +37,7 @@ class UsuarioRestController: BaseRestController() {
 
         if (emailOrPhone.contains("@",true)) {
             //Buscar por email
-            usuario = usuarioBusiness.getUserByEmail(emailOrPhone)
+            usuario = usuarioService.getUserByEmail(emailOrPhone)
             usuario?.let {
                 emailCorrecto = it.correo
             }
@@ -45,7 +45,7 @@ class UsuarioRestController: BaseRestController() {
         } else {
             //buscar por numero de telefono
 
-            usuario =  usuarioBusiness.findUserByPhoneNumber(emailOrPhone)
+            usuario =  usuarioService.findUserByPhoneNumber(emailOrPhone)
             usuario?.let {
                 emailCorrecto = it.correo
             }
@@ -67,9 +67,9 @@ class UsuarioRestController: BaseRestController() {
 
             val asunto = "Oyee Taxi"
 
-            emailSentSussefuctly = emailBusiness.sendEmailTo(it,asunto, template)
+            emailSentSussefuctly = emailServicio.sendEmailTo(it,asunto, template)
             if (emailSentSussefuctly) {
-                usuarioBusiness.updateUser(
+                usuarioService.updateUser(
                     Usuario(
                         id = usuario?.id,
                         otpCode = codeOTP
@@ -101,7 +101,7 @@ class UsuarioRestController: BaseRestController() {
         var otpCodeCorrect  = false
 
         val usuario : Usuario? = try {
-            usuarioBusiness.getUserById(idUsuario)
+            usuarioService.getUserById(idUsuario)
         }catch (e:BusinessException) {
             null
         }
@@ -132,21 +132,21 @@ class UsuarioRestController: BaseRestController() {
 
 
 
-            usuarioBusiness.findUserByPhoneNumber(userPhone)?.let { usuario ->
+            usuarioService.findUserByPhoneNumber(userPhone)?.let { usuario ->
                 usuarioEncontrado = true
                 correctPasword = (password == usuario.contrasena)
                 if (correctPasword) {
 
 
                     if (usuario.conductor == true) {
-                        vehiculoBusiness.getActiveVehicleByUserId(usuario.id?:"")?.let { vehiculo ->
+                        vehiculoService.getActiveVehicleByUserId(usuario.id?:"")?.let { vehiculo ->
                             activeVehicleResponse = convertVehicleToVehicleResponse(vehiculo)
                         }
 
                     }
 
 
-                    val serverConfig = configuracionBusiness.getConfiguration()
+                    val serverConfig = configuracionService.getConfiguration()
                     if (usuario.administrador == true) {
                         serverActiveForThisUser = serverConfig.servidorActivoAdministradores?:true
                         if (!serverActiveForThisUser) {messaje = serverConfig.motivoServidorInactivoAdministradores}
@@ -194,7 +194,7 @@ class UsuarioRestController: BaseRestController() {
 
         var usuarioEncontrado  = false
 
-        usuarioBusiness.findUserByPhoneNumber(userPhone)?.let {
+        usuarioService.findUserByPhoneNumber(userPhone)?.let {
             usuarioEncontrado = true
         }
 
@@ -229,7 +229,7 @@ class UsuarioRestController: BaseRestController() {
 
 
 
-            if (smsBusiness.sendSMS(phoneNumber,message)) {
+            if (smsTwilioService.sendSMS(phoneNumber,message)) {
                 ResponseEntity(codeOTP, HttpStatus.OK)
             } else {
                 ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -246,7 +246,7 @@ class UsuarioRestController: BaseRestController() {
     @GetMapping("/getAllUsers")
     fun getAllUsers():ResponseEntity<List<Usuario>>{
         return try {
-            ResponseEntity(usuarioBusiness.getAllUsers(),HttpStatus.OK)
+            ResponseEntity(usuarioService.getAllUsers(),HttpStatus.OK)
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -255,7 +255,7 @@ class UsuarioRestController: BaseRestController() {
     @GetMapping("/getAllUsersPaginated")
     fun getAllUsersPaginated(pageable: Pageable):ResponseEntity<Page<Usuario>>{ //@RequestParam("pageable")
         return try {
-            ResponseEntity(usuarioBusiness.getAllUsersPaginated(pageable),HttpStatus.OK)
+            ResponseEntity(usuarioService.getAllUsersPaginated(pageable),HttpStatus.OK)
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -264,7 +264,7 @@ class UsuarioRestController: BaseRestController() {
     @GetMapping("/searchUsersPaginated")
     fun searchUsersPaginated(pageable: Pageable,@RequestParam("search") search:String?):ResponseEntity<Page<Usuario>>{ //@RequestParam("pageable")
         return try {
-            ResponseEntity(usuarioBusiness.searchAllUsersPaginated(search?:"",pageable),HttpStatus.OK)
+            ResponseEntity(usuarioService.searchAllUsersPaginated(search?:"",pageable),HttpStatus.OK)
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -274,7 +274,7 @@ class UsuarioRestController: BaseRestController() {
     fun searchUsersPaginatedWithFilter(pageable: Pageable,@RequestBody userFilterOptions: UserFilterOptions?):ResponseEntity<Page<Usuario>>{ //@RequestParam("pageable") ,@RequestParam("search") search:String?
 
         return try {
-            ResponseEntity(usuarioBusiness.searchUsersPaginatedWithFilter(userFilterOptions?:UserFilterOptions(),pageable),HttpStatus.OK)
+            ResponseEntity(usuarioService.searchUsersPaginatedWithFilter(userFilterOptions?:UserFilterOptions(),pageable),HttpStatus.OK)
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -283,7 +283,7 @@ class UsuarioRestController: BaseRestController() {
     @GetMapping("/getUserById={id}")
     fun getUserById(@PathVariable("id") idUsuario: String  ):ResponseEntity<Usuario> {
         return try {
-            ResponseEntity(usuarioBusiness.getUserById(idUsuario),HttpStatus.OK)
+            ResponseEntity(usuarioService.getUserById(idUsuario),HttpStatus.OK)
         }catch (e:BusinessException) {
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -307,7 +307,7 @@ class UsuarioRestController: BaseRestController() {
 //            ResponseEntity(responseHeader,HttpStatus.CREATED)
 
             //Devuelve el Body completo del Usuario Creado
-            ResponseEntity( usuarioBusiness.addUser(usuario),HttpStatus.OK)
+            ResponseEntity( usuarioService.addUser(usuario),HttpStatus.OK)
 
         } catch (e: BusinessException) {
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -319,7 +319,7 @@ class UsuarioRestController: BaseRestController() {
     fun updateUser(@RequestBody usuario: Usuario): ResponseEntity<Any>{
 
         return try {
-            ResponseEntity( usuarioBusiness.updateUser(usuario),HttpStatus.OK)
+            ResponseEntity( usuarioService.updateUser(usuario),HttpStatus.OK)
         } catch (e: BusinessException) {
             ResponseEntity(HttpStatus.NOT_FOUND)
         }
@@ -329,7 +329,7 @@ class UsuarioRestController: BaseRestController() {
     @PutMapping("/updateUserLocationById")
     fun updateUserLocationById(@RequestParam idUsuario: String,@RequestBody ubicacion: Ubicacion): ResponseEntity<Any>{
         return try {
-            ResponseEntity( usuarioBusiness.updateUserLocationById(idUsuario,ubicacion ),HttpStatus.OK)
+            ResponseEntity( usuarioService.updateUserLocationById(idUsuario,ubicacion ),HttpStatus.OK)
         } catch (e: BusinessException) {
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -339,7 +339,7 @@ class UsuarioRestController: BaseRestController() {
     @DeleteMapping("/deleteUserById={id}")
     fun deleteUserById(@PathVariable("id") idUsuario: String): ResponseEntity<Any>{
         return try {
-            usuarioBusiness.deleteUserById(idUsuario)
+            usuarioService.deleteUserById(idUsuario)
             ResponseEntity(HttpStatus.OK)
 
         } catch (e: BusinessException) {
@@ -353,7 +353,7 @@ class UsuarioRestController: BaseRestController() {
     @DeleteMapping("/deleteAllUsers")
     fun deleteAllUsers(): ResponseEntity<Any>{
         return try {
-            usuarioBusiness.deleteAllUsers()
+            usuarioService.deleteAllUsers()
 
             val responseHeader = org.springframework.http.HttpHeaders()
             responseHeader.set("BORRADOS","SI")
@@ -370,7 +370,7 @@ class UsuarioRestController: BaseRestController() {
     @GetMapping("/countUsers")
     fun countUsers():String{
         return try {
-            usuarioBusiness.countUsers().toString()
+            usuarioService.countUsers().toString()
 
         }catch (e:Exception){
             "-1"

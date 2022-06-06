@@ -1,8 +1,9 @@
-package com.oyeetaxi.cybergod.futures.vehiculo.models
+package com.oyeetaxi.cybergod.futures.vehiculo.models.response
 
 
 import com.oyeetaxi.cybergod.futures.tipo_vehiculo.models.TipoVehiculo
 import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
+import com.oyeetaxi.cybergod.futures.vehiculo.models.type.VehiculoVerificacion
 import java.time.LocalDate
 
 

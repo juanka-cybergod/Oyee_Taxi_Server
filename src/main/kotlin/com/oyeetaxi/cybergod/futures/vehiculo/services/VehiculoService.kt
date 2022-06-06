@@ -6,16 +6,27 @@ import com.oyeetaxi.cybergod.futures.vehiculo.repositories.VehiculoRepository
 import com.oyeetaxi.cybergod.exceptions.BusinessException
 import com.oyeetaxi.cybergod.exceptions.NotFoundException
 import com.oyeetaxi.cybergod.futures.vehiculo.models.Vehiculo
+import com.oyeetaxi.cybergod.futures.vehiculo.models.requestFilter.VehicleFilterOptions
+import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterActivos
+import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterDeshabilitados
+import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterTipoVehiculos
+import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterVerificacionesPendientes
+import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterVisibles
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import java.util.*
+import kotlin.math.min
 
 @Service
-class VehiculoService : VehiculoInterface {
+class VehiculoService(
+    @Autowired private val vehiculoRepository: VehiculoRepository
+) : VehiculoInterface {
 
-    @Autowired
-    val vehiculoRepository: VehiculoRepository? = null
+
 
     private var LOGGER = LoggerFactory.getLogger(VehiculoService::class.java)
 
@@ -26,7 +37,7 @@ class VehiculoService : VehiculoInterface {
         val encontrados: Optional<List<Vehiculo>>
 
         try {
-            encontrados = vehiculoRepository!!.findActiveVehicleByUserId(idUsuario)
+            encontrados = vehiculoRepository.findActiveVehicleByUserId(idUsuario)
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
@@ -52,7 +63,7 @@ class VehiculoService : VehiculoInterface {
     override fun getAviableVehicles(): List<Vehiculo> {
 
         try {
-            return vehiculoRepository!!.findAviableVehicles()
+            return vehiculoRepository.findAviableVehicles()
         } catch (e:Exception){
             throw BusinessException(e.message)
         }
@@ -61,31 +72,63 @@ class VehiculoService : VehiculoInterface {
     @Throws(BusinessException::class)
     override fun getAllVehiclesFromUserId(idUsuario:String): List<Vehiculo> {
         try {
-            return vehiculoRepository!!.findAllVehiclesByUserId(idUsuario)
+            return vehiculoRepository.findAllVehiclesByUserId(idUsuario)
         } catch (e:Exception){
             throw BusinessException(e.message)
         }
     }
-
-
-
-
 
     @Throws(BusinessException::class)
     override fun getAllVehicles(): List<Vehiculo> {
         try {
-            return vehiculoRepository!!.findAll()
+            return vehiculoRepository.findAll()
         } catch (e:Exception){
             throw BusinessException(e.message)
         }
     }
+
+
+    @Throws(BusinessException::class,NotFoundException::class)
+    override fun searchVehiclesPaginatedWithFilter(vehicleFilterOptions: VehicleFilterOptions, pageable: Pageable): Page<Vehiculo> {
+
+
+//        var allUserFound: List<Usuario> =  try{
+//           usuarioQueryService!!.searchUsersFiltered(search, userFilterOptions, pageable.sort)
+//        } catch (e:Exception){
+//            println("usuarioQueryService!!.searchUsersFiltered() -> Fail to Search")
+//           usuarioRepository!!.searchAll(search, pageable.sort)
+//        }
+
+        var allVehiclesFound: List<Vehiculo> = vehiculoRepository.searchAll(vehicleFilterOptions.texto, pageable.sort)
+
+
+        with(vehicleFilterOptions) {
+            tipoVehiculo?.let { allVehiclesFound = allVehiclesFound.filterTipoVehiculos(it) }
+            visibles?.let { allVehiclesFound = allVehiclesFound.filterVisibles(it) }
+            activos?.let { allVehiclesFound = allVehiclesFound.filterActivos(it) }
+            deshabilitados?.let { allVehiclesFound = allVehiclesFound.filterDeshabilitados(it) }
+            verificacionesPendientes?.let { allVehiclesFound = allVehiclesFound.filterVerificacionesPendientes(it) }
+        }
+
+
+
+        val start = pageable.offset.toInt()
+        val end = min(start + pageable.pageSize, allVehiclesFound.size)
+
+        val vehicleSubList = allVehiclesFound.subList(start, end)
+
+
+        return PageImpl(vehicleSubList, pageable, allVehiclesFound.size.toLong())
+
+    }
+
 
     @Throws(BusinessException::class,NotFoundException::class)
     override fun getVehicleById(idVehiculo: String): Vehiculo {
         val optional:Optional<Vehiculo>
 
         try {
-            optional = vehiculoRepository!!.findById(idVehiculo)
+            optional = vehiculoRepository.findById(idVehiculo)
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
@@ -98,7 +141,7 @@ class VehiculoService : VehiculoInterface {
     @Throws(BusinessException::class,NotFoundException::class)
     override fun addVehicle(vehiculo: Vehiculo): Vehiculo {
         try {
-            return vehiculoRepository!!.insert(vehiculo)
+            return vehiculoRepository.insert(vehiculo)
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
@@ -113,7 +156,7 @@ class VehiculoService : VehiculoInterface {
         vehiculo.id?.let { id ->
 
             try {
-                optional = vehiculoRepository!!.findById(id)
+                optional = vehiculoRepository.findById(id)
             }catch (e:Exception) {
                 throw BusinessException(e.message)
             }
@@ -150,7 +193,7 @@ class VehiculoService : VehiculoInterface {
 
 
                 try {
-                    vehiculoActualizdo = vehiculoRepository!!.save(vehiculoModificar)
+                    vehiculoActualizdo = vehiculoRepository.save(vehiculoModificar)
                 }catch (e:Exception){
                     throw BusinessException(e.message)
 
@@ -174,7 +217,7 @@ class VehiculoService : VehiculoInterface {
     @Throws(BusinessException::class,NotFoundException::class)
     override fun countVehicles(): Long {
         try {
-            return  vehiculoRepository!!.count()
+            return  vehiculoRepository.count()
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
@@ -186,7 +229,7 @@ class VehiculoService : VehiculoInterface {
         val optional:Optional<Vehiculo>
 
         try {
-            optional = vehiculoRepository!!.findById(idVehiculo)
+            optional = vehiculoRepository.findById(idVehiculo)
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
@@ -196,7 +239,7 @@ class VehiculoService : VehiculoInterface {
         } else {
 
             try {
-                vehiculoRepository!!.deleteById(idVehiculo)
+                vehiculoRepository.deleteById(idVehiculo)
             }catch (e:Exception){
                 throw BusinessException(e.message)
             }
@@ -209,12 +252,11 @@ class VehiculoService : VehiculoInterface {
     @Throws(BusinessException::class,NotFoundException::class)
     override fun deleteAllVehicles() {
         try {
-            vehiculoRepository!!.deleteAll()
+            vehiculoRepository.deleteAll()
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
     }
-
 
     fun setActiveVehicle(vehiculo: Vehiculo, active:Boolean): Boolean{
 

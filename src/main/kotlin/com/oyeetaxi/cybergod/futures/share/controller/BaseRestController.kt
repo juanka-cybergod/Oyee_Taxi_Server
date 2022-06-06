@@ -1,7 +1,7 @@
 package com.oyeetaxi.cybergod.futures.share.controller
 
 import com.oyeetaxi.cybergod.configuration.CoroutineConfiguration
-import com.oyeetaxi.cybergod.futures.vehiculo.models.VehiculoResponse
+import com.oyeetaxi.cybergod.futures.vehiculo.models.response.VehiculoResponse
 import com.oyeetaxi.cybergod.futures.share.services.EmailServicio
 import com.oyeetaxi.cybergod.futures.share.services.SmsTwilioService
 import com.oyeetaxi.cybergod.futures.configuracion.services.ConfiguracionService
@@ -23,19 +23,19 @@ class BaseRestController {
     var LOGGER = LoggerFactory.getLogger(BaseRestController::class.java)
 
     @Autowired
-    lateinit var vehiculoBusiness : VehiculoService
+    lateinit var vehiculoService : VehiculoService
     @Autowired
-    lateinit var usuarioBusiness : UsuarioService
+    lateinit var usuarioService : UsuarioService
     @Autowired
-    lateinit var tipoVehiculosBusiness : TipoVehiculoService
+    lateinit var tipoVehiculoService : TipoVehiculoService
     @Autowired
-    lateinit var emailBusiness : EmailServicio
+    lateinit var emailServicio : EmailServicio
     @Autowired
-    lateinit var valoracionBusiness : ValoracionService
+    lateinit var valoracionService : ValoracionService
     @Autowired
-    lateinit var configuracionBusiness : ConfiguracionService
+    lateinit var configuracionService : ConfiguracionService
     @Autowired
-    lateinit var smsBusiness : SmsTwilioService
+    lateinit var smsTwilioService : SmsTwilioService
     @Autowired
     lateinit var scope: CoroutineConfiguration
 
@@ -43,8 +43,8 @@ class BaseRestController {
     fun convertVehicleToVehicleResponse(vehiculo: Vehiculo): VehiculoResponse {
             return VehiculoResponse(
                 id = vehiculo.id,
-                usuario = usuarioBusiness.getUserById(vehiculo.idUsuario!!),
-                tipoVehiculo = tipoVehiculosBusiness.getVehicleTypeById(vehiculo.tipoVehiculo!!),
+                usuario = usuarioService.getUserById(vehiculo.idUsuario!!),
+                tipoVehiculo = tipoVehiculoService.getVehicleTypeById(vehiculo.tipoVehiculo!!),
                 marca = vehiculo.marca,
                 modelo = vehiculo.modelo,
                 ano = vehiculo.ano,
@@ -65,7 +65,7 @@ class BaseRestController {
 
     fun setUserConductorById(idUsuario: String?){
             if (!idUsuario.isNullOrEmpty()){
-                usuarioBusiness.updateUser(
+                usuarioService.updateUser(
                     Usuario(
                         id = idUsuario,
                         conductor = true,
@@ -80,9 +80,9 @@ class BaseRestController {
     fun updateUserValoration(valoracion: Valoracion) {
         scope.launch {
 
-            val newValorationAverage = valoracionBusiness.getValorationAverageByUserId(valoracion.idUsuarioValorado?:"")
+            val newValorationAverage = valoracionService.getValorationAverageByUserId(valoracion.idUsuarioValorado?:"")
 
-            usuarioBusiness.updateUser(
+            usuarioService.updateUser(
                 usuario = Usuario(
                     id = valoracion.idUsuarioValorado,
                     valoracion = newValorationAverage

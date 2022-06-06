@@ -2,6 +2,7 @@ package com.oyeetaxi.cybergod.futures.vehiculo.models
 
 
 import com.mongodb.lang.Nullable
+import com.oyeetaxi.cybergod.futures.vehiculo.models.type.VehiculoVerificacion
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate

@@ -2,6 +2,7 @@ package com.oyeetaxi.cybergod.futures.vehiculo.interfaces
 
 import com.oyeetaxi.cybergod.futures.vehiculo.models.Vehiculo
 import com.oyeetaxi.cybergod.futures.vehiculo.models.requestFilter.VehicleFilterOptions
+import com.oyeetaxi.cybergod.futures.vehiculo.models.response.VehiculoResponse
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
@@ -9,7 +10,7 @@ interface VehiculoInterface {
 
     fun getAllVehicles(): List<Vehiculo>
     fun getAviableVehicles(): List<Vehiculo>
-    fun searchVehiclesPaginatedWithFilter(vehicleFilterOptions: VehicleFilterOptions, pageable: Pageable): Page<Vehiculo>
+    fun searchVehiclesPaginatedWithFilter(vehicleFilterOptions: VehicleFilterOptions, pageable: Pageable): Page<VehiculoResponse>
     fun getVehicleById(idVehiculo: String): Vehiculo
     fun addVehicle(vehiculo: Vehiculo): Vehiculo
     fun updateVehicle(vehiculo: Vehiculo): Vehiculo

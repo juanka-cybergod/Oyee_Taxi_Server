@@ -160,7 +160,7 @@ class VehiculoRestController: BaseRestController() {
 
 
     @PutMapping("/searchVehiclesPaginatedWithFilter")
-    fun searchVehiclesPaginatedWithFilter(pageable: Pageable, @RequestBody vehicleFilterOptions: VehicleFilterOptions?):ResponseEntity<Page<Vehiculo>>{ //@RequestParam("pageable") ,@RequestParam("search") search:String?
+    fun searchVehiclesPaginatedWithFilter(pageable: Pageable, @RequestBody vehicleFilterOptions: VehicleFilterOptions?):ResponseEntity<Page<VehiculoResponse>>{ //@RequestParam("pageable") ,@RequestParam("search") search:String?
 
         return try {
             ResponseEntity(vehiculoService.searchVehiclesPaginatedWithFilter(vehicleFilterOptions?: VehicleFilterOptions(),pageable),HttpStatus.OK)

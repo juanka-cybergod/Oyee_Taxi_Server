@@ -5,8 +5,10 @@ import com.oyeetaxi.cybergod.futures.vehiculo.interfaces.VehiculoInterface
 import com.oyeetaxi.cybergod.futures.vehiculo.repositories.VehiculoRepository
 import com.oyeetaxi.cybergod.exceptions.BusinessException
 import com.oyeetaxi.cybergod.exceptions.NotFoundException
+import com.oyeetaxi.cybergod.futures.share.services.BaseService
 import com.oyeetaxi.cybergod.futures.vehiculo.models.Vehiculo
 import com.oyeetaxi.cybergod.futures.vehiculo.models.requestFilter.VehicleFilterOptions
+import com.oyeetaxi.cybergod.futures.vehiculo.models.response.VehiculoResponse
 import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterActivos
 import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterDeshabilitados
 import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterTipoVehiculos
@@ -24,7 +26,7 @@ import kotlin.math.min
 @Service
 class VehiculoService(
     @Autowired private val vehiculoRepository: VehiculoRepository
-) : VehiculoInterface {
+) : BaseService(), VehiculoInterface {
 
 
 
@@ -89,7 +91,7 @@ class VehiculoService(
 
 
     @Throws(BusinessException::class,NotFoundException::class)
-    override fun searchVehiclesPaginatedWithFilter(vehicleFilterOptions: VehicleFilterOptions, pageable: Pageable): Page<Vehiculo> {
+    override fun searchVehiclesPaginatedWithFilter(vehicleFilterOptions: VehicleFilterOptions, pageable: Pageable): Page<VehiculoResponse> {
 
 
 //        var allUserFound: List<Usuario> =  try{
@@ -117,8 +119,10 @@ class VehiculoService(
 
         val vehicleSubList = allVehiclesFound.subList(start, end)
 
+        val vehicleResponseSubList : List<VehiculoResponse> = vehicleSubList.convertVehicleToVehicleResponse()
 
-        return PageImpl(vehicleSubList, pageable, allVehiclesFound.size.toLong())
+        return PageImpl(vehicleResponseSubList, pageable, allVehiclesFound.size.toLong())
+//        return PageImpl(vehicleSubList, pageable, allVehiclesFound.size.toLong())
 
     }
 

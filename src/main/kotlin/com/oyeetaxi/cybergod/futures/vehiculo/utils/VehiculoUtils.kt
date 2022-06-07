@@ -14,11 +14,11 @@ object VehiculoUtils {
             .collect(Collectors.toList())
     }
 
-    fun List<Vehiculo>.filterVisibles(param: Boolean): List<Vehiculo> {
+    fun List<Vehiculo>.filterNoVisibles(param: Boolean): List<Vehiculo> {
         return this.stream()
             .parallel()
             .filter {
-                (param == it.visible)
+                (param != it.visible)
             }
             .collect(Collectors.toList())
     }

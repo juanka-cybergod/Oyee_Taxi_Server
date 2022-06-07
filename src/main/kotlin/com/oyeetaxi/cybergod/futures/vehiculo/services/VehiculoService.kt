@@ -13,7 +13,7 @@ import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterActivos
 import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterDeshabilitados
 import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterTipoVehiculos
 import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterVerificacionesPendientes
-import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterVisibles
+import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterNoVisibles
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -106,7 +106,7 @@ class VehiculoService(
 
         with(vehicleFilterOptions) {
             tipoVehiculo?.let { allVehiclesFound = allVehiclesFound.filterTipoVehiculos(it) }
-            visibles?.let { allVehiclesFound = allVehiclesFound.filterVisibles(it) }
+            noVisibles?.let { allVehiclesFound = allVehiclesFound.filterNoVisibles(it) }
             activos?.let { allVehiclesFound = allVehiclesFound.filterActivos(it) }
             deshabilitados?.let { allVehiclesFound = allVehiclesFound.filterDeshabilitados(it) }
             verificacionesPendientes?.let { allVehiclesFound = allVehiclesFound.filterVerificacionesPendientes(it) }

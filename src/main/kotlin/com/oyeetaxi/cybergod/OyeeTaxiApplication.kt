@@ -857,24 +857,7 @@ class OyeeTaxiApplication:CommandLineRunner{
 		}
 
 
-
-
-
-
-
-
-
-
-
-
-		val vehiculoVerificacion = VehiculoVerificacion(
-			verificado = false,
-			circulacion = "",
-			imagenCirculacionURL = "",
-			matricula = "P525700",
-		)
-
-		val vehiculoAuto = Vehiculo(
+		val vehiculoMovil = Vehiculo(
 			id = "id_auto",
 			idUsuario = usuario_cliente.id,
 			tipoVehiculo = tipoVehiculo_Automovil.tipoVehiculo,
@@ -890,8 +873,13 @@ class OyeeTaxiApplication:CommandLineRunner{
 			disponible = true,
 			climatizado  = true,
 			fechaDeRegistro = LocalDate.parse("06-06-2022", myformatter),
-//			imagenFrontalPublicaURL = "ficheros/descarga/MOTORINA.JPG",
-			vehiculoVerificacion = vehiculoVerificacion
+			imagenFrontalPublicaURL = "ficheros/descarga/AUTO_MOVIL_1.PNG",
+			vehiculoVerificacion = VehiculoVerificacion(
+				verificado = true,
+				circulacion = "C8952410",
+				imagenCirculacionURL = "ficheros/descarga/6AEFC655-3FAB-4C7E-98C2-62CA10002779_USUARIO_VERIFICACION_20220604111628.JPG",
+				matricula = "P525700",
+			)
 		).also {
 			vehiculoRepository!!.save(it)
 		}
@@ -908,12 +896,17 @@ class OyeeTaxiApplication:CommandLineRunner{
 			capacidadCarga = "0",
 			activo = true,
 			visible = true,
-			habilitado = true,
+			habilitado = false,
 			disponible = true,
 			climatizado  = false,
 			fechaDeRegistro = LocalDate.parse("02-02-2022", myformatter),
 			imagenFrontalPublicaURL = "",
-			vehiculoVerificacion = vehiculoVerificacion
+			vehiculoVerificacion = VehiculoVerificacion(
+				verificado = false,
+				circulacion = "C88100700",
+				imagenCirculacionURL = "ficheros/descarga/6AEFC655-3FAB-4C7E-98C2-62CA10002779_USUARIO_VERIFICACION_20220604111628.JPG",
+				matricula = "P525700",
+			)
 		).also {
 			vehiculoRepository!!.save(it)
 		}
@@ -929,13 +922,18 @@ class OyeeTaxiApplication:CommandLineRunner{
 			capacidadEquipaje = "10",
 			capacidadCarga = "0",
 			activo = true,
-			visible = true,
+			visible = false,
 			habilitado = true,
 			disponible = true,
 			climatizado  = false,
 			fechaDeRegistro = LocalDate.parse("01-01-2022", myformatter),
 			imagenFrontalPublicaURL = "",
-			vehiculoVerificacion = vehiculoVerificacion
+			vehiculoVerificacion = VehiculoVerificacion(
+				verificado = false,
+				circulacion = "",
+				imagenCirculacionURL = "",
+				matricula = "P8979845",
+			)
 		).also {
 			vehiculoRepository!!.save(it)
 		}
@@ -957,7 +955,12 @@ class OyeeTaxiApplication:CommandLineRunner{
 			climatizado  = false,
 			fechaDeRegistro = LocalDate.parse("01-01-2022", myformatter),
 			imagenFrontalPublicaURL = "",
-			vehiculoVerificacion = vehiculoVerificacion
+			vehiculoVerificacion = VehiculoVerificacion(
+				verificado = false,
+				circulacion = "",
+				imagenCirculacionURL = "",
+				matricula = "P235743",
+			)
 		).also {
 			vehiculoRepository!!.save(it)
 		}
@@ -979,7 +982,12 @@ class OyeeTaxiApplication:CommandLineRunner{
 			climatizado  = true,
 			fechaDeRegistro = LocalDate.parse("01-01-2022", myformatter),
 			imagenFrontalPublicaURL = "",
-			vehiculoVerificacion = vehiculoVerificacion
+			vehiculoVerificacion = VehiculoVerificacion(
+				verificado = false,
+				circulacion = "",
+				imagenCirculacionURL = "",
+				matricula = "R1412312",
+			)
 		).also {
 			vehiculoRepository!!.save(it)
 		}
@@ -1001,7 +1009,12 @@ class OyeeTaxiApplication:CommandLineRunner{
 			climatizado  = true,
 			fechaDeRegistro = LocalDate.parse("05-05-2022", myformatter),
 			imagenFrontalPublicaURL = "",
-			vehiculoVerificacion = vehiculoVerificacion
+			vehiculoVerificacion = VehiculoVerificacion(
+				verificado = false,
+				circulacion = "",
+				imagenCirculacionURL = "",
+				matricula = "Q8823843",
+			)
 		).also {
 			vehiculoRepository!!.save(it)
 		}
@@ -1020,9 +1033,14 @@ class OyeeTaxiApplication:CommandLineRunner{
 			habilitado = true,//habilitado = true,
 			disponible = true,
 			climatizado  = true,
-			fechaDeRegistro = LocalDate.parse("03-03-2022", myformatter),
+			fechaDeRegistro = LocalDate.parse("08-08-2022", myformatter),
 			imagenFrontalPublicaURL = "ficheros/descarga/MOTORINA.JPG",
-			vehiculoVerificacion = vehiculoVerificacion
+			vehiculoVerificacion = VehiculoVerificacion(
+				verificado = false,
+				circulacion = "",
+				imagenCirculacionURL = "",
+				matricula = "",
+			)
 		).also {
 			vehiculoRepository!!.save(it)
 		}
@@ -1044,7 +1062,12 @@ class OyeeTaxiApplication:CommandLineRunner{
 			climatizado  = false,
 			fechaDeRegistro = LocalDate.parse("10-03-2022", myformatter),
 			imagenFrontalPublicaURL = "",
-			vehiculoVerificacion = vehiculoVerificacion
+			vehiculoVerificacion = VehiculoVerificacion(
+				verificado = false,
+				circulacion = "",
+				imagenCirculacionURL = "",
+				matricula = "P469238",
+			)
 		).also {
 			vehiculoRepository!!.save(it)
 		}

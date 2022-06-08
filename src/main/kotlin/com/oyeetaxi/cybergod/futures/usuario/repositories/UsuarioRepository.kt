@@ -14,11 +14,14 @@ import java.util.*
 @Repository
 interface UsuarioRepository: MongoRepository<Usuario, String>{
 
-    @Query("{'telefonoMovil': ?0}")
-    fun findUserByPhoneNumber(telefonoMovil: String) : Optional<Usuario>
+//    @Query("{'telefonoMovil': ?0}")
+//    fun findUserByPhoneNumber(telefonoMovil: String) : Optional<Usuario>
 
-    @Query("{'telefonoMovil': ?0}")
-    fun findUserByPhoneNumberList(telefonoMovil: String) : Optional<List<Usuario>>
+//    @Query("{'telefonoMovil': ?0}")
+//    fun findUserByPhoneNumberList(telefonoMovil: String) : Optional<List<Usuario>>
+
+    @Query("{'telefonoMovil':{\$regex: ?0}}")
+    fun findUserByPhoneNumberList(telefonoMovil: String) : Usuario?
 
     @Query("{'correo': ?0}")
     fun findUserByEmail(correo: String) : Optional<List<Usuario>>

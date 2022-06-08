@@ -108,25 +108,20 @@ class UsuarioService(
     }
 
     override fun findUserByPhoneNumber(phoneNumber: String): Usuario? {
-        var foundUser: Usuario? = null
-        val encontrados: List<Usuario>?
+//        var foundUser: Usuario? = null
+//        val encontrados: List<Usuario>?
+//            encontrados = usuarioRepository.findUserByPhoneNumberList(phoneNumber.replace("+","",true).trim())
+//            if (encontrados.isNotEmpty()) {
+//
+//                encontrados.forEach {
+//                    println("ID Encontrados = "+it.id.toString())
+//                    }
+//                    foundUser = encontrados.last()
+//                    println("ID Encontrados = "+foundUser.id.toString())
+//
+//            }
 
-       // LOGGER.info("BUSCANDO A USUARIO CON NUMERO= $phoneNumber")
-
-            encontrados = usuarioRepository.findUserByPhoneNumberList(phoneNumber).get()
-
-            if (encontrados.isNotEmpty()) {
-
-                encontrados.forEach {
-                        // LOGGER.info("ID Encontrados = "+it.id.toString())
-                    }
-                    foundUser = encontrados.last()
-                   // LOGGER.info("ULTIMO = $foundUser")
-
-
-            }
-
-        return foundUser
+        return usuarioRepository.findUserByPhoneNumberList(phoneNumber.replace("+","",true).trim())
     }
 
     @Throws(BusinessException::class,NotFoundException::class)

@@ -32,27 +32,3 @@ data class Vehiculo(
 
     )
 
-
-
-/**
-var id:String? = null,
-var idUsuario:String = "",
-var tipoVehiculo: String = "",
-var marca:String = "",
-var modelo:String = "",
-var ano:String = "",
-var chapa:String = "",
-var capacidadPasajeros: Int = 0,
-var equipaje: Int = 0,
-var visible: Boolean = true,
-var habilitado: Boolean = true,
-var ocupado: Boolean = false,
-var ubicacion: Ubicacion,
-
-var climatizado: Boolean = false,
-var fechaDeRegistro: LocalDate? = null,
-var imagenPublica:String = "",
-var imagenFrontal:String = "",
-var imagenCirculacion:String = "",
-
- **/

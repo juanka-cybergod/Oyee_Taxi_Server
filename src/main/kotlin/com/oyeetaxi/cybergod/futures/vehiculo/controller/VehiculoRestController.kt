@@ -208,6 +208,16 @@ class VehiculoRestController: BaseRestController() {
     }
 
 
+    @PutMapping("/updateVehicleAndGetVehicleResponse")
+    fun updateVehicleAndGetVehicleResponse(@RequestBody vehiculo: Vehiculo): ResponseEntity<VehiculoResponse>{
+        return try {
+            ResponseEntity(convertVehicleToVehicleResponse(vehiculoService.updateVehicle(vehiculo)),HttpStatus.OK)
+        } catch (e: BusinessException) {
+            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+
     @DeleteMapping("/deleteVehicleById={id}")
     fun deleteVehicleById(@PathVariable("id") idVehiculo: String): ResponseEntity<Any>{
         return try {

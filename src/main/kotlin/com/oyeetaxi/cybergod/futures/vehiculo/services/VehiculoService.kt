@@ -193,7 +193,6 @@ class VehiculoService(
                     verificacion.circulacion?.let {  vehiculoModificar.vehiculoVerificacion?.circulacion = it }
                     verificacion.imagenCirculacionURL?.let {  vehiculoModificar.vehiculoVerificacion?.imagenCirculacionURL = it }
                 }
-                //vehiculo.vehiculoVerificacion?.let { vehiculoModificar.vehiculoVerificacion = it}
 
 
                 try {

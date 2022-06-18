@@ -9,7 +9,8 @@ plugins {
 }
 
 group = "com.oyee-taxi"
-version = "0.0.1-SNAPSHOT"
+version = "1.0.0"
+//version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
@@ -54,8 +55,6 @@ dependencies {
 //	implementation ("org.webjars:stomp-websocket:2.3.4")
 //	implementation ("org.webjars:bootstrap:5.1.3")
 //	implementation ("org.webjars:jquery:3.6.0")
-
-
 
 }
 

@@ -1,1 +1,2 @@
-rootProject.name = "cybergod"
+rootProject.name = "oyee-taxi-server"
+//rootProject.name = "cybergod"

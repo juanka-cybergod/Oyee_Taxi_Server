@@ -1,0 +1,8 @@
+./gradlew
+
+./gradlew build
+
+./gradlew bootJar
+
+java -jar build/libs/oyee-taxi-server-1.0.0.jar
+

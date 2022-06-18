@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable
 interface VehiculoInterface {
 
     fun getAllVehicles(): List<Vehiculo>
-    fun getAviableVehicles(): List<Vehiculo>
+    fun getAviableVehicles(): List<VehiculoResponse>
     fun searchVehiclesPaginatedWithFilter(vehicleFilterOptions: VehicleFilterOptions, pageable: Pageable): Page<VehiculoResponse>
     fun getVehicleById(idVehiculo: String): Vehiculo
     fun addVehicle(vehiculo: Vehiculo): Vehiculo
@@ -17,10 +17,9 @@ interface VehiculoInterface {
     fun deleteVehicleById(idVehiculo: String)
     fun deleteAllVehicles()
     fun countVehicles():Long
-
     fun getActiveVehicleByUserId(idUsuario:String): Vehiculo?
-
-    fun getAllVehiclesFromUserId(idUsuario:String): List<Vehiculo>?
+    fun getAllVehiclesFromUserId(idUsuario:String): List<VehiculoResponse>?
+    fun setActiveVehicleToUserId(idUsuario:String,idVehiculo:String):Boolean
 
 }
 

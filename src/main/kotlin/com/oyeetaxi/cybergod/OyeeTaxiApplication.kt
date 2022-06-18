@@ -1084,7 +1084,7 @@ class OyeeTaxiApplication:CommandLineRunner{
 
 	override fun run(vararg args: String?) {
 
-		populateBD()
+		//populateBD()
 
 	}
 

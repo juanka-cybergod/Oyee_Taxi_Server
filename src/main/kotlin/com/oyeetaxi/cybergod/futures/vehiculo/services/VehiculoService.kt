@@ -14,6 +14,9 @@ import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterDeshabil
 import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterTipoVehiculos
 import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterVerificacionesPendientes
 import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterNoVisibles
+import com.oyeetaxi.cybergod.utils.GlobalVariables.availableVehiclesListGlobal
+import com.oyeetaxi.cybergod.utils.GlobalVariables.lastTimeUpdateAvailableVehicles
+import com.oyeetaxi.cybergod.utils.GlobalVariables.updateAvailableVehiclesRate
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -27,8 +30,6 @@ import kotlin.math.min
 class VehiculoService(
     @Autowired private val vehiculoRepository: VehiculoRepository
 ) : BaseService(), VehiculoInterface {
-
-
 
     private var LOGGER = LoggerFactory.getLogger(VehiculoService::class.java)
 
@@ -62,22 +63,62 @@ class VehiculoService(
     }
 
     @Throws(BusinessException::class)
-    override fun getAviableVehicles(): List<Vehiculo> {
+    override fun getAviableVehicles(): List<VehiculoResponse> {
 
-        try {
-            return vehiculoRepository.findAviableVehicles()
+        val currentTime = System.currentTimeMillis() / 1000
+        val diffTime = currentTime - lastTimeUpdateAvailableVehicles
+
+        return try {
+
+            if (diffTime >= updateAvailableVehiclesRate || availableVehiclesListGlobal == null) {
+                println("$diffTime Seg - Get AvailableVehicles from Repository")
+                lastTimeUpdateAvailableVehicles = currentTime
+                availableVehiclesListGlobal = vehiculoRepository.findAviableVehicles().convertVehicleToVehicleResponse()
+                availableVehiclesListGlobal.orEmpty()
+            } else {
+                println("$diffTime Seg - Get AvailableVehicles from Global")
+                availableVehiclesListGlobal.orEmpty()
+            }
+
         } catch (e:Exception){
             throw BusinessException(e.message)
         }
     }
 
     @Throws(BusinessException::class)
-    override fun getAllVehiclesFromUserId(idUsuario:String): List<Vehiculo> {
+    override fun getAllVehiclesFromUserId(idUsuario:String): List<VehiculoResponse> {
         try {
-            return vehiculoRepository.findAllVehiclesByUserId(idUsuario)
+            return vehiculoRepository.findAllVehiclesByUserId(idUsuario).convertVehicleToVehicleResponse()
         } catch (e:Exception){
             throw BusinessException(e.message)
         }
+    }
+
+    @Throws(BusinessException::class)
+    override fun setActiveVehicleToUserId(idUsuario:String,idVehiculo:String):Boolean {
+
+        var vehiculoActivo = false
+
+        vehiculoRepository.findAllVehiclesByUserId(idUsuario).let { listaVehiculosDeUsuario ->
+
+            listaVehiculosDeUsuario.forEach { vehiculo ->
+                //LOGGER.info(vehiculo.id.toString())
+
+                when (idVehiculo) {
+                    vehiculo.id -> {
+                        vehiculoActivo = setActiveVehicle(vehiculo,true)
+                    }
+                    else -> {
+                        setActiveVehicle(vehiculo,false)
+                    }
+                }
+            }
+
+
+        }
+
+        return vehiculoActivo
+
     }
 
     @Throws(BusinessException::class)
@@ -92,14 +133,6 @@ class VehiculoService(
 
     @Throws(BusinessException::class,NotFoundException::class)
     override fun searchVehiclesPaginatedWithFilter(vehicleFilterOptions: VehicleFilterOptions, pageable: Pageable): Page<VehiculoResponse> {
-
-
-//        var allUserFound: List<Usuario> =  try{
-//           usuarioQueryService!!.searchUsersFiltered(search, userFilterOptions, pageable.sort)
-//        } catch (e:Exception){
-//            println("usuarioQueryService!!.searchUsersFiltered() -> Fail to Search")
-//           usuarioRepository!!.searchAll(search, pageable.sort)
-//        }
 
         var allVehiclesFound: List<Vehiculo> = vehiculoRepository.searchAll(vehicleFilterOptions.texto, pageable.sort)
 
@@ -122,7 +155,6 @@ class VehiculoService(
         val vehicleResponseSubList : List<VehiculoResponse> = vehicleSubList.convertVehicleToVehicleResponse()
 
         return PageImpl(vehicleResponseSubList, pageable, allVehiclesFound.size.toLong())
-//        return PageImpl(vehicleSubList, pageable, allVehiclesFound.size.toLong())
 
     }
 
@@ -208,13 +240,6 @@ class VehiculoService(
 
         return vehiculoActualizdo
 
-
-//
-//        try {
-//            return vehiculoRepository!!.save(vehiculo)
-//        }catch (e:Exception) {
-//            throw BusinessException(e.message)
-//        }
     }
 
     @Throws(BusinessException::class,NotFoundException::class)

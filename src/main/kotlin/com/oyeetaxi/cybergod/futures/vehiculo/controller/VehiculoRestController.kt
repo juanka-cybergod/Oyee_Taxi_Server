@@ -26,23 +26,29 @@ class VehiculoRestController: BaseRestController() {
     @GetMapping("/getAvailableVehicles")
     fun getAvailableVehicles():ResponseEntity<List<VehiculoResponse>>{
 
-        val listaVehiculosResponse : MutableCollection<VehiculoResponse> = ArrayList()
-
-        vehiculoService.getAviableVehicles().let { listaVehiculosDisponibles ->
-
-            listaVehiculosDisponibles.forEach { vehiculo ->
-                listaVehiculosResponse.add(
-                    convertVehicleToVehicleResponse(vehiculo)
-                )
-            }
-        }
-
-
         return try {
-            ResponseEntity(listaVehiculosResponse.toList(),HttpStatus.OK)
+            ResponseEntity(vehiculoService.getAviableVehicles(),HttpStatus.OK)
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
+
+//        val listaVehiculosResponse : MutableCollection<VehiculoResponse> = ArrayList()
+//
+//        vehiculoService.getAviableVehicles().let { listaVehiculosDisponibles ->
+//
+//            listaVehiculosDisponibles.forEach { vehiculo ->
+//                listaVehiculosResponse.add(
+//                    convertVehicleToVehicleResponse(vehiculo)
+//                )
+//            }
+//        }
+//
+//
+//        return try {
+//            ResponseEntity(listaVehiculosResponse.toList(),HttpStatus.OK)
+//        }catch (e:Exception){
+//            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+//        }
     }
 
     @GetMapping("/getActiveVehicleByUserId={id}")
@@ -89,58 +95,18 @@ class VehiculoRestController: BaseRestController() {
 
     @GetMapping("/getAllVehiclesFromUserId={id}")
     fun getAllVehiclesFromUserId(@PathVariable("id") idUsuario: String  ):ResponseEntity<List<VehiculoResponse>>{
-
-        //Preparar la Respuesta
-        val listaVehiculosResponse : MutableCollection<VehiculoResponse> = ArrayList()
-
-
-        vehiculoService.getAllVehiclesFromUserId(idUsuario).let { listaVehiculosDeUsuario ->
-
-            listaVehiculosDeUsuario.forEach { vehiculo ->
-                listaVehiculosResponse.add(
-                    convertVehicleToVehicleResponse(vehiculo)
-                )
-            }
-
-
-        }
-
-
         return try {
-            ResponseEntity(listaVehiculosResponse.toList(),HttpStatus.OK)
+            ResponseEntity(vehiculoService.getAllVehiclesFromUserId(idUsuario).toList(),HttpStatus.OK)
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
-
-
     }
 
     @GetMapping("/setActiveVehicleToUserId")
     fun setActiveVehicleToUserId(@RequestParam("idUsuario") idUsuario: String, @RequestParam("idVehiculo") idVehiculo: String):ResponseEntity<Any>{
 
-        var vehiculoActivo = false
-
-        vehiculoService.getAllVehiclesFromUserId(idUsuario).let { listaVehiculosDeUsuario ->
-
-            listaVehiculosDeUsuario.forEach { vehiculo ->
-                //LOGGER.info(vehiculo.id.toString())
-
-                when (idVehiculo) {
-                        vehiculo.id -> {
-                            vehiculoActivo =  vehiculoService.setActiveVehicle(vehiculo,true)
-                        }
-                        else -> {
-                            vehiculoService.setActiveVehicle(vehiculo,false)
-                        }
-                }
-            }
-
-
-        }
-
-
         return try {
-            ResponseEntity(vehiculoActivo,HttpStatus.OK)
+            ResponseEntity(vehiculoService.setActiveVehicleToUserId(idUsuario,idVehiculo),HttpStatus.OK)
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }

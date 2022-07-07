@@ -4,22 +4,25 @@ package com.oyeetaxi.cybergod.futures.configuracion.services
 import com.oyeetaxi.cybergod.exceptions.BusinessException
 import com.oyeetaxi.cybergod.exceptions.NotFoundException
 import com.oyeetaxi.cybergod.futures.configuracion.interfaces.ConfiguracionInterface
+import com.oyeetaxi.cybergod.futures.configuracion.models.Actualizacion
 import com.oyeetaxi.cybergod.futures.configuracion.models.Configuracion
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.EmailConfiguracion
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.SmsProvider
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.TwilioConfiguracion
-import com.oyeetaxi.cybergod.futures.configuracion.models.types.UpdateConfiguracion
+import com.oyeetaxi.cybergod.futures.configuracion.repositories.ActualizacionRepository
 import com.oyeetaxi.cybergod.futures.configuracion.repositories.ConfiguracionRepository
+import com.oyeetaxi.cybergod.futures.vehiculo.models.Vehiculo
 import com.oyeetaxi.cybergod.utils.Constants.DEFAULT_CONFIG
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class ConfiguracionService : ConfiguracionInterface {
+class ConfiguracionService(
+    @Autowired private val configuracionRepository: ConfiguracionRepository,
+    @Autowired private val actualizacionRepository: ActualizacionRepository,
+) : ConfiguracionInterface {
 
-    @Autowired
-    val configuracionRepository: ConfiguracionRepository? = null
 
     @Throws(BusinessException::class, NotFoundException::class)
     override fun getConfiguration(): Configuracion {
@@ -27,7 +30,7 @@ class ConfiguracionService : ConfiguracionInterface {
         val optional: Optional<Configuracion>
 
         try {
-            optional = configuracionRepository!!.findById(DEFAULT_CONFIG)
+            optional = configuracionRepository.findById(DEFAULT_CONFIG)
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
@@ -46,7 +49,7 @@ class ConfiguracionService : ConfiguracionInterface {
         var configuracionActualizada : Configuracion = configuracion
 
         try {
-            optional = configuracionRepository!!.findById(DEFAULT_CONFIG)
+            optional = configuracionRepository.findById(DEFAULT_CONFIG)
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
@@ -68,7 +71,6 @@ class ConfiguracionService : ConfiguracionInterface {
                 twilioConfiguration.account_sid?.let { configuracionModificar.twilioConfiguracion?.account_sid = it }
                 twilioConfiguration.auth_token?.let { configuracionModificar.twilioConfiguracion?.auth_token = it }
                 twilioConfiguration.trial_number?.let { configuracionModificar.twilioConfiguracion?.trial_number = it }
-//                twilioConfiguration.remainingCredit?.let { configuracionModificar.twilioConfiguracion?.remainingCredit = it }
                 twilioConfiguration.smsCost?.let { configuracionModificar.twilioConfiguracion?.smsCost = it }
                 twilioConfiguration.balance?.let { balance ->
                     balance.balance?.let { configuracionModificar.twilioConfiguracion?.balance?.balance = it }
@@ -89,17 +91,8 @@ class ConfiguracionService : ConfiguracionInterface {
 
             }
 
-            configuracion.updateConfiguracion?.let {updateConfiguracion ->
-                updateConfiguracion.available?.let { configuracionModificar.updateConfiguracion?.available = it }
-                updateConfiguracion.version?.let { configuracionModificar.updateConfiguracion?.version = it }
-                updateConfiguracion.versionString?.let { configuracionModificar.updateConfiguracion?.versionString = it }
-                updateConfiguracion.fileSize?.let { configuracionModificar.updateConfiguracion?.fileSize = it }
-                updateConfiguracion.appURL?.let { configuracionModificar.updateConfiguracion?.appURL = it }
-                updateConfiguracion.packageName?.let { configuracionModificar.updateConfiguracion?.packageName = it }
-                updateConfiguracion.forceUpdate?.let { configuracionModificar.updateConfiguracion?.forceUpdate = it }
-                updateConfiguracion.description?.let { configuracionModificar.updateConfiguracion?.description = it }
 
-            }
+            configuracion.actualizacionHabilita?.let { configuracionModificar.actualizacionHabilita = it }
 
             configuracion.socialConfiguracion?.let { socialConfiguracion ->
                 socialConfiguracion.disponible?.let { configuracionModificar.socialConfiguracion?.disponible = it }
@@ -111,7 +104,7 @@ class ConfiguracionService : ConfiguracionInterface {
 
 
             try {
-                configuracionActualizada = configuracionRepository!!.save(configuracionModificar)
+                configuracionActualizada = configuracionRepository.save(configuracionModificar)
 
             }catch (e:Exception){
 
@@ -125,16 +118,6 @@ class ConfiguracionService : ConfiguracionInterface {
 
         return configuracionActualizada
 
-
-
-//        return try {
-//            configuracionRepository!!.save(configuracion)
-//            true
-//        }catch (e:Exception) {
-//            throw BusinessException(e.message)
-//
-//        }
-
     }
 
     @Throws(BusinessException::class, NotFoundException::class)
@@ -143,7 +126,7 @@ class ConfiguracionService : ConfiguracionInterface {
         val optional: Optional<Configuracion>
 
         try {
-            optional = configuracionRepository!!.findById(DEFAULT_CONFIG)
+            optional = configuracionRepository.findById(DEFAULT_CONFIG)
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
@@ -161,7 +144,7 @@ class ConfiguracionService : ConfiguracionInterface {
         val optional: Optional<Configuracion>
 
         try {
-            optional = configuracionRepository!!.findById(DEFAULT_CONFIG)
+            optional = configuracionRepository.findById(DEFAULT_CONFIG)
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
@@ -179,7 +162,7 @@ class ConfiguracionService : ConfiguracionInterface {
         val optional: Optional<Configuracion>
 
         try {
-            optional = configuracionRepository!!.findById(DEFAULT_CONFIG)
+            optional = configuracionRepository.findById(DEFAULT_CONFIG)
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
@@ -197,7 +180,7 @@ class ConfiguracionService : ConfiguracionInterface {
         val optional: Optional<Configuracion>
 
         try {
-            optional = configuracionRepository!!.findById(DEFAULT_CONFIG)
+            optional = configuracionRepository.findById(DEFAULT_CONFIG)
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
@@ -214,7 +197,7 @@ class ConfiguracionService : ConfiguracionInterface {
         val optional: Optional<Configuracion>
 
         try {
-            optional = configuracionRepository!!.findById(DEFAULT_CONFIG)
+            optional = configuracionRepository.findById(DEFAULT_CONFIG)
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
@@ -225,21 +208,167 @@ class ConfiguracionService : ConfiguracionInterface {
 
     }
 
-    @Throws(BusinessException::class,NotFoundException::class)
-    override fun getUpdateConfiguration(): UpdateConfiguracion {
-        val optional: Optional<Configuracion>
 
-        try {
-            optional = configuracionRepository!!.findById(DEFAULT_CONFIG)
+
+    //APP_UPDATE
+
+
+    @Throws(BusinessException::class,NotFoundException::class)
+    override fun getAppUpdate(): Actualizacion {
+
+        val actualizacionHabilitada = try {
+            configuracionRepository.findById(DEFAULT_CONFIG).get().actualizacionHabilita
         }catch (e:Exception) {
             throw BusinessException(e.message)
         }
-        if (!optional.isPresent){
-            throw NotFoundException("Configuracion con ID $DEFAULT_CONFIG No Encontrado")
+
+        if (actualizacionHabilitada!=true) {
+            throw NotFoundException("Las actualizaciones para la aplicación están deshabilitadas en configuración")
         }
-        return optional.get().updateConfiguracion!!
+
+        val appUpdateList =  actualizacionRepository.findAll()
+
+        if (appUpdateList.isEmpty()) {
+            throw NotFoundException("No se han encontrado actualizaciones para la aplicación")
+        }
+
+
+        return appUpdateList.findLast { actualizacion -> actualizacion.active == true } ?: appUpdateList.last()
+
 
     }
+
+
+    @Throws(BusinessException::class,NotFoundException::class)
+    override fun addAppUpdate(actualizacion: Actualizacion): Actualizacion {
+        try {
+            return actualizacionRepository.insert(actualizacion)
+        }catch (e:Exception) {
+            throw BusinessException(e.message)
+        }
+    }
+
+
+    @Throws(BusinessException::class,NotFoundException::class)
+    override fun editAppUpdate(actualizacion: Actualizacion): Actualizacion {
+
+
+        val optional:Optional<Actualizacion>
+        var actualizacionActualizada : Actualizacion = actualizacion
+
+        actualizacion.id?.let { id ->
+
+            try {
+                optional = actualizacionRepository.findById(id)
+            }catch (e:Exception) {
+                throw BusinessException(e.message)
+            }
+
+            if (!optional.isPresent){
+                throw NotFoundException("Actualizacion con ID $id No Encontrada")
+            } else {
+
+                val actualizacionModificar : Actualizacion = optional.get()
+
+                actualizacion.active?.let { actualizacionModificar.active = it}
+                actualizacion.version?.let { actualizacionModificar.version = it}
+                actualizacion.versionString?.let { actualizacionModificar.versionString = it}
+                actualizacion.fileSize?.let { actualizacionModificar.fileSize = it}
+                actualizacion.appURL?.let { actualizacionModificar.appURL = it}
+                actualizacion.playStorePackageName?.let { actualizacionModificar.playStorePackageName = it}
+                actualizacion.forceUpdate?.let { actualizacionModificar.forceUpdate = it}
+                actualizacion.description?.let { actualizacionModificar.description = it}
+
+
+                try {
+                    actualizacionActualizada = actualizacionRepository.save(actualizacionModificar)
+                }catch (e:Exception){
+                    throw BusinessException(e.message)
+
+                }
+
+            }
+
+        }
+
+        return actualizacionActualizada
+    }
+
+
+    @Throws(BusinessException::class,NotFoundException::class)
+    override fun deleteAppUpdateById(idActualizacion: String): Boolean {
+
+        val optional:Optional<Actualizacion>
+
+        try {
+            optional = actualizacionRepository.findById(idActualizacion)
+        }catch (e:Exception) {
+            throw BusinessException(e.message)
+        }
+
+        if (!optional.isPresent){
+            throw NotFoundException("Actualizacion con ID $idActualizacion No Encontrada")
+        } else {
+
+            return try {
+                actualizacionRepository.deleteById(idActualizacion)
+                true
+            }catch (e:Exception){
+                throw BusinessException(e.message)
+            }
+
+        }
+
+    }
+
+
+    @Throws(BusinessException::class,NotFoundException::class)
+    override fun getAllAppUpdates():List<Actualizacion>{
+        try {
+            return actualizacionRepository.findAll()
+        }catch (e:Exception) {
+            throw BusinessException(e.message)
+        }
+    }
+
+
+    @Throws(BusinessException::class,NotFoundException::class)
+    override fun setAppUpdateActiveById(idActualizacion: String, active:Boolean) :Boolean {
+
+        var success = false
+
+        actualizacionRepository.findAll().forEach { actualizacion ->
+
+            if (actualizacion.id.equals(idActualizacion,true)) {
+                success = try {
+                    editAppUpdate(
+                        Actualizacion(
+                            id = actualizacion.id,
+                            active = active
+                        )
+                    )
+                    true
+                } catch (e:Exception) {
+                    throw BusinessException(e.message)
+                }
+
+
+            } else {
+                editAppUpdate(
+                    Actualizacion(
+                        id = actualizacion.id,
+                        active = false
+                    )
+                )
+            }
+
+        }
+
+
+        return success
+
+    }
+
 
 
 }

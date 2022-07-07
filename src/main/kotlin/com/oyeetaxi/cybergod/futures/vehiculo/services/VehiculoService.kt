@@ -102,8 +102,6 @@ class VehiculoService(
         vehiculoRepository.findAllVehiclesByUserId(idUsuario).let { listaVehiculosDeUsuario ->
 
             listaVehiculosDeUsuario.forEach { vehiculo ->
-                //LOGGER.info(vehiculo.id.toString())
-
                 when (idVehiculo) {
                     vehiculo.id -> {
                         vehiculoActivo = setActiveVehicle(vehiculo,true)

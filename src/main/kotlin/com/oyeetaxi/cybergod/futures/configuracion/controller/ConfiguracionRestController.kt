@@ -2,10 +2,9 @@ package com.oyeetaxi.cybergod.futures.configuracion.controller
 
 
 import com.oyeetaxi.cybergod.exceptions.BusinessException
+import com.oyeetaxi.cybergod.futures.configuracion.models.Actualizacion
 import com.oyeetaxi.cybergod.futures.configuracion.models.Configuracion
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.SmsProvider
-import com.oyeetaxi.cybergod.futures.configuracion.models.types.TwilioConfiguracion
-import com.oyeetaxi.cybergod.futures.configuracion.models.types.UpdateConfiguracion
 import com.oyeetaxi.cybergod.futures.configuracion.services.ConfiguracionService
 import com.oyeetaxi.cybergod.futures.share.interfaces.SmsInterface
 import com.oyeetaxi.cybergod.futures.share.services.SmsTwilioService
@@ -18,29 +17,17 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping(URL_BASE_CONFIGURACION)
-class ConfiguracionRestController {
+class ConfiguracionRestController(
+    @Autowired private val configuracionService : ConfiguracionService,
+    @Autowired private val smsTwilioService : SmsTwilioService
+) {
 
-    @Autowired
-    val configuracionBusiness : ConfiguracionService? = null
-    @Autowired
-    val smsTwilioService : SmsTwilioService? = null
-
-
-
-    @GetMapping("/getUpdateConfiguration")
-    fun getUpdateConfiguration():ResponseEntity<UpdateConfiguracion>{
-        return try {
-            ResponseEntity(configuracionBusiness!!.getUpdateConfiguration(),HttpStatus.OK)
-        }catch (e:Exception){
-            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
-        }
-    }
 
     @GetMapping("/getSMSBalance")
     fun getSMSBalance():ResponseEntity<Any>{
         val smsProvider :SmsInterface? =
-            when (configuracionBusiness!!.getSmsProvider()) {
-            SmsProvider.TWILIO -> {smsTwilioService!!}
+            when (configuracionService.getSmsProvider()) {
+            SmsProvider.TWILIO -> {smsTwilioService}
             else -> null
             }
 
@@ -55,7 +42,7 @@ class ConfiguracionRestController {
     @GetMapping("/getSmsProvider")
     fun getSmsProvider():ResponseEntity<SmsProvider>{
         return try {
-            ResponseEntity(configuracionBusiness!!.getSmsProvider(),HttpStatus.OK)
+            ResponseEntity(configuracionService.getSmsProvider(),HttpStatus.OK)
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -64,7 +51,7 @@ class ConfiguracionRestController {
     @GetMapping("/isServerActive")
     fun isServerActive():ResponseEntity<Boolean>{
         return try {
-            ResponseEntity(configuracionBusiness!!.isServerActive(),HttpStatus.OK)
+            ResponseEntity(configuracionService.isServerActive(),HttpStatus.OK)
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -73,7 +60,7 @@ class ConfiguracionRestController {
     @GetMapping("/isServerActiveForAdmin")
     fun isServerActiveForAdmin():ResponseEntity<Boolean>{
         return try {
-            ResponseEntity(configuracionBusiness!!.isServerActiveForAdmin(),HttpStatus.OK)
+            ResponseEntity(configuracionService.isServerActiveForAdmin(),HttpStatus.OK)
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -84,8 +71,8 @@ class ConfiguracionRestController {
 
 
         val smsProvider :SmsInterface? =
-            when (configuracionBusiness!!.getSmsProvider()) {
-                SmsProvider.TWILIO -> {smsTwilioService!!}
+            when (configuracionService.getSmsProvider()) {
+                SmsProvider.TWILIO -> {smsTwilioService}
                 else -> null
             }
 
@@ -95,21 +82,13 @@ class ConfiguracionRestController {
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
 
-
-//
-//        return try {
-//            ResponseEntity( configuracionBusiness!!.getRemaningSMS(),HttpStatus.OK)
-//
-//        } catch (e: BusinessException) {
-//            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
-//        }
     }
 
 
     @GetMapping("/getConfiguration")
     fun getConfiguration():ResponseEntity<Configuracion> {
         return try {
-            ResponseEntity(configuracionBusiness!!.getConfiguration(),HttpStatus.OK)
+            ResponseEntity(configuracionService.getConfiguration(),HttpStatus.OK)
         }catch (e: BusinessException) {
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -120,9 +99,75 @@ class ConfiguracionRestController {
     @PutMapping("/updateConfiguration")
     fun updateConfiguration(@RequestBody configuracion: Configuracion): ResponseEntity<Configuracion>{
         return try {
-            ResponseEntity(configuracionBusiness!!.updateConfiguration(configuracion),HttpStatus.OK)
+            ResponseEntity(configuracionService.updateConfiguration(configuracion),HttpStatus.OK)
         } catch (e: BusinessException) {
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+
+
+
+
+    //APP_UPDATE
+
+    @GetMapping("/getAppUpdate")
+    fun getAppUpdate():ResponseEntity<Actualizacion>{
+        return try {
+            ResponseEntity(configuracionService.getAppUpdate(),HttpStatus.OK)
+        }catch (e:Exception){
+            //println(e.message.toString())
+            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+
+        }
+    }
+
+    @GetMapping("/getAllAppUpdates")
+    fun getAllAppUpdates():ResponseEntity<List<Actualizacion>>{
+        return try {
+            ResponseEntity(configuracionService.getAllAppUpdates().toList(),HttpStatus.OK)
+        }catch (e:Exception){
+            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    @GetMapping("/setAppUpdateActiveById")
+    fun setAppUpdateActiveById(@RequestParam("idActualizacion") idActualizacion: String,@RequestParam("active") active: Boolean):ResponseEntity<Boolean>{
+        return try {
+            ResponseEntity(configuracionService.setAppUpdateActiveById(idActualizacion,active),HttpStatus.OK)
+        }catch (e:Exception){
+            //println(e.message.toString())
+            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+
+        }
+    }
+
+
+    @PostMapping("/addAppUpdate")
+    fun addAppUpdate(@RequestBody actualizacion: Actualizacion): ResponseEntity<Any>{
+        return try {
+            ResponseEntity( configuracionService.addAppUpdate(actualizacion),HttpStatus.OK)
+        } catch (e: BusinessException) {
+            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+
+    @PutMapping("/editAppUpdate")
+    fun editAppUpdate(@RequestBody actualizacion: Actualizacion): ResponseEntity<Any>{
+        return try {
+            ResponseEntity( configuracionService.editAppUpdate(actualizacion),HttpStatus.OK)
+        } catch (e: BusinessException) {
+            ResponseEntity(HttpStatus.NOT_FOUND)
+        }
+    }
+
+    @DeleteMapping("/deleteAppUpdateById")
+    fun deleteAppUpdateById(@RequestParam("idActualizacion") idActualizacion: String): ResponseEntity<Any>{
+        return try {
+            ResponseEntity( configuracionService.deleteAppUpdateById(idActualizacion),HttpStatus.OK)
+        } catch (e: BusinessException) {
+            ResponseEntity(HttpStatus.NOT_FOUND)
         }
     }
 

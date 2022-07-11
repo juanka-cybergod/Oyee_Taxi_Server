@@ -2,12 +2,14 @@ package com.oyeetaxi.cybergod.futures.configuracion.controller
 
 
 import com.oyeetaxi.cybergod.exceptions.BusinessException
+import com.oyeetaxi.cybergod.exceptions.ForbiddenException
 import com.oyeetaxi.cybergod.futures.configuracion.models.Actualizacion
 import com.oyeetaxi.cybergod.futures.configuracion.models.Configuracion
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.SmsProvider
 import com.oyeetaxi.cybergod.futures.configuracion.services.ConfiguracionService
 import com.oyeetaxi.cybergod.futures.share.interfaces.SmsInterface
 import com.oyeetaxi.cybergod.futures.share.services.SmsTwilioService
+import com.oyeetaxi.cybergod.utils.Constants.ERROR_RESPONSE
 import com.oyeetaxi.cybergod.utils.Constants.URL_BASE_CONFIGURACION
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -112,14 +114,17 @@ class ConfiguracionRestController(
     //APP_UPDATE
 
     @GetMapping("/getAppUpdate")
-    fun getAppUpdate():ResponseEntity<Actualizacion>{
-        return try {
-            ResponseEntity(configuracionService.getAppUpdate(),HttpStatus.OK)
-        }catch (e:Exception){
-            //println(e.message.toString())
-            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+    fun getAppUpdate(@RequestParam("clientAppVersion") clientAppVersion: Int):ResponseEntity<Actualizacion>{
+        val responseHeader = org.springframework.http.HttpHeaders()
 
+        return try {
+            ResponseEntity(configuracionService.getAppUpdate(clientAppVersion),HttpStatus.OK)
+        }catch (e:BusinessException){
+            responseHeader.set(ERROR_RESPONSE,e.message)
+            ResponseEntity(responseHeader,HttpStatus.NOT_FOUND)
         }
+
+        // ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
     }
 
     @GetMapping("/getAllAppUpdates")

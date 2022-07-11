@@ -11,16 +11,18 @@ import com.oyeetaxi.cybergod.futures.configuracion.models.types.SmsProvider
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.TwilioConfiguracion
 import com.oyeetaxi.cybergod.futures.configuracion.repositories.ActualizacionRepository
 import com.oyeetaxi.cybergod.futures.configuracion.repositories.ConfiguracionRepository
-import com.oyeetaxi.cybergod.futures.vehiculo.models.Vehiculo
+import com.oyeetaxi.cybergod.futures.fichero.services.FicheroServicio
 import com.oyeetaxi.cybergod.utils.Constants.DEFAULT_CONFIG
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.io.File
 import java.util.*
 
 @Service
 class ConfiguracionService(
     @Autowired private val configuracionRepository: ConfiguracionRepository,
     @Autowired private val actualizacionRepository: ActualizacionRepository,
+    @Autowired private val ficheroServicio: FicheroServicio,
 ) : ConfiguracionInterface {
 
 
@@ -213,31 +215,58 @@ class ConfiguracionService(
     //APP_UPDATE
 
 
-    @Throws(BusinessException::class,NotFoundException::class)
-    override fun getAppUpdate(): Actualizacion {
+    @Throws(Exception::class)
+    override fun getAppUpdate(clientAppVersion: Int): Actualizacion {
 
         val actualizacionHabilitada = try {
             configuracionRepository.findById(DEFAULT_CONFIG).get().actualizacionHabilita
         }catch (e:Exception) {
-            throw BusinessException(e.message)
+            throw BusinessException("Las Actualizaciones no se han configurado en el Servidor")
         }
 
         if (actualizacionHabilitada!=true) {
-            throw NotFoundException("Las actualizaciones para la aplicación están deshabilitadas en configuración")
+            throw BusinessException("Las actualizaciones están temporalmente deshabilitadas")
         }
 
-        val appUpdateList =  actualizacionRepository.findAll()
-
-        if (appUpdateList.isEmpty()) {
-            throw NotFoundException("No se han encontrado actualizaciones para la aplicación")
+        val allAppUpdateList =  actualizacionRepository.findAll()
+        if (allAppUpdateList.isEmpty()) {
+            throw BusinessException("No existen actualizaciones disponibles")
         }
 
+        val lastAppUpdate = allAppUpdateList.findLast { actualizacion -> actualizacion.active == true } ?: allAppUpdateList.last()
+        val toVersion = lastAppUpdate?.version ?: clientAppVersion
 
-        return appUpdateList.findLast { actualizacion -> actualizacion.active == true } ?: appUpdateList.last()
+
+        val upgradableAppUpdateList =  actualizacionRepository.findUpgradableAppUpdateListBetweenVersion(clientAppVersion, toVersion)
+        if (upgradableAppUpdateList.isEmpty()) {
+            throw BusinessException("La aplicación está actualizada")
+        }
+
+        //Obtener las lista de Cambios de todas las versiones que falta por actualizar
+        val allChangeLog : MutableList<String> = ArrayList()
+        upgradableAppUpdateList.forEach { actualizacion ->
+            actualizacion.versionString?.let { allChangeLog.add("Cambios en v$it") }
+            actualizacion.description?.let { allChangeLog.addAll(it) }
+            println(actualizacion.versionString)
+        }
+        lastAppUpdate.description = allChangeLog
+
+        //Si falto alguna actualizacion requerida intermedia dese la actual del cliente hasta la ultima aplicable tambien esa ultima debe ser requerida
+        lastAppUpdate.forceUpdate = upgradableAppUpdateList.find { actualizacion -> actualizacion.forceUpdate==true}?.forceUpdate ?:false
+
+
+        //Obtener el Tamaño real en MB de esa Actualizacion si Existe y enviar Actualizacion correcta al usuario
+        return try {
+
+            lastAppUpdate.fileSize = ficheroServicio.getFileSize(lastAppUpdate.appURL)
+            lastAppUpdate
+
+        } catch (e :NotFoundException) {
+            throw BusinessException("No disponible por el momento")
+        }
 
 
     }
-
 
     @Throws(BusinessException::class,NotFoundException::class)
     override fun addAppUpdate(actualizacion: Actualizacion): Actualizacion {

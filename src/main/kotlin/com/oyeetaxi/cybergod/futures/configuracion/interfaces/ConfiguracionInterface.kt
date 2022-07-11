@@ -23,7 +23,7 @@ interface ConfiguracionInterface {
 
 
     //APP_UPDATE
-    fun getAppUpdate(): Actualizacion
+    fun getAppUpdate(clientAppVersion: Int): Actualizacion
 
     fun addAppUpdate(actualizacion: Actualizacion): Actualizacion
 

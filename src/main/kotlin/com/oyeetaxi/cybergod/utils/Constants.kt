@@ -30,4 +30,5 @@ object Constants {
         const val AUTHORIZATION = "Authorization"
 
 
+        const val ERROR_RESPONSE="ERROR_RESPONSE"
 }

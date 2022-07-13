@@ -30,24 +30,15 @@ class FicheroRestController {
     val ficheroServicio : FicheroServicio? = null
 
 
-    //TODO EndPoint Para Subir un Solo Fichero
-    //TODO la Llamada al EndPont Seria http://localhost:8080/ficheros/uploadSingleFile
+    //EndPoint Para Subir un Solo Fichero
     @PostMapping("/uploadSingleFileByType")
     fun uploadSingleFileByType(@RequestParam file: MultipartFile, @RequestParam("id") id: String, @RequestParam("fileType") fileType: String ): FileUploadesResponse {
-
-       // System.out.println("id is  "+id + " - fileType is "+ fileType)
-
-
-
 
         //Nombre del Fichero
         val nombreFichero: String = ficheroServicio!!.guardarFichero(
             file = file,
             fileName = getFileNameByType(id,fileType)
         )
-
-
-        //System.out.println("nombreFichero is  "+nombreFichero)
 
         //Url Destino del Fichero Ej: http://IP:PUERTO/ficheros/download/nombreFichero.extencion
         val url = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -58,12 +49,6 @@ class FicheroRestController {
 
         //Url Relativa del Fichero Ej: ficheros/download/nombreFichero.extencion
         val urlRelativa = "$FILES_FOLDER/$DOWNLOAD_FOLDER/$nombreFichero"
-
-
-        //var LOGGER = LoggerFactory.getLogger(VehiculoRestController::class.java)
-        //LOGGER.info()
-
-        //System.out.println("urlRelativa is  "+urlRelativa)
 
         //Tipo
         val contentType: String = file.contentType.toString()
@@ -72,14 +57,18 @@ class FicheroRestController {
         return FileUploadesResponse(fileName = nombreFichero, contentType = contentType, url = urlRelativa)
     }
 
-    //TODO EndPoint Para Subir un Solo Fichero
+    //EndPoint Para Subir un Solo Fichero
     //TODO la Llamada al EndPont Seria http://localhost:8080/ficheros/uploadSingleFile
     @PostMapping("/uploadSingleFile")
     fun uploadSingleFile(@RequestParam("file") file: MultipartFile, @RequestParam("fileName") fileName: String): FileUploadesResponse {
 
+        val char :Char = '"'
+        val fileNameOK = fileName.replace(char.toString(),"")
+
+         println("fileName is  $fileNameOK" )
 
         //Nombre del Fichero
-        val nombreFichero: String = ficheroServicio!!.guardarFichero(file,fileName.toLowerCase())
+        val nombreFichero: String = ficheroServicio!!.guardarFichero(file,fileNameOK)
 
         //Url Destino del Fichero Ej: http://IP:PUERTO/ficheros/download/nombreFichero.extencion
         val url = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -87,13 +76,9 @@ class FicheroRestController {
             .path(nombreFichero)
             .toUriString()
 
-
-        //Url Relativa del Fichero Ej: ficheros/download/nombreFichero.extencion
         val urlRelativa = "$FILES_FOLDER/$DOWNLOAD_FOLDER/$nombreFichero"
 
-
-        //var LOGGER = LoggerFactory.getLogger(VehiculoRestController::class.java)
-        //LOGGER.info(urlRelativa)
+        println("urlRelativa is  $urlRelativa" )
 
         //Tipo
         val contentType: String = file.contentType.toString()

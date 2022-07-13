@@ -131,10 +131,9 @@ class FicheroServicio( @Value("\${file.storage.location:temp}") fileStorageLocat
 
 
     @Throws(NotFoundException::class)
-    fun getFileSize(fileName: String?):String {
+    fun getFileSize(fileName: String?):String? {
 
-        val localFileName:String = fileName?.replace("${FILES_FOLDER}/${DOWNLOAD_FOLDER}"  , fileStoragePath.toString())?.replace("/","\\").orEmpty()
-
+        val localFileName: String = fileName.resolveFile()
 
         val file = File(localFileName)
 
@@ -161,35 +160,47 @@ class FicheroServicio( @Value("\${file.storage.location:temp}") fileStorageLocat
                 }
 
             }.also {
-                println("$localFileName -> $it")
+                //println("$localFileName -> $it")
             }
-
-
-
-//          //FUNCIONA OK
-//            val bytes: Long = file.length()
-//            val kilobytes = bytes / 1024
-//            val megabytes = kilobytes / 1024
-//            val gigabytes = megabytes / 1024
-//            val terabytes = gigabytes / 1024
-//
-////            println(String.format("%,d bytes", bytes))
-////            println(String.format("%,d KB", kilobytes))
-////            println(String.format("%,d MB", megabytes))
-////            println(String.format("%,d GB", gigabytes))
-////            println(String.format("%,d TB", terabytes))
-//
-//            String.format("%,d MB", megabytes).also {
-//                println("$localFileName -> $it")
-//            }
-
 
         } else {
-            throw NotFoundException("$localFileName no existe!").also {
-                println(it.message)
-            }
+            //println("$localFileName no existe!")
+            null
+//            throw NotFoundException("$localFileName no existe!").also {
+//                println(it.message)
+//            }
         }
     }
+
+    private fun String?.resolveFile(): String {
+        return this?.replace("${FILES_FOLDER}/${DOWNLOAD_FOLDER}", fileStoragePath.toString())?.replace("/", "\\")
+            .orEmpty()
+    }
+
+
+    fun deleteFile(fileName: String):Boolean {
+
+        val localFileName: String = fileName.resolveFile()
+
+        val path = Paths.get(localFileName)
+        return try {
+
+            Files.deleteIfExists(path).also {
+                if (it) {
+                    println("$fileName borrado!")
+                } else {
+                    println("$fileName no se pudo borrar!")
+                }
+            }
+
+        } catch (e: Exception) {
+            false.also {
+                println(println("$fileName no se pudo borrar -> $e"))
+            }
+        }
+
+    }
+
 
 
 }

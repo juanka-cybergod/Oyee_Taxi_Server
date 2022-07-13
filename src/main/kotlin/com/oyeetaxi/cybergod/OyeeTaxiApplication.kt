@@ -1,30 +1,21 @@
 package com.oyeetaxi.cybergod
 
 
-import com.oyeetaxi.cybergod.futures.configuracion.models.Actualizacion
-import com.oyeetaxi.cybergod.futures.share.models.Ubicacion
-import com.oyeetaxi.cybergod.futures.usuario.models.type.UsuarioVerificacion
-import com.oyeetaxi.cybergod.futures.vehiculo.models.type.VehiculoVerificacion
+import com.oyeetaxi.cybergod.futures.actualizacion.models.Actualizacion
 import com.oyeetaxi.cybergod.utils.Constants.DEFAULT_CONFIG
-import com.oyeetaxi.cybergod.utils.Utils.passwordEncode
 import com.oyeetaxi.cybergod.futures.configuracion.models.Configuracion
 import com.oyeetaxi.cybergod.futures.configuracion.models.balanceResponse.Balance
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.*
-import com.oyeetaxi.cybergod.futures.configuracion.repositories.ActualizacionRepository
+import com.oyeetaxi.cybergod.futures.actualizacion.repositories.ActualizacionRepository
 import com.oyeetaxi.cybergod.futures.configuracion.repositories.ConfiguracionRepository
-import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
 import com.oyeetaxi.cybergod.futures.usuario.repositories.UsuarioRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import com.oyeetaxi.cybergod.futures.provincia.models.Provincia
 import com.oyeetaxi.cybergod.futures.provincia.repositories.ProvinciaRepository
-import com.oyeetaxi.cybergod.futures.tipo_vehiculo.models.TipoVehiculo
 import com.oyeetaxi.cybergod.futures.tipo_vehiculo.repositories.TipoVehiculoRepository
-import com.oyeetaxi.cybergod.futures.vehiculo.models.Vehiculo
 import com.oyeetaxi.cybergod.futures.vehiculo.repositories.VehiculoRepository
-import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 

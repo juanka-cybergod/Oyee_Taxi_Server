@@ -1,4 +1,4 @@
-package com.oyeetaxi.cybergod.futures.configuracion.models
+package com.oyeetaxi.cybergod.futures.actualizacion.models
 
 import com.mongodb.lang.Nullable
 import com.oyeetaxi.cybergod.utils.CollectionsNames.APP_UPDATES

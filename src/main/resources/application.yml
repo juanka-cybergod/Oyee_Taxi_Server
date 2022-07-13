@@ -30,9 +30,9 @@ file:
     multipart:
       enabled: true
       location: tempFolder
-      file-size-threshold: 50MB
-      max-file-size: 50MB
-      max-request-size: 50MB
+      file-size-threshold: 100MB
+      max-file-size: 100MB
+      max-request-size: 100MB
 
 ##TWILIO SMS API
 twilio:

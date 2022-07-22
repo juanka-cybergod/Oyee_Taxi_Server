@@ -208,6 +208,15 @@ class UsuarioRestController: BaseRestController() {
 
     }
 
+    @GetMapping("/emailExist")
+    fun emailExist(@RequestParam("email") email: String): ResponseEntity<Boolean> {
+        return try {
+            ResponseEntity(usuarioService.emailExist(email),HttpStatus.OK)
+        }catch (e:Exception){
+            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+
+    }
 
     @GetMapping("/requestOTPCodeToSMSTest")
     fun requestOTPCodeToSMSTest(@RequestParam("phoneNumber") phoneNumber: String): ResponseEntity<Any> {

@@ -32,4 +32,8 @@ object Constants {
 
 
         const val ERROR_RESPONSE="ERROR_RESPONSE"
+
+
+        const val DEFAULT_updateAvailableVehiclesRate = 10L
+
 }

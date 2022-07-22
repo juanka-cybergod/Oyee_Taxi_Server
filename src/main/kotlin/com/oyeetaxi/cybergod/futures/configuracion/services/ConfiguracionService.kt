@@ -10,6 +10,7 @@ import com.oyeetaxi.cybergod.futures.configuracion.models.types.EmailConfiguraci
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.SmsProvider
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.TwilioConfiguracion
 import com.oyeetaxi.cybergod.futures.actualizacion.repositories.ActualizacionRepository
+import com.oyeetaxi.cybergod.futures.configuracion.models.types.RegisterConfiguracion
 import com.oyeetaxi.cybergod.futures.configuracion.repositories.ConfiguracionRepository
 import com.oyeetaxi.cybergod.futures.fichero.services.FicheroServicio
 import com.oyeetaxi.cybergod.utils.Constants.DEFAULT_CONFIG
@@ -61,9 +62,10 @@ class ConfiguracionService(
 
             configuracion.servidorActivoClientes?.let { configuracionModificar.servidorActivoClientes = it }
             configuracion.servidorActivoAdministradores?.let { configuracionModificar.servidorActivoAdministradores = it }
-            configuracion.smsProvider?.let { configuracionModificar.smsProvider = it }
+//            configuracion.smsProvider?.let { configuracionModificar.smsProvider = it }
             configuracion.motivoServidorInactivoClientes?.let { configuracionModificar.motivoServidorInactivoClientes = it }
             configuracion.motivoServidorInactivoAdministradores?.let { configuracionModificar.motivoServidorInactivoAdministradores = it }
+
 
 
             configuracion.twilioConfiguracion?.let { twilioConfiguration ->
@@ -100,6 +102,21 @@ class ConfiguracionService(
                 socialConfiguracion.web?.let { configuracionModificar.socialConfiguracion?.web = it }
                 socialConfiguracion.redesSociales?.let { configuracionModificar.socialConfiguracion?.redesSociales = it }
             }
+
+
+
+
+            configuracion.actualizacionVehiculosDisponibles?.let { configuracionModificar.actualizacionVehiculosDisponibles = it }
+            configuracion.actualizacionUbicacionClientes?.let { configuracionModificar.actualizacionUbicacionClientes = it }
+
+
+            configuracion.registerConfiguracion?.let { registerConfiguracion ->
+                registerConfiguracion.smsProvider?.let { configuracionModificar.registerConfiguracion?.smsProvider = it }
+                registerConfiguracion.habilitadoRegistroConductores?.let { configuracionModificar.registerConfiguracion?.habilitadoRegistroConductores = it }
+                registerConfiguracion.habilitadoRegistroPasajeros?.let { configuracionModificar.registerConfiguracion?.habilitadoRegistroPasajeros = it }
+
+            }
+
 
 
             try {
@@ -173,23 +190,23 @@ class ConfiguracionService(
 
     }
 
-    @Throws(BusinessException::class,NotFoundException::class)
-    override fun getSmsProvider(): SmsProvider {
-
-        val optional: Optional<Configuracion>
-
-        try {
-            optional = configuracionRepository.findById(DEFAULT_CONFIG)
-        }catch (e:Exception) {
-            throw BusinessException(e.message)
-        }
-        if (!optional.isPresent){
-            throw NotFoundException("Configuracion con ID $DEFAULT_CONFIG No Encontrado")
-        }
-        return optional.get().smsProvider!!
-
-
-    }
+//    @Throws(BusinessException::class,NotFoundException::class)
+//    override fun getSmsProvider(): SmsProvider {
+//
+//        val optional: Optional<Configuracion>
+//
+//        try {
+//            optional = configuracionRepository.findById(DEFAULT_CONFIG)
+//        }catch (e:Exception) {
+//            throw BusinessException(e.message)
+//        }
+//        if (!optional.isPresent){
+//            throw NotFoundException("Configuracion con ID $DEFAULT_CONFIG No Encontrado")
+//        }
+//        return optional.get().smsProvider!!
+//
+//
+//    }
 
     @Throws(BusinessException::class,NotFoundException::class)
     override fun getEmailConfiguration(): EmailConfiguracion {
@@ -207,6 +224,23 @@ class ConfiguracionService(
 
     }
 
+    @Throws(BusinessException::class,NotFoundException::class)
+    override fun getRegisterConfiguration(): RegisterConfiguracion {
+
+        val optional: Optional<Configuracion>
+
+        try {
+            optional = configuracionRepository.findById(DEFAULT_CONFIG)
+        }catch (e:Exception) {
+            throw BusinessException(e.message)
+        }
+        if (!optional.isPresent){
+            throw NotFoundException("Configuracion con ID $DEFAULT_CONFIG No Encontrado")
+        }
+        return optional.get().registerConfiguracion!!
+
+
+    }
 
 
 }

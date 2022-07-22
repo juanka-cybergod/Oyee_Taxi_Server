@@ -3,6 +3,7 @@ package com.oyeetaxi.cybergod.futures.configuracion.interfaces
 import com.oyeetaxi.cybergod.futures.actualizacion.models.Actualizacion
 import com.oyeetaxi.cybergod.futures.configuracion.models.Configuracion
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.EmailConfiguracion
+import com.oyeetaxi.cybergod.futures.configuracion.models.types.RegisterConfiguracion
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.SmsProvider
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.TwilioConfiguracion
 
@@ -19,9 +20,11 @@ interface ConfiguracionInterface {
 
     fun getConfiguration(): Configuracion
 
-    fun getSmsProvider(): SmsProvider
+//    fun getSmsProvider(): SmsProvider
 
     fun getEmailConfiguration(): EmailConfiguracion
+
+    fun getRegisterConfiguration(): RegisterConfiguracion
 
 }
 

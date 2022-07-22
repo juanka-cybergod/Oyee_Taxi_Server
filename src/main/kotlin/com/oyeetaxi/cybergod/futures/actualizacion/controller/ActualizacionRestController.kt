@@ -71,7 +71,7 @@ class ActualizacionRestController(
         return try {
             ResponseEntity( actualizacionService.editAppUpdate(actualizacion),HttpStatus.OK)
         } catch (e: NotFoundException) {
-            ResponseEntity(HttpStatus.NOT_FOUND)
+            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 

@@ -311,5 +311,14 @@ class UsuarioService(
         return findUserByPhoneNumber(phoneNumber)?.correo
     }
 
+    @Throws(BusinessException::class)
+    override fun emailExist(email: String): Boolean {
+        return try {
+            usuarioRepository.findUserByEmail(email.trim()).get().isNotEmpty()
+        } catch (e:Exception) {
+            throw BusinessException("No se pudo buscar por email Motivo: ${e.message}")
+        }
+
+    }
 
 }

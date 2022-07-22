@@ -24,4 +24,6 @@ interface UsuarioInterface {
     fun getUserByEmail(email: String): Usuario?
     fun getUserEmailByPhoneNumber(phoneNumber: String): String?
 
+    fun emailExist(email: String): Boolean
+
 }

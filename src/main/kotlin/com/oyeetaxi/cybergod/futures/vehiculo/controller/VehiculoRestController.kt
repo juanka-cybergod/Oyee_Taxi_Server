@@ -25,30 +25,11 @@ class VehiculoRestController: BaseRestController() {
 
     @GetMapping("/getAvailableVehicles")
     fun getAvailableVehicles():ResponseEntity<List<VehiculoResponse>>{
-
         return try {
             ResponseEntity(vehiculoService.getAviableVehicles(),HttpStatus.OK)
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
-
-//        val listaVehiculosResponse : MutableCollection<VehiculoResponse> = ArrayList()
-//
-//        vehiculoService.getAviableVehicles().let { listaVehiculosDisponibles ->
-//
-//            listaVehiculosDisponibles.forEach { vehiculo ->
-//                listaVehiculosResponse.add(
-//                    convertVehicleToVehicleResponse(vehiculo)
-//                )
-//            }
-//        }
-//
-//
-//        return try {
-//            ResponseEntity(listaVehiculosResponse.toList(),HttpStatus.OK)
-//        }catch (e:Exception){
-//            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
-//        }
     }
 
     @GetMapping("/getActiveVehicleByUserId={id}")
@@ -110,8 +91,6 @@ class VehiculoRestController: BaseRestController() {
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
-
-
     }
 
 
@@ -134,7 +113,6 @@ class VehiculoRestController: BaseRestController() {
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
-
 
 
     @GetMapping("/getVehicleById={id}")
@@ -224,8 +202,6 @@ class VehiculoRestController: BaseRestController() {
             "-1"
         }
     }
-
-
 
 
 

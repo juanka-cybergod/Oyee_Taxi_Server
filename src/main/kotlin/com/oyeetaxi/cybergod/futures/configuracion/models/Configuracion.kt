@@ -1,10 +1,7 @@
 package com.oyeetaxi.cybergod.futures.configuracion.models
 
 import com.mongodb.lang.Nullable
-import com.oyeetaxi.cybergod.futures.configuracion.models.types.EmailConfiguracion
-import com.oyeetaxi.cybergod.futures.configuracion.models.types.SocialConfiguracion
-import com.oyeetaxi.cybergod.futures.configuracion.models.types.TwilioConfiguracion
-import com.oyeetaxi.cybergod.futures.configuracion.models.types.SmsProvider
+import com.oyeetaxi.cybergod.futures.configuracion.models.types.*
 import com.oyeetaxi.cybergod.utils.CollectionsNames.CONFIGURACION
 import com.oyeetaxi.cybergod.utils.Constants.DEFAULT_CONFIG
 import org.springframework.data.annotation.Id
@@ -20,10 +17,17 @@ data class Configuracion(
     @Nullable var motivoServidorInactivoClientes :String? = null,
     @Nullable var motivoServidorInactivoAdministradores :String? = null,
     @Nullable var twilioConfiguracion: TwilioConfiguracion? = null,
-    @Nullable var smsProvider: SmsProvider? = null,
     @Nullable var emailConfiguracion: EmailConfiguracion? = null,
     @Nullable var actualizacionHabilita: Boolean? = null,
     @Nullable var socialConfiguracion: SocialConfiguracion? = null,
+
+
+
+    @Nullable var actualizacionVehiculosDisponibles: Long? = null,
+    @Nullable var actualizacionUbicacionClientes: Long? = null,
+    @Nullable var registerConfiguracion: RegisterConfiguracion? = null,//
+
+
 
     )
 

@@ -3,6 +3,7 @@ package com.oyeetaxi.cybergod.futures.configuracion.controller
 
 import com.oyeetaxi.cybergod.exceptions.BusinessException
 import com.oyeetaxi.cybergod.futures.configuracion.models.Configuracion
+import com.oyeetaxi.cybergod.futures.configuracion.models.types.RegisterConfiguracion
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.SmsProvider
 import com.oyeetaxi.cybergod.futures.configuracion.services.ConfiguracionService
 import com.oyeetaxi.cybergod.futures.share.interfaces.SmsInterface
@@ -25,7 +26,7 @@ class ConfiguracionRestController(
     @GetMapping("/getSMSBalance")
     fun getSMSBalance():ResponseEntity<Any>{
         val smsProvider :SmsInterface? =
-            when (configuracionService.getSmsProvider()) {
+            when (configuracionService.getRegisterConfiguration().smsProvider) {
             SmsProvider.TWILIO -> {smsTwilioService}
             else -> null
             }
@@ -38,10 +39,19 @@ class ConfiguracionRestController(
     }
 
 
-    @GetMapping("/getSmsProvider")
-    fun getSmsProvider():ResponseEntity<SmsProvider>{
+//    @GetMapping("/getSmsProvider")
+//    fun getSmsProvider():ResponseEntity<SmsProvider>{
+//        return try {
+//            ResponseEntity(configuracionService.getSmsProvider(),HttpStatus.OK)
+//        }catch (e:Exception){
+//            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+//        }
+//    }
+
+    @GetMapping("/getRegisterConfiguration")
+    fun getRegisterConfiguration():ResponseEntity<RegisterConfiguracion>{
         return try {
-            ResponseEntity(configuracionService.getSmsProvider(),HttpStatus.OK)
+            ResponseEntity(configuracionService.getRegisterConfiguration(),HttpStatus.OK)
         }catch (e:Exception){
             ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
         }
@@ -70,7 +80,7 @@ class ConfiguracionRestController(
 
 
         val smsProvider :SmsInterface? =
-            when (configuracionService.getSmsProvider()) {
+            when (configuracionService.getRegisterConfiguration().smsProvider) {
                 SmsProvider.TWILIO -> {smsTwilioService}
                 else -> null
             }

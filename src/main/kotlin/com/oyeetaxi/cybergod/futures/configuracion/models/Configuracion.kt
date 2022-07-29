@@ -20,11 +20,7 @@ data class Configuracion(
     @Nullable var emailConfiguracion: EmailConfiguracion? = null,
     @Nullable var actualizacionHabilita: Boolean? = null,
     @Nullable var socialConfiguracion: SocialConfiguracion? = null,
-
-
-
-    @Nullable var actualizacionVehiculosDisponibles: Long? = null,
-    @Nullable var actualizacionUbicacionClientes: Long? = null,
+    @Nullable var intervalTimerConfiguracion: IntervalTimerConfiguracion? = null,//
     @Nullable var registerConfiguracion: RegisterConfiguracion? = null,//
 
 

@@ -105,9 +105,10 @@ class ConfiguracionService(
 
 
 
-
-            configuracion.actualizacionVehiculosDisponibles?.let { configuracionModificar.actualizacionVehiculosDisponibles = it }
-            configuracion.actualizacionUbicacionClientes?.let { configuracionModificar.actualizacionUbicacionClientes = it }
+            configuracion.intervalTimerConfiguracion?.let { intervalTimerConfiguracion ->
+                intervalTimerConfiguracion.getAvailableVehicleInterval?.let { configuracionModificar.intervalTimerConfiguracion?.getAvailableVehicleInterval = it }
+                intervalTimerConfiguracion.setDriversLocationInterval?.let { configuracionModificar.intervalTimerConfiguracion?.setDriversLocationInterval = it }
+            }
 
 
             configuracion.registerConfiguracion?.let { registerConfiguracion ->

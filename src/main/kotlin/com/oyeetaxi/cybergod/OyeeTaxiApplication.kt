@@ -143,8 +143,10 @@ class OyeeTaxiApplication:CommandLineRunner{
 				web = "http://www.oyeetaxi.com",
 				redesSociales = redesSociales.toList()
 			),
-			actualizacionVehiculosDisponibles = 10,
-			actualizacionUbicacionClientes = 5,
+			intervalTimerConfiguracion = IntervalTimerConfiguracion(
+				getAvailableVehicleInterval = 10,
+				setDriversLocationInterval = 5,
+			),
 			registerConfiguracion = RegisterConfiguracion(
 				smsProvider = SmsProvider.TWILIO,
 				habilitadoRegistroConductores = true,

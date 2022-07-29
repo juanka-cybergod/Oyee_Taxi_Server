@@ -160,6 +160,7 @@ class UsuarioService(
                 usuario.imagenPerfilURL?.let { usuarioModificar.imagenPerfilURL = it}
                 usuario.telefonoMovil?.let { usuarioModificar.telefonoMovil = it}
                 usuario.telefonoFijo?.let { usuarioModificar.telefonoFijo = it}
+                usuario.correo?.let { usuarioModificar.correo = it}
                 usuario.contrasena?.let { usuarioModificar.contrasena = it}
                 usuario.otpCode?.let { usuarioModificar.otpCode = it }
                 usuario.provincia?.let { usuarioModificar.provincia = it}

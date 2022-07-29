@@ -3,13 +3,11 @@ package com.oyeetaxi.cybergod.configuration
 
 import com.oyeetaxi.cybergod.futures.configuracion.repositories.ConfiguracionRepository
 import com.oyeetaxi.cybergod.futures.share.models.Ubicacion
-import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
 import com.oyeetaxi.cybergod.futures.usuario.repositories.UsuarioRepository
 import com.oyeetaxi.cybergod.futures.usuario.services.UsuarioService
 import com.oyeetaxi.cybergod.futures.vehiculo.services.VehiculoService
-import com.oyeetaxi.cybergod.utils.Constants
+import com.oyeetaxi.cybergod.utils.Constants.DEFAULT_AvailableVehicleInterval
 import com.oyeetaxi.cybergod.utils.Constants.DEFAULT_CONFIG
-import com.oyeetaxi.cybergod.utils.Constants.DEFAULT_updateAvailableVehiclesRate
 import com.oyeetaxi.cybergod.utils.GlobalVariables.updateAvailableVehiclesRate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
@@ -20,7 +18,7 @@ import java.text.DecimalFormat
 import java.util.*
 import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.TimeUnit
-import java.util.stream.Collectors
+
 
 
 @Configuration
@@ -132,8 +130,8 @@ class SchedulerConfiguration(
             val optional = configuracionRepository.findById(DEFAULT_CONFIG)
 
             updateAvailableVehiclesRate = if (optional.isPresent) {
-                optional.get().actualizacionVehiculosDisponibles ?: DEFAULT_updateAvailableVehiclesRate
-            } else {DEFAULT_updateAvailableVehiclesRate}
+                optional.get().intervalTimerConfiguracion?.getAvailableVehicleInterval ?: DEFAULT_AvailableVehicleInterval
+            } else {DEFAULT_AvailableVehicleInterval}
 
            // println("updateAvailableVehiclesRate = $updateAvailableVehiclesRate")
 

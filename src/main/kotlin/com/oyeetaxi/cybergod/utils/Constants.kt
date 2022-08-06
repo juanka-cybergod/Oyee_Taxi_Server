@@ -34,6 +34,7 @@ object Constants {
         const val ERROR_RESPONSE="ERROR_RESPONSE"
 
 
-        const val DEFAULT_AvailableVehicleInterval = 10L
+        const val DEFAULT_GetAvailableVehicleInterval = 10L
+        const val DEFAULT_SetDriversLocationInterval = 5L
 
 }

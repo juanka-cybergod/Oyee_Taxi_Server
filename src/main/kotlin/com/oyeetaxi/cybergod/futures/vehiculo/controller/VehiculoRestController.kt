@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import com.oyeetaxi.cybergod.futures.vehiculo.models.Vehiculo
 import com.oyeetaxi.cybergod.futures.vehiculo.models.requestFilter.VehicleFilterOptions
+import com.oyeetaxi.cybergod.futures.vehiculo.models.response.DataResponse
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
@@ -21,6 +22,16 @@ import org.springframework.data.domain.Pageable
 @RequestMapping(URL_BASE_VEHICULOS)
 class VehiculoRestController: BaseRestController() {
 
+
+
+    @GetMapping("/getData")
+    fun getData():ResponseEntity<DataResponse>{
+        return try {
+            ResponseEntity(vehiculoService.getData(),HttpStatus.OK)
+        }catch (e:Exception){
+            ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
 
 
     @GetMapping("/getAvailableVehicles")

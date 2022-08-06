@@ -5,9 +5,11 @@ import com.oyeetaxi.cybergod.futures.vehiculo.interfaces.VehiculoInterface
 import com.oyeetaxi.cybergod.futures.vehiculo.repositories.VehiculoRepository
 import com.oyeetaxi.cybergod.exceptions.BusinessException
 import com.oyeetaxi.cybergod.exceptions.NotFoundException
+import com.oyeetaxi.cybergod.futures.configuracion.models.types.IntervalTimerConfiguracion
 import com.oyeetaxi.cybergod.futures.share.services.BaseService
 import com.oyeetaxi.cybergod.futures.vehiculo.models.Vehiculo
 import com.oyeetaxi.cybergod.futures.vehiculo.models.requestFilter.VehicleFilterOptions
+import com.oyeetaxi.cybergod.futures.vehiculo.models.response.DataResponse
 import com.oyeetaxi.cybergod.futures.vehiculo.models.response.VehiculoResponse
 import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterActivos
 import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterDeshabilitados
@@ -16,7 +18,8 @@ import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterVerifica
 import com.oyeetaxi.cybergod.futures.vehiculo.utils.VehiculoUtils.filterNoVisibles
 import com.oyeetaxi.cybergod.utils.GlobalVariables.availableVehiclesListGlobal
 import com.oyeetaxi.cybergod.utils.GlobalVariables.lastTimeUpdateAvailableVehicles
-import com.oyeetaxi.cybergod.utils.GlobalVariables.updateAvailableVehiclesRate
+import com.oyeetaxi.cybergod.utils.GlobalVariables.getAvailableVehicleInterval
+import com.oyeetaxi.cybergod.utils.GlobalVariables.setDriversLocationInterval
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -28,10 +31,49 @@ import kotlin.math.min
 
 @Service
 class VehiculoService(
-    @Autowired private val vehiculoRepository: VehiculoRepository
+    @Autowired private val vehiculoRepository: VehiculoRepository,
 ) : BaseService(), VehiculoInterface {
 
     private var LOGGER = LoggerFactory.getLogger(VehiculoService::class.java)
+
+    @Throws(BusinessException::class)
+    override fun getData(): DataResponse {
+
+        return try {
+            DataResponse(
+                vehicleResponseList = getAviableVehicles(),
+                intervalTimerConfiguracion = IntervalTimerConfiguracion(
+                    getAvailableVehicleInterval = getAvailableVehicleInterval,
+                    setDriversLocationInterval = setDriversLocationInterval,
+                ),
+            )
+        } catch(e:Exception) {
+            throw BusinessException(e.message)
+        }
+    }
+
+    @Throws(BusinessException::class)
+    override fun getAviableVehicles(): List<VehiculoResponse> {
+
+        val currentTime = System.currentTimeMillis() / 1000
+        val diffTime = currentTime - lastTimeUpdateAvailableVehicles
+
+        return try {
+
+            if (diffTime >= getAvailableVehicleInterval || availableVehiclesListGlobal == null) {
+                println("$diffTime Seg - Get AvailableVehicles from Repository")
+                lastTimeUpdateAvailableVehicles = currentTime
+                availableVehiclesListGlobal = vehiculoRepository.findAviableVehicles().convertVehicleToVehicleResponse()
+                availableVehiclesListGlobal.orEmpty()
+            } else {
+                println("$diffTime Seg - Get AvailableVehicles from Global")
+                availableVehiclesListGlobal.orEmpty()
+            }
+
+        } catch (e:Exception){
+            throw BusinessException(e.message)
+        }
+    }
 
     @Throws(BusinessException::class)
     override fun getActiveVehicleByUserId(idUsuario:String): Vehiculo? {
@@ -60,29 +102,6 @@ class VehiculoService(
         }
 
         return foundVehicle
-    }
-
-    @Throws(BusinessException::class)
-    override fun getAviableVehicles(): List<VehiculoResponse> {
-
-        val currentTime = System.currentTimeMillis() / 1000
-        val diffTime = currentTime - lastTimeUpdateAvailableVehicles
-
-        return try {
-
-            if (diffTime >= updateAvailableVehiclesRate || availableVehiclesListGlobal == null) {
-                println("$diffTime Seg - Get AvailableVehicles from Repository")
-                lastTimeUpdateAvailableVehicles = currentTime
-                availableVehiclesListGlobal = vehiculoRepository.findAviableVehicles().convertVehicleToVehicleResponse()
-                availableVehiclesListGlobal.orEmpty()
-            } else {
-                println("$diffTime Seg - Get AvailableVehicles from Global")
-                availableVehiclesListGlobal.orEmpty()
-            }
-
-        } catch (e:Exception){
-            throw BusinessException(e.message)
-        }
     }
 
     @Throws(BusinessException::class)
@@ -128,7 +147,6 @@ class VehiculoService(
         }
     }
 
-
     @Throws(BusinessException::class,NotFoundException::class)
     override fun searchVehiclesPaginatedWithFilter(vehicleFilterOptions: VehicleFilterOptions, pageable: Pageable): Page<VehiculoResponse> {
 
@@ -155,7 +173,6 @@ class VehiculoService(
         return PageImpl(vehicleResponseSubList, pageable, allVehiclesFound.size.toLong())
 
     }
-
 
     @Throws(BusinessException::class,NotFoundException::class)
     override fun getVehicleById(idVehiculo: String): Vehiculo {

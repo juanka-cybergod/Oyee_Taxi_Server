@@ -6,9 +6,11 @@ import com.oyeetaxi.cybergod.futures.share.models.Ubicacion
 import com.oyeetaxi.cybergod.futures.usuario.repositories.UsuarioRepository
 import com.oyeetaxi.cybergod.futures.usuario.services.UsuarioService
 import com.oyeetaxi.cybergod.futures.vehiculo.services.VehiculoService
-import com.oyeetaxi.cybergod.utils.Constants.DEFAULT_AvailableVehicleInterval
+import com.oyeetaxi.cybergod.utils.Constants.DEFAULT_GetAvailableVehicleInterval
 import com.oyeetaxi.cybergod.utils.Constants.DEFAULT_CONFIG
-import com.oyeetaxi.cybergod.utils.GlobalVariables.updateAvailableVehiclesRate
+import com.oyeetaxi.cybergod.utils.Constants.DEFAULT_SetDriversLocationInterval
+import com.oyeetaxi.cybergod.utils.GlobalVariables.getAvailableVehicleInterval
+import com.oyeetaxi.cybergod.utils.GlobalVariables.setDriversLocationInterval
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.EnableAsync
@@ -124,14 +126,18 @@ class SchedulerConfiguration(
 
         currentTime++
 
-        if (currentTime.mod(updateAvailableVehiclesRate).toInt() == 0) {
+        if (currentTime.mod(getAvailableVehicleInterval).toInt() == 0) {
 
             currentTime = 0
             val optional = configuracionRepository.findById(DEFAULT_CONFIG)
 
-            updateAvailableVehiclesRate = if (optional.isPresent) {
-                optional.get().intervalTimerConfiguracion?.getAvailableVehicleInterval ?: DEFAULT_AvailableVehicleInterval
-            } else {DEFAULT_AvailableVehicleInterval}
+            getAvailableVehicleInterval = if (optional.isPresent) {
+                optional.get().intervalTimerConfiguracion?.getAvailableVehicleInterval ?: DEFAULT_GetAvailableVehicleInterval
+            } else {DEFAULT_GetAvailableVehicleInterval}
+
+            setDriversLocationInterval = if (optional.isPresent) {
+                optional.get().intervalTimerConfiguracion?.setDriversLocationInterval ?: DEFAULT_SetDriversLocationInterval
+            } else {DEFAULT_SetDriversLocationInterval}
 
            // println("updateAvailableVehiclesRate = $updateAvailableVehiclesRate")
 

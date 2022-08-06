@@ -4,15 +4,11 @@ package com.oyeetaxi.cybergod.futures.configuracion.services
 import com.oyeetaxi.cybergod.exceptions.BusinessException
 import com.oyeetaxi.cybergod.exceptions.NotFoundException
 import com.oyeetaxi.cybergod.futures.configuracion.interfaces.ConfiguracionInterface
-import com.oyeetaxi.cybergod.futures.actualizacion.models.Actualizacion
 import com.oyeetaxi.cybergod.futures.configuracion.models.Configuracion
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.EmailConfiguracion
-import com.oyeetaxi.cybergod.futures.configuracion.models.types.SmsProvider
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.TwilioConfiguracion
-import com.oyeetaxi.cybergod.futures.actualizacion.repositories.ActualizacionRepository
 import com.oyeetaxi.cybergod.futures.configuracion.models.types.RegisterConfiguracion
 import com.oyeetaxi.cybergod.futures.configuracion.repositories.ConfiguracionRepository
-import com.oyeetaxi.cybergod.futures.fichero.services.FicheroServicio
 import com.oyeetaxi.cybergod.utils.Constants.DEFAULT_CONFIG
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -22,7 +18,6 @@ import java.util.*
 class ConfiguracionService(
     @Autowired private val configuracionRepository: ConfiguracionRepository,
 ) : ConfiguracionInterface {
-
 
     @Throws(BusinessException::class, NotFoundException::class)
     override fun getConfiguration(): Configuracion {

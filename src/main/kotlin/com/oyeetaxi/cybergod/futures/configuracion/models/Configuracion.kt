@@ -20,8 +20,10 @@ data class Configuracion(
     @Nullable var emailConfiguracion: EmailConfiguracion? = null,
     @Nullable var actualizacionHabilita: Boolean? = null,
     @Nullable var socialConfiguracion: SocialConfiguracion? = null,
-    @Nullable var intervalTimerConfiguracion: IntervalTimerConfiguracion? = null,//
-    @Nullable var registerConfiguracion: RegisterConfiguracion? = null,//
+    @Nullable var intervalTimerConfiguracion: IntervalTimerConfiguracion? = null,
+    @Nullable var registerConfiguracion: RegisterConfiguracion? = null,
+
+    @Nullable var pagoConfiguracion: PagoConfiguracion? = null,//
 
 
 

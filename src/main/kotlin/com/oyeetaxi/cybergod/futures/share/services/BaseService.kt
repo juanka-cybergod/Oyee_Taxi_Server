@@ -1,5 +1,6 @@
 package com.oyeetaxi.cybergod.futures.share.services
 
+import com.oyeetaxi.cybergod.futures.pago.services.PagoService
 import com.oyeetaxi.cybergod.futures.tipo_vehiculo.services.TipoVehiculoService
 import com.oyeetaxi.cybergod.futures.usuario.services.UsuarioService
 import com.oyeetaxi.cybergod.futures.vehiculo.models.Vehiculo
@@ -14,34 +15,41 @@ class BaseService(
 ) {
     @Autowired lateinit var usuarioService : UsuarioService
     @Autowired lateinit var tipoVehiculoService : TipoVehiculoService
+    @Autowired lateinit var pagoService: PagoService
 
 
     fun List<Vehiculo>.convertVehicleToVehicleResponse():List<VehiculoResponse> {
 
-        val vehiculoResponseList : MutableList<VehiculoResponse> = ArrayList<VehiculoResponse>()
+        val vehiculoResponseList : MutableList<VehiculoResponse> = ArrayList()
 
         this.stream().forEach { vehiculo ->
-            vehiculoResponseList.add(
-                VehiculoResponse(
-                    id = vehiculo.id,
-                    usuario = usuarioService.getUserById(vehiculo.idUsuario!!),
-                    tipoVehiculo = tipoVehiculoService.getVehicleTypeById(vehiculo.tipoVehiculo!!),
-                    marca = vehiculo.marca,
-                    modelo = vehiculo.modelo,
-                    ano = vehiculo.ano,
-                    capacidadPasajeros = vehiculo.capacidadPasajeros,
-                    capacidadEquipaje = vehiculo.capacidadEquipaje,
-                    capacidadCarga = vehiculo.capacidadCarga,
-                    visible = vehiculo.visible,
-                    activo = vehiculo.activo,
-                    habilitado = vehiculo.habilitado,
-                    disponible = vehiculo.disponible,
-                    climatizado = vehiculo.climatizado,
-                    fechaDeRegistro = vehiculo.fechaDeRegistro,
-                    imagenFrontalPublicaURL = vehiculo.imagenFrontalPublicaURL,
-                    vehiculoVerificacion = vehiculo.vehiculoVerificacion,
+
+            if (pagoService.isVehiclePaid(vehiculo.id.orEmpty())) {
+
+                vehiculoResponseList.add(
+                    VehiculoResponse(
+                        id = vehiculo.id,
+                        usuario = usuarioService.getUserById(vehiculo.idUsuario!!),
+                        tipoVehiculo = tipoVehiculoService.getVehicleTypeById(vehiculo.tipoVehiculo!!),
+                        marca = vehiculo.marca,
+                        modelo = vehiculo.modelo,
+                        ano = vehiculo.ano,
+                        capacidadPasajeros = vehiculo.capacidadPasajeros,
+                        capacidadEquipaje = vehiculo.capacidadEquipaje,
+                        capacidadCarga = vehiculo.capacidadCarga,
+                        visible = vehiculo.visible,
+                        activo = vehiculo.activo,
+                        habilitado = vehiculo.habilitado,
+                        disponible = vehiculo.disponible,
+                        climatizado = vehiculo.climatizado,
+                        fechaDeRegistro = vehiculo.fechaDeRegistro,
+                        imagenFrontalPublicaURL = vehiculo.imagenFrontalPublicaURL,
+                        vehiculoVerificacion = vehiculo.vehiculoVerificacion,
+                    )
                 )
-            )
+
+            }
+
         }
 
 

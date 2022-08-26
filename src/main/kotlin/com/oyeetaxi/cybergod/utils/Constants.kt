@@ -15,6 +15,7 @@ object Constants {
         const val URL_BASE_CONFIGURACION="$URL_BASE/configuracion"
         const val URL_BASE_ACTUALIZACION="$URL_BASE/actualizacion"
         const val URL_BASE_VIAJES="$URL_BASE/viajes"
+        const val URL_BASE_PAGOS="$URL_BASE/pagos"
         const val FILES_FOLDER="ficheros"
         const val DOWNLOAD_FOLDER="descarga"
         const val URL_BASE_FICHEROS="$URL_BASE/$FILES_FOLDER"

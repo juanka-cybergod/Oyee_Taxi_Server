@@ -3,6 +3,7 @@ package com.oyeetaxi.cybergod.futures.usuario.models
 
 import com.mongodb.lang.Nullable
 import com.oyeetaxi.cybergod.futures.provincia.models.Provincia
+import com.oyeetaxi.cybergod.futures.share.models.TarjetaCredito
 import com.oyeetaxi.cybergod.futures.share.models.Ubicacion
 import com.oyeetaxi.cybergod.futures.usuario.models.type.UsuarioVerificacion
 import com.oyeetaxi.cybergod.utils.CollectionsNames.USUARIOS
@@ -36,6 +37,8 @@ data class Usuario(
     var usuarioVerificacion: UsuarioVerificacion? = null,
     var valoracion: Float?=null,
     var mensaje: String?=null,
+
+    var tarjetasCredito: List<TarjetaCredito>? = null,
     )
 
 

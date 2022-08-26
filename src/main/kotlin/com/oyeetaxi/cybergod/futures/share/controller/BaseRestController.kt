@@ -5,6 +5,7 @@ import com.oyeetaxi.cybergod.futures.vehiculo.models.response.VehiculoResponse
 import com.oyeetaxi.cybergod.futures.share.services.EmailServicio
 import com.oyeetaxi.cybergod.futures.share.services.SmsTwilioService
 import com.oyeetaxi.cybergod.futures.configuracion.services.ConfiguracionService
+import com.oyeetaxi.cybergod.futures.pago.services.PagoService
 import com.oyeetaxi.cybergod.futures.tipo_vehiculo.services.TipoVehiculoService
 import com.oyeetaxi.cybergod.futures.usuario.models.Usuario
 import com.oyeetaxi.cybergod.futures.usuario.services.UsuarioService
@@ -26,6 +27,8 @@ class BaseRestController {
     lateinit var vehiculoService : VehiculoService
     @Autowired
     lateinit var usuarioService : UsuarioService
+    @Autowired
+    lateinit var pagoService: PagoService
     @Autowired
     lateinit var tipoVehiculoService : TipoVehiculoService
     @Autowired

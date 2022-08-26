@@ -6,6 +6,7 @@ object CollectionsNames {
     const val USUARIOS = "usuarios"
     const val CONFIGURACION = "configuracion"
     const val APP_UPDATES = "actualizaciones"
+    const val PAYMENTS = "pagos"
 
 
 }
